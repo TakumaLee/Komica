@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--<TextView-->
+    <!--android:id="@+id/textView_NativeAdBodyContent"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_margin="8dp"-->
+    <!--/>-->
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageView_NativeAdCover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_mask" />
+
+            <!--<LinearLayout-->
+            <!--android:id="@+id/linearLayout_NativeAdView_Description_Container"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical">-->
+
+            <ImageView
+                android:id="@+id/imageView_NativeAd_DeleteIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_margin="12dp"
+                android:src="@mipmap/native_ads_btn_close"
+                android:visibility="gone" />
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="70dp">
+
+                <!--<TextView-->
+                <!--android:id="@+id/textView_NativeButtonTitle"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_margin="@dimen/activity_vertical_margin"/>-->
+                <TextView
+                    android:id="@+id/textView_NativeAdTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/button_NativeButtonTitle"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:text="XXX"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/button_NativeButtonTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="21dp"
+                    android:layout_marginRight="21dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/ad_button_primary"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+
+            </RelativeLayout>
+
+            <!--</LinearLayout>-->
+
+            <ImageView
+                android:id="@+id/imageView_NativeAd_PrivacyIcon"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true" />
+
+        </RelativeLayout>
+
+        <idv.kuma.app.komica.views.RoundedCornerImageView
+            android:id="@+id/imageView_NativeAdIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:adjustViewBounds="true"
+            android:background="@drawable/ad_button"
+            app:layout_anchor="@id/imageView_NativeAdCover"
+            app:layout_anchorGravity="left|bottom" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</LinearLayout>

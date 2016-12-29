@@ -1,0 +1,8 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="idv.kuma.library.appversionmanager">
+
+    <application >
+        <service android:name="idv.kuma.library.appversionmanager.DownloadService"/>
+    </application>
+
+</manifest>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="alert_error_ssl_cert_invalid">Server security SSL Certificate seems invalid. Do you want to continue (download of files would not be possible) ?</string>
+    <string name="alert_error_ssl_cert_continue">Continue</string>
+    <string name="alert_error_ssl_cert_cancel">Cancel</string>
+</resources>

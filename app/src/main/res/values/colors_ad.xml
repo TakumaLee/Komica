@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="alpha_black">#86000000</color>
+    <color name="white">#ffffff</color>
+    <color name="green">#00FF00</color>
+    <color name="green_deep">#00AA33</color>
+    <color name="yellow">#FFA000</color>
+    <color name="yellow_pressed">#FF9000</color>
+    <color name="yellow_deep">#F9A825</color>
+
+    <color name="mask_background_start">#00000000</color>
+    <color name="mask_background_center">#19000000</color>
+    <color name="mask_background_end">#cd000000</color>
+
+    <color name="gray_light">#cccccc</color>
+    <color name="alpha_gray_light">#33dddddd</color>
+    <color name="alpha_gray_deep">#33555555</color>
+
+    <color name="window_background">#FFF5F5F5</color>
+</resources>

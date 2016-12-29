@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_facebook">Login with Facebook</string>
+    <string name="logout_facebook">Logout with Facebook</string>
+    <string name="version">Version: %s </string>
+</resources>

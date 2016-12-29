@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_facebook">Facebook登入</string>
+    <string name="logout_facebook">Facebook登出</string>
+    <string name="version">版本號: %s </string>
+</resources>

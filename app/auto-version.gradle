@@ -1,0 +1,206 @@
+ext {
+    versionFile = new File(project.rootDir, 'version.properties')
+    calculateVersionName = {
+        def version = readVersion()
+        return "${version['major']}.${version['minor']}.${version['build']}"
+    }
+
+    calculateDebugVersionName = {
+        println("Debug version")
+        def version = readVersion()
+        return "${version['major']}.${version['minor']}.${version['build']}.Debug"
+    }
+
+    calculateVersionCode = {
+        def version = readVersion()
+        def versionCode = version['VERSION_CODE'] as int
+        return versionCode
+    }
+
+    calculateAPKVersionName = {
+        def version = readVersion()
+        def build = version['build'] as int
+//        build--
+        println("Output APK: ${version['major']}.${version['minor']}.${build.toString()}")
+        return "${version['major']}.${version['minor']}.${build.toString()}"
+    }
+
+    calculateAPKVersionCode = {
+        def version = readVersion()
+        def versionCode = version['VERSION_CODE'] as int
+        return versionCode
+    }
+}
+
+Properties readVersion() {
+    def version = new Properties()
+    def stream
+    try {
+        stream = new FileInputStream(versionFile)
+        version.load(stream)
+    } catch (FileNotFoundException ignore) {
+    } finally {
+        if (stream != null) stream.close()
+    }
+    // safety defaults in case file is missing
+    if (!version['APP_NAME']) version['APP_NAME'] = "AppName"
+    if (!version['major']) version['major'] = "0"
+    if (!version['minor']) version['minor'] = "0"
+    if (!version['build']) version['build'] = "0"
+    if (!version['major_current']) version['major_current'] = version['major']
+    if (!version['minor_current']) version['minor_current'] = version['minor']
+    if (!version['build_current']) version['build_current'] = version['build']
+    if (!version['VERSION_CODE']) version['VERSION_CODE'] = "1"
+    return version
+}
+
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMddHHmm')
+    return formattedDate
+}
+
+void checkVersion() {
+    println("Check Version")
+    def version = readVersion()
+
+    def major = version['major'] as int
+    def majorCur = version['major_current'] as int
+    def minor = version['minor'] as int
+    def minorCur = version['minor_current'] as int
+    def build = version['build'] as int
+    def buildCur = version['build_current'] as int
+
+    if (major > majorCur) {
+        println("Check Version: major -> ${major.toString()}.${minor.toString()}.${build.toString()}")
+        minor = 0
+        build = 0
+    }
+
+    if (minor > minorCur) {
+        println("Check Version: minor -> ${major.toString()}.${minor.toString()}.${build.toString()}")
+        build = 0
+    }
+    println("Check Version: end -> ${major.toString()}.${minor.toString()}.${build.toString()}")
+
+    version['major'] = major.toString()
+    version['minor'] = minor.toString()
+    version['build'] = build.toString()
+    version['major_current'] = version['major']
+    version['minor_current'] = version['minor']
+    version['build_current'] = version['build']
+
+    def stream = new FileOutputStream(versionFile)
+    try {
+        version.store(stream, null)
+    } finally {
+        stream.close()
+    }
+}
+
+void incrementVersionNumber() {
+    def version = readVersion()
+
+    // careful with the types, culprits: "9"++ = ":", "9" + 1 = "91"
+    def build = version['build'] as int
+    build++
+    version['build'] = build.toString()
+
+    def versionCode = version['VERSION_CODE'] as int
+    versionCode++
+    version['VERSION_CODE'] = versionCode.toString()
+
+    def stream = new FileOutputStream(versionFile)
+    try {
+        version.store(stream, null)
+    } finally {
+        stream.close()
+    }
+}
+
+task incrementVersion {
+    description "Increments build counter in ${versionFile}"
+    doFirst {
+        incrementVersionNumber()
+    }
+}
+
+def autoBuildApk = { variant ->
+    variant.outputs.each { output ->
+        def readFile = readVersion()
+        def appName = readFile['APP_NAME']
+        if (output.outputFile.name.contains("release")) {
+//                        println("Output1: ${variant.buildType.name}")
+            appName = readFile['APP_NAME'] + "-Release"
+            variant.mergedFlavor.versionName = calculateAPKVersionName()
+            variant.mergedFlavor.versionCode = calculateAPKVersionCode()
+            println("APK Version: ${variant.versionName}")
+            output.outputFile = new File(output.outputFile.parent, appName + "-${variant.versionName}.apk")
+//        } else {
+////                        println("Output2: ${variant.buildType.name}")
+//            appName = readFile['APP_NAME'] + "-Demo"
+//            output.outputFile = new File(output.outputFile.parent, appName + ".apk")
+        }
+//                    output.outputFile.parent,
+//                    output.outputFile.name.replace(".apk", "-${variant.versionName}.apk"))
+    }
+}
+
+if (plugins.hasPlugin('android') || plugins.hasPlugin('android-library')) {
+    android {
+        defaultConfig {
+            versionName = calculateVersionName()
+            versionCode = calculateVersionCode()
+        }
+
+        gradle.projectsEvaluated {
+            println("projectsEvaluated")
+            try {
+                if (gradle.taskGraph.getAllTasks().last().name.contains("release") ||
+                        gradle.taskGraph.getAllTasks().last().name.contains("Release")) {
+                    println("Output incrementVersion")
+                    incrementVersionNumber()
+                }
+
+            } catch (TaskExecutionException) {
+
+            }
+        }
+
+        gradle.buildFinished {
+            println("Build End")
+        }
+
+        afterEvaluate {
+
+            def mergeFlavor = { variant ->
+                checkVersion()
+                if (variant.buildType.name == buildTypes.release.name) {
+                    // don't increment on debug builds
+                    variant.preBuild.doLast {
+                        println("Output1: ${variant.buildType.name}")
+
+//                        variant.mergedFlavor.versionName = calculateAPKVersionName()
+//                        variant.mergedFlavor.versionCode = calculateAPKVersionCode()
+                        checkVersion()
+                    }
+                } else {
+                    println("Output2: ${variant.buildType.name}")
+                    variant.mergedFlavor.versionName = calculateDebugVersionName()
+                }
+            }
+
+            if (plugins.hasPlugin('android')) {
+                applicationVariants.all { variant ->
+                    mergeFlavor(variant)
+                    autoBuildApk(variant)
+                }
+            }
+            if (plugins.hasPlugin('android-library')) {
+                libraryVariants.all { variant ->
+//                    autoIncrementVariant(variant)
+                }
+            }
+        }
+    }
+}

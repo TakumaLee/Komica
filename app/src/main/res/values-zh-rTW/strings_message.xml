@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="message_system">系統訊息</string>
+
+    <string name="message_has_member">會員已存在</string>
+    <string name="message_please_enter_valid_email">請輸入正確的 email 格式</string>
+    <string name="message_email_confirming">確認 Email 中...</string>
+    <string name="message_download_title">
+        下載角色
+    </string>
+
+    <string name="message_download_description">
+        MangaChat 是一款全圖像式介面的資訊分享平台，
+        您需要使用角色來代表您表達想法。
+        您目前沒有角色可使用，
+        要下載角色嗎？
+    </string>
+    <string name="connection_error">連線發生問題！</string>
+    <string name="message_input_title">請輸入您欲分享的文章標題</string>
+    <string name="message_facebook_not_provide_email">Facebook 未提供您的 email，是否註冊過或是否填寫 email 呢？</string>
+    <string name="message_something_error_please_try_again">連線錯誤，請再試一次</string>
+</resources>

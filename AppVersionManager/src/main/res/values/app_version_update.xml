@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Update Version String -->
+    <string name="new_version_available">New version is available\.</string>
+    <string name="update_message">Please update to the latest version\.</string>
+    <string name="update_message2">A new version of %s is now available. Would you like to check the update?</string>
+    <string name="button_update_now">Update Now</string>
+    <string name="button_never_do">No, thanks</string>
+    <string name="button_later">Remind me later</string>
+
+    <!-- End Update Version String -->
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Update Version String -->
+    <string name="new_version_available">已有新版本</string>
+    <string name="update_message">請更新到最新版本</string>
+    <string name="update_message2"> 新版的 %s 可供下載。要前往更新頁面嗎？</string>
+    <string name="button_update_now">立即更新</string>
+    <string name="button_never_do">不用了，謝謝</string>
+    <string name="button_later">稍後再說</string>
+
+    <!-- End Update Version String -->
+</resources>

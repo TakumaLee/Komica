@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="message_system">System Message</string>
+
+    <string name="message_has_member">Member is already existed</string>
+    <string name="message_please_enter_valid_email">Please enter a valid email format</string>
+    <string name="message_email_confirming">Confirm email...</string>
+
+    <string name="message_download_title">
+        Role Download
+    </string>
+
+    <string name="message_download_description">
+        MangaChat is a platform with full\-graphical interface,
+        where you need a visualized role as representative when communicating with friends.
+        Since you don\'t have any,
+        would you like to download now?
+    </string>
+    <string name="connection_error">Connection Error!</string>
+    <string name="message_input_title">Please input your article title.</string>
+    <string name="message_facebook_not_provide_email">Facebook not provide your email to us, Whether registered or fill out the email?</string>
+    <string name="message_something_error_please_try_again">Something is wrong, please try again later.</string>
+</resources>

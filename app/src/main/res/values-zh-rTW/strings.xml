@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Komica+</string>
+
+    <!-- Drawer Page -->
+    <string name="home_page">首頁</string>
+    <!--<string name="wishing_well">許願池</string>-->
+    <string name="others">其他選項</string>
+    <!--<string name="cloud_upload">上傳紀錄</string>-->
+    <!--<string name="cloud_download">下載紀錄</string>-->
+    <string name="fanpage">Facebook 粉絲團</string>
+    <string name="rating">Google Play 評分</string>
+    <string name="feedback">回報與建議</string>
+    <string name="about_us">關於我們</string>
+    <!--<string name="open_notification">開啟快速輸入</string>-->
+    <string name="sponsor">贊助</string>
+
+</resources>

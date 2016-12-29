@@ -1,0 +1,137 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+apply from: 'auto-version.gradle'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "24.0.2"
+    defaultConfig {
+        applicationId "idv.kuma.app.komica"
+        minSdkVersion 16
+        targetSdkVersion 25
+//        versionCode 1
+//        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        release
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    dexOptions {
+//        incremental true
+        javaMaxHeapSize "4g"
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+//    compile project(':AdSDK')
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:design:25.0.1'
+    compile 'com.android.support:cardview-v7:25.0.1'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
+    compile 'com.android.support:palette-v7:25.0.1'
+    compile 'com.android.support:customtabs:25.0.1'
+    compile 'com.android.support:multidex:1.0.1'
+
+    compile 'com.google.android.gms:play-services-location:10.0.1'
+    compile 'com.google.android.gms:play-services-analytics:10.0.1'
+
+    // Firebase
+    compile 'com.google.firebase:firebase-database:10.0.1'
+    compile 'com.google.firebase:firebase-config:10.0.1'
+    compile 'com.google.firebase:firebase-analytics:10.0.1'
+    compile 'com.google.firebase:firebase-messaging:10.0.1'
+    compile 'com.google.firebase:firebase-crash:10.0.1'
+
+    // compile platform
+    compile 'com.facebook.android:facebook-android-sdk:4.17.0'
+
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.8.3'
+
+    // UI
+    compile 'com.afollestad.material-dialogs:core:0.9.1.0'
+    compile 'com.github.kuma:TwitterFavoIcon:1.0.5'
+    compile 'tw.showang.android:recycleradapterbase:1.0.0'
+    compile 'com.github.chrisbanes:PhotoView:1.3.1'
+//    compile 'com.github.barteksc:android-pdf-viewer:2.3.0'
+//    compile 'com.github.barteksc:android-pdf-viewer:1.5.0'
+
+    // Drawer and icon
+    compile('com.mikepenz:materialdrawer:5.7.0@aar') {
+        transitive = true
+    }
+    compile 'com.mikepenz:actionitembadge:3.2.5@aar'
+    compile 'com.mikepenz:iconics-core:2.7.1@aar'
+    compile 'com.mikepenz:google-material-typeface:2.2.0.2.original@aar'
+    compile 'com.mikepenz:material-design-iconic-typeface:2.2.0.2@aar'
+    compile 'com.mikepenz:fontawesome-typeface:4.6.0.2@aar'
+    compile 'com.mikepenz:octicons-typeface:3.2.0.2@aar'
+    compile 'com.mikepenz:meteocons-typeface:1.1.0.2@aar'
+    compile 'com.mikepenz:community-material-typeface:1.5.54.2@aar'
+    compile 'com.mikepenz:weather-icons-typeface:2.0.10.2@aar'
+    compile 'com.mikepenz:typeicons-typeface:2.0.7.2@aar'
+    compile 'com.mikepenz:entypo-typeface:1.0.0.2@aar'
+    compile 'com.mikepenz:devicon-typeface:2.0.0.2@aar'
+    compile 'com.mikepenz:foundation-icons-typeface:3.0.0.2@aar'
+    compile 'com.mikepenz:ionicons-typeface:2.0.1.2@aar'
+
+
+    testCompile 'junit:junit:4.12'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
+        transitive = true;
+    }
+}
+
+//rootProject.file(): 取得根目錄中的檔案
+def ksFile = rootProject.file('keystore.properties')
+def props = new Properties();
+if (ksFile.canRead()) {
+    props.load(new FileInputStream(ksFile))
+
+    if (props != null) {
+        android.signingConfigs.release.storeFile file(props['KEYSTORE_FILE'])
+        android.signingConfigs.release.storePassword props['KEYSTORE_PASSWORD']
+        android.signingConfigs.release.keyAlias props['KEYSTORE_ALIAS']
+        android.signingConfigs.release.keyPassword props['KEYSTORE_ALIAS_PASSWORD']
+    } else {
+        println 'some entries in \'keystore.properties\' not found!'
+    }
+} else {
+    println '\'keystore.properties\' not found!'
+}
+
+apply plugin: 'com.google.gms.google-services'

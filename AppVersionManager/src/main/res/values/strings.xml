@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">AppVersionManager</string>
+    <string name="html_format_color" translatable="false"><![CDATA[ <b><font color=#2828FF>%s</b> ]]></string>
+</resources>

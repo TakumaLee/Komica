@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="declared_index">
+        <![CDATA[Author:
+        It\'s in development.<br />
+        And the Komica has a lot of pages for different format.<br />
+        So it has been spent a lot of time to create different crawler.<br />
+        The architecture is rough, just for demo..]]>
+    </string>
+</resources>
