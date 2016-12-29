@@ -20,9 +20,12 @@ public class KomicaAccountManager {
     private static final String KOMICA_ACCOUNT_PHOTO = "komica_account_photo";
     private static final String KOMICA_ACCOUNT_COVER = "komica_account_cover";
 
+    private static final String PREFERENCE_SWITCH_LOGIN = "switch_login";
+
     private MyAccount myAccount;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private SharedPreferences noClearSharedPreferences;
 
     public synchronized static KomicaAccountManager getInstance() {
         return INSTANCE;
@@ -37,6 +40,9 @@ public class KomicaAccountManager {
         myAccount.setEmail(sharedPreferences.getString(KOMICA_ACCOUNT_EMAIL, ""));
         myAccount.setHeaderPic(sharedPreferences.getString(KOMICA_ACCOUNT_PHOTO, ""));
         myAccount.setCoverPic(sharedPreferences.getString(KOMICA_ACCOUNT_COVER, ""));
+
+        noClearSharedPreferences = context.getSharedPreferences("NO_CLEAR", Context.MODE_PRIVATE);
+        KomicaManager.getInstance().enableSwitchLogin(noClearSharedPreferences.getBoolean(PREFERENCE_SWITCH_LOGIN, false));
     }
 
     public static void initialize(Context context) {
@@ -53,6 +59,11 @@ public class KomicaAccountManager {
         ThirdPartyManager.getInstance().logout();
     }
 
+    protected void applyNoClearPreference() {
+        SharedPreferences.Editor noClearEditor = noClearSharedPreferences.edit();
+        noClearEditor.putBoolean(PREFERENCE_SWITCH_LOGIN, KomicaManager.getInstance().isSwitchLogin());
+        noClearEditor.commit();
+    }
 
     public void setMyAccount(MyAccount myAccount) {
         this.myAccount = myAccount;

@@ -80,6 +80,7 @@ public class KomicaManager {
                     boolean tmpSwitch = mFirebaseRemoteConfig.getBoolean("switch_login");
                     if (tmpSwitch != switchLogin) {
                         switchLogin = tmpSwitch;
+                        KomicaAccountManager.getInstance().applyNoClearPreference();
                         for (OnUpdateConfigListener listener : onUpdateConfigListeners) {
                             listener.onUpdated();
                         }
@@ -117,6 +118,10 @@ public class KomicaManager {
 
     public boolean isSwitchLogin() {
         return switchLogin;
+    }
+
+    protected void enableSwitchLogin(boolean enable) {
+        this.switchLogin = enable;
     }
 
     public boolean checkVisible(String memberTitle) {
