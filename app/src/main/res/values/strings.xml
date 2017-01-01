@@ -1,15 +1,3 @@
 <resources>
     <string name="app_name">Komica+</string>
-    <!-- Drawer Page -->
-    <string name="home_page">Home</string>
-    <!--<string name="wishing_well">Wishing Well</string>-->
-    <string name="others">Others</string>
-    <!--<string name="cloud_upload">Upload your records.</string>-->
-    <!--<string name="cloud_download">Sync your records.</string>-->
-    <string name="fanpage">Facebook Fans</string>
-    <string name="rating">Rating</string>
-    <string name="feedback">Feedback</string>
-    <string name="about_us">About Us</string>
-    <!--<string name="open_notification">Open Faster Insert</string>-->
-    <string name="sponsor">Sponsor</string>
 </resources>

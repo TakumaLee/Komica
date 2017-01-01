@@ -3,4 +3,14 @@
     <string name="login_facebook">Facebook登入</string>
     <string name="logout_facebook">Facebook登出</string>
     <string name="version">版本號: %s </string>
+
+    <!-- Drawer Page -->
+    <string name="home_page">首頁</string>
+    <string name="refresh_menu">更新列表</string>
+    <string name="others">其他選項</string>
+    <string name="fanpage">Facebook 粉絲團</string>
+    <string name="rating">Google Play 評分</string>
+    <string name="feedback">回報與建議</string>
+    <string name="about_us">關於我們</string>
+    <string name="sponsor">贊助</string>
 </resources>

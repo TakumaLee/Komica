@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
  */
 
 public class KPost {
+    private static final String TAG = KPost.class.getSimpleName();
 
     /**
      * id="r2212869"

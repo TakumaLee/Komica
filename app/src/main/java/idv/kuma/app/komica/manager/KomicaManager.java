@@ -1,5 +1,7 @@
 package idv.kuma.app.komica.manager;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -7,12 +9,22 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import idv.kuma.app.komica.BuildConfig;
+import idv.kuma.app.komica.configs.WebUrlFormaterUtils;
 import idv.kuma.app.komica.entity.KomicaMenuGroup;
 import idv.kuma.app.komica.entity.KomicaMenuMember;
+import idv.kuma.app.komica.http.NetworkCallback;
+import idv.kuma.app.komica.http.OkHttpClientConnect;
 import idv.kuma.app.komica.utils.KLog;
 
 /**
@@ -23,10 +35,15 @@ public class KomicaManager {
     private static final String TAG = KomicaManager.class.getSimpleName();
 
     public interface OnUpdateConfigListener {
-        void onUpdated();
+        void onConfigUpdated();
+    }
+
+    public interface OnUpdateMenuListener {
+        void onMenuUpdated();
     }
 
     private List<OnUpdateConfigListener> onUpdateConfigListeners;
+    private List<OnUpdateMenuListener> onUpdateMenuListeners;
 
     private List<KomicaMenuGroup> menuGroupList;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
@@ -49,17 +66,26 @@ public class KomicaManager {
     }
 
     public KomicaManager() {
+        this.onUpdateMenuListeners = new ArrayList<>();
         this.onUpdateConfigListeners = new ArrayList<>();
         this.menuGroupList = new ArrayList<>();
         initConfig();
     }
 
-    public void registerUpdateListener(OnUpdateConfigListener listener) {
+    public void registerConfigUpdateListener(OnUpdateConfigListener listener) {
         onUpdateConfigListeners.add(listener);
     }
 
-    public void unRegisterUpdateListener(OnUpdateConfigListener listener) {
+    public void unRegisterConfigUpdateListener(OnUpdateConfigListener listener) {
         onUpdateConfigListeners.remove(listener);
+    }
+
+    public void registerMenuUpdateListener(OnUpdateMenuListener listener) {
+        onUpdateMenuListeners.add(listener);
+    }
+
+    public void unRegisterMenuUpdateListener(OnUpdateMenuListener listener) {
+        onUpdateMenuListeners.remove(listener);
     }
 
     private void initConfig() {
@@ -82,7 +108,7 @@ public class KomicaManager {
                         switchLogin = tmpSwitch;
                         KomicaAccountManager.getInstance().applyNoClearPreference();
                         for (OnUpdateConfigListener listener : onUpdateConfigListeners) {
-                            listener.onUpdated();
+                            listener.onConfigUpdated();
                         }
                     }
                     KLog.v(TAG, "switch: " + switchLogin);
@@ -110,6 +136,70 @@ public class KomicaManager {
             }
         }
         return member;
+    }
+
+    public void loadKomicaMenu() {
+        OkHttpClientConnect.excuteAutoGet(WebUrlFormaterUtils.getKomicaMenuUrl(), new NetworkCallback() {
+            @Override
+            public void onFailure(IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(int responseCode, String result) {
+                Document document = Jsoup.parse(result);
+                Element element = document.getElementsByTag("font").remove(1);
+                int count = 0;
+                int memberId = 0;
+                KomicaMenuGroup group = null;
+                List<KomicaMenuGroup> groupList = new ArrayList<>();
+                List<KomicaMenuMember> members = new ArrayList<>();
+                for (Element elem : element.children()) {
+                    if ("b".equals(elem.tagName())) {
+                        if (group != null && members.size() > 0) {
+                            group.setMemberList(members);
+                            groupList.add(group);
+                            members = new ArrayList<>();
+                        }
+                        group = new KomicaMenuGroup();
+                        group.setGroupId(count);
+                        group.setGroupPosition(count++);
+                        group.setTitle(elem.text());
+                        continue;
+                    }
+                    if ("a".equals(elem.tagName())) {
+                        KomicaMenuMember member = new KomicaMenuMember();
+                        String title = "";
+                        Pattern pattern = Pattern.compile("\\, '(.*?)'\\)");
+                        Matcher matcher = pattern.matcher(elem.attr("onclick"));
+                        if (matcher.find()) {
+                            title = matcher.group(1);
+                        }
+                        if ("".equals(title) || title == null) {
+                            title = elem.text();
+                        }
+                        member.setTitle(title);
+                        member.setLinkUrl(elem.attr("href"));
+                        member.setMemberId(memberId++);
+                        members.add(member);
+                    }
+                }
+                group.setMemberList(members);
+                groupList.add(group);
+                setMenuGroupList(groupList);
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (OnUpdateMenuListener listener : onUpdateMenuListeners) {
+                            listener.onMenuUpdated();
+                        }
+                    }
+                });
+
+//                fragment.notifyDrawerBuild();
+            }
+        });
     }
 
     public List<KomicaMenuGroup> getMenuGroupList() {
@@ -193,6 +283,33 @@ public class KomicaManager {
             case "手工藝":
             case "圖書":
             case "短片":
+            case "遊戲速報":
+            case "動作遊戲":
+            case "格鬥遊戲":
+            case "2D STG":
+            case "3D STG":
+            case "冒險遊戲":
+            case "RPG":
+            case "養成遊戲":
+            case "戀愛遊戲":
+            case "音樂遊戲":
+            case "網頁遊戲":
+            case "獨立遊戲":
+            case "行動遊戲":
+            case "麻將":
+            case "遊戲設計":
+            case "網路遊戲":
+            case "FEZ":
+            case "GTA":
+            case "TOS":
+            case "戰車世界":
+            case "戰車風雲":
+            case "戰車雷霆":
+            case "戰機世界":
+            case "戰艦世界":
+            case "艦隊收藏":
+            case "魔物獵人":
+//            case "Minecraft":
                 return WebType.NORMAL;
             default:
                 return WebType.WEB;

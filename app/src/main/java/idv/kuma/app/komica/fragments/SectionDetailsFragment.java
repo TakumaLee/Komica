@@ -78,13 +78,13 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         super.onViewCreated(view, savedInstanceState);
         initView();
         loadSection();
-        KomicaManager.getInstance().registerUpdateListener(this);
+        KomicaManager.getInstance().registerConfigUpdateListener(this);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        KomicaManager.getInstance().unRegisterUpdateListener(this);
+        KomicaManager.getInstance().unRegisterConfigUpdateListener(this);
     }
 
     private void initView() {
@@ -130,7 +130,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
     }
 
     @Override
-    public void onUpdated() {
+    public void onConfigUpdated() {
         adapter.notifyDataSetChanged();
     }
 

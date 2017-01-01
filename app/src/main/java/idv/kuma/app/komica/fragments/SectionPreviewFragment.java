@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.analytics.HitBuilders;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -109,7 +110,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         loadSection();
         ThirdPartyManager.getInstance().registerProfileListener(this);
         ThirdPartyManager.getInstance().registerLogoutListener(this);
-        KomicaManager.getInstance().registerUpdateListener(this);
+        KomicaManager.getInstance().registerConfigUpdateListener(this);
     }
 
     @Override
@@ -117,7 +118,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         super.onDestroyView();
         ThirdPartyManager.getInstance().unRegisterProfileListener(this);
         ThirdPartyManager.getInstance().unRegisterLogoutListener(this);
-        KomicaManager.getInstance().unRegisterUpdateListener(this);
+        KomicaManager.getInstance().unRegisterConfigUpdateListener(this);
     }
 
     private void initView() {
@@ -208,6 +209,8 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                 @Override
                 public void run() {
                     getActivity().setTitle(title);
+                    tracker.setScreenName(title);
+                    tracker.send(new HitBuilders.ScreenViewBuilder().build());
                 }
             });
         }
@@ -245,7 +248,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
     }
 
     @Override
-    public void onUpdated() {
+    public void onConfigUpdated() {
         adapter.notifyDataSetChanged();
     }
 

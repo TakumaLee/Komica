@@ -76,7 +76,7 @@ public class CrawlerUtils {
             if ("a".equals(element.tagName())) {
                 // post start
 
-                if (head != null && "返信".equals(element.text())) {
+                if (head != null && ("返信".equals(element.text()) || "Reply".equals(element.text()))) {
                     head.setDetailLink(url.substring(0, url.lastIndexOf("/") + 1) + element.attr("href"));
                 } else if (!element.hasClass("del")) {
                     head = new KTitle();
