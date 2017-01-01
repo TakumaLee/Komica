@@ -1,6 +1,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="line">
-    <solid
+    <stroke
         android:color="@color/divier_gray"
         />
     <size android:height="2dp"

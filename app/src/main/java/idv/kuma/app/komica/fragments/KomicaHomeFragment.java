@@ -369,6 +369,9 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
     }
 
     private void refreshDrawerItems() {
+        if (null == drawer) {
+            return;
+        }
         drawer.removeAllItems();
         drawer.addItems(getDynamicalDrawerItems());
         drawer.getItemAdapter().notifyDataSetChanged();
