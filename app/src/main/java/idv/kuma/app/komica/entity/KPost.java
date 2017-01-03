@@ -77,8 +77,10 @@ public class KPost {
             if (imgElement == null) {
                 imgElement = element.getElementsByAttributeValue("target", "_blank").first();
             }
-            setImageUrl(imgElement.attr("href"));
-            setImageFileName(imgElement.text());
+            if (imgElement != null) {
+                setImageUrl(imgElement.attr("href"));
+                setImageFileName(imgElement.text());
+            }
             setThumbUrl(thumbElement.attr("src"));
             setThumbWidth(findWidthPixel(thumbElement.attr("style")));
             setThumbHeight(findHeightPixel(thumbElement.attr("style")));

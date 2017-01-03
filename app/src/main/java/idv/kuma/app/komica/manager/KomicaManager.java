@@ -69,7 +69,9 @@ public class KomicaManager {
         this.onUpdateMenuListeners = new ArrayList<>();
         this.onUpdateConfigListeners = new ArrayList<>();
         this.menuGroupList = new ArrayList<>();
-        initConfig();
+        if (!switchLogin) {
+            initConfig();
+        }
     }
 
     public void registerConfigUpdateListener(OnUpdateConfigListener listener) {
@@ -98,6 +100,9 @@ public class KomicaManager {
     }
 
     public void fetchNewConfig() {
+        if (switchLogin) {
+            return;
+        }
         mFirebaseRemoteConfig.fetch(0).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -106,7 +111,9 @@ public class KomicaManager {
                     boolean tmpSwitch = mFirebaseRemoteConfig.getBoolean("switch_login");
                     if (tmpSwitch != switchLogin) {
                         switchLogin = tmpSwitch;
-                        KomicaAccountManager.getInstance().applyNoClearPreference();
+                        if (switchLogin) {
+                            KomicaAccountManager.getInstance().applyNoClearPreference();
+                        }
                         for (OnUpdateConfigListener listener : onUpdateConfigListeners) {
                             listener.onConfigUpdated();
                         }
@@ -179,7 +186,11 @@ public class KomicaManager {
                             title = elem.text();
                         }
                         member.setTitle(title);
-                        member.setLinkUrl(elem.attr("href"));
+                        if ("動物綜合".equals(title)) {
+                            member.setLinkUrl("http://2nyan.org/animal/");
+                        } else {
+                            member.setLinkUrl(elem.attr("href"));
+                        }
                         member.setMemberId(memberId++);
                         members.add(member);
                     }
@@ -257,6 +268,33 @@ public class KomicaManager {
             case "改造":
             case "委託":
             case "鋼普拉":
+            case "遊戲速報":
+//            case "行動遊戲":
+            case "網路遊戲":
+            case "塗鴉王國":
+            case "飲食":
+            case "體育":
+
+            case "電腦":
+            case "文化交流":
+            case "新聞":
+            case "寫真":
+            case "女性角色":
+            case "男性角色":
+            case "中性角色":
+            case "擬人化":
+            case "少女漫畫":
+            case "音樂":
+            case "布袋戲":
+            case "小說":
+            case "奇幻":
+            case "紙牌":
+            case "高解析度":
+            case "GIF":
+            case "FLASH":
+            case "MAD":
+            case "素材":
+            case "求圖":
                 return WebType.INTEGRATED;
             case "動畫":
 //            case "螢幕攝":
@@ -283,7 +321,7 @@ public class KomicaManager {
             case "手工藝":
             case "圖書":
             case "短片":
-            case "遊戲速報":
+
             case "動作遊戲":
             case "格鬥遊戲":
             case "2D STG":
@@ -295,10 +333,10 @@ public class KomicaManager {
             case "音樂遊戲":
             case "網頁遊戲":
             case "獨立遊戲":
-            case "行動遊戲":
+
             case "麻將":
             case "遊戲設計":
-            case "網路遊戲":
+
             case "FEZ":
             case "GTA":
             case "TOS":
@@ -310,6 +348,60 @@ public class KomicaManager {
             case "艦隊收藏":
             case "魔物獵人":
 //            case "Minecraft":
+            case "葉鍵":
+            case "涼宮":
+            case "Homestuck":
+            case "IM@S":
+            case "Pokemon":
+            case "Pretty Cure":
+            case "Strike Witches":
+            case "GAINAX":
+            case "KOEI":
+            case "SQEX":
+            case "TYPE-MOON":
+//            case "京都動畫":
+            case "聲優綜合":
+            case "釘宮":
+//            case "田村/堀江/水樹":
+            case "角色配對":
+            case "催淚":
+            case "性轉換":
+            case "Maid":
+            case "巫女":
+            case "魔女":
+            case "蘿莉":
+            case "正太":
+            case "御姊":
+            case "兄貴":
+            case "妹系":
+            case "人外":
+            case "獸":
+            case "機娘":
+            case "返信娘":
+            case "Lolita Fashion":
+
+            case "塗鴉工廠":
+            case "同人2":
+            case "宣傳":
+
+            case "酒":
+            case "素食":
+
+            case "足球":
+            case "武術":
+            case "動物綜合":
+            case "犬":
+            case "貓":
+            case "蟲":
+            case "水族":
+            case "認養":
+//            case "二次壁":
+            case "PSP壁":
+
+            case "Pixmicat!":
+//            case "Joyful Note":
+
+            case "Apple":
                 return WebType.NORMAL;
             default:
                 return WebType.WEB;
