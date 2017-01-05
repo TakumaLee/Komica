@@ -1,5 +1,6 @@
 package idv.kuma.app.komica.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -305,9 +306,11 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
             });
             if (KomicaManager.getInstance().isSwitchLogin() && ThirdPartyManager.getInstance().isFacebookLogin()) {
                 holder.postThumbImageView.setVisibility(View.VISIBLE);
+                holder.postImgErrMsgTextView.setVisibility(View.GONE);
                 Glide.with(getContext()).load(head.getImageUrl()).into(holder.postThumbImageView);
             } else {
                 holder.postThumbImageView.setVisibility(View.GONE);
+                holder.postImgErrMsgTextView.setVisibility(View.VISIBLE);
             }
             if (titleList.get(position).getReplyList().size() > 0) {
                 holder.replyLinearLayout.setVisibility(View.VISIBLE);
@@ -346,6 +349,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         TextView postTitleTextView;
         TextView postQuoteTextView;
         ImageView postThumbImageView;
+        TextView postImgErrMsgTextView;
 
         TextView postWarnTextView;
         Button moreBtn;
@@ -357,12 +361,20 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
             postTitleTextView = findViewById(itemView, R.id.textView_section_post_title);
             postQuoteTextView = findViewById(itemView, R.id.textView_section_post_quote);
             postQuoteTextView.setMovementMethod(LinkMovementMethod.getInstance());
+            postImgErrMsgTextView = findViewById(itemView,R.id.textView_section_post_message);
             postThumbImageView = findViewById(itemView, R.id.imageView_section_post_thumb);
             postWarnTextView = findViewById(itemView, R.id.textView_section_preview_warnText);
             moreBtn = findViewById(itemView, R.id.button_section_preview_more);
             replyLinearLayout = findViewById(itemView, R.id.linearLayout_section_preview_replyContainer);
 
             postThumbImageView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && ThirdPartyManager.getInstance().isFacebookLogin() ? View.VISIBLE : View.GONE);
+            postImgErrMsgTextView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && ThirdPartyManager.getInstance().isFacebookLogin() ? View.GONE : View.VISIBLE);
+            postImgErrMsgTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ThirdPartyManager.getInstance().loginFacebook((Activity) getContext());
+                }
+            });
         }
     }
 

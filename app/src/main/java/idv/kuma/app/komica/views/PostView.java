@@ -1,5 +1,6 @@
 package idv.kuma.app.komica.views;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.text.Html;
@@ -30,6 +31,7 @@ public class PostView extends LinearLayout {
     public TextView postTitleTextView;
     public TextView postQuoteTextView;
     public ImageView postThumbImageView;
+    public TextView postImgErrMsgTextView;
 
     private KPost post;
 
@@ -51,8 +53,16 @@ public class PostView extends LinearLayout {
         postIdTextView = (TextView) findViewById(R.id.textView_section_post_id);
         postTitleTextView = (TextView) findViewById(R.id.textView_section_post_title);
         postQuoteTextView = (TextView) findViewById(R.id.textView_section_post_quote);
+        postImgErrMsgTextView = (TextView) findViewById(R.id.textView_section_post_message);
         postThumbImageView = (ImageView) findViewById(R.id.imageView_section_post_thumb);
         postThumbImageView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && ThirdPartyManager.getInstance().isFacebookLogin() ? View.VISIBLE : View.GONE);
+        postImgErrMsgTextView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && ThirdPartyManager.getInstance().isFacebookLogin() ? View.GONE : View.VISIBLE);
+        postImgErrMsgTextView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ThirdPartyManager.getInstance().loginFacebook((Activity) getContext());
+            }
+        });
     }
 
     public void setPost(KPost post) {

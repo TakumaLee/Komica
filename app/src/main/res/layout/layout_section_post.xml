@@ -22,6 +22,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textView_section_post_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="32dp"
+            android:gravity="center"
+            android:text="@string/message_please_login_to_view_image"
+            android:textColor="@color/md_blue_500"
+            android:background="@color/gray_light"
+            android:visibility="gone"/>
+
         <ImageView
             android:id="@+id/imageView_section_post_thumb"
             android:layout_width="match_parent"
