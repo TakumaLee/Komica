@@ -183,8 +183,18 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
                         switch ((int) drawerItem.getIdentifier()) {
                             case -1:
                                 if (ThirdPartyManager.getInstance().isFacebookLogin()) {
+                                    tracker.send(new HitBuilders.EventBuilder()
+                                            .setCategory("00. Slide Menu")
+                                            .setLabel("登出")
+                                            .setAction("登出")
+                                            .build());
                                     logout();
                                 } else {
+                                    tracker.send(new HitBuilders.EventBuilder()
+                                            .setCategory("00. Slide Menu")
+                                            .setLabel("登入")
+                                            .setAction("登入")
+                                            .build());
                                     login();
                                 }
                                 break;
@@ -228,7 +238,6 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
 //                                }
 //                                break;
                             default:
-                                int count = 0;
                                 if (drawerItem.getIdentifier() > 0 && drawerItem.getIdentifier() < 1000) {
                                     KomicaMenuMember clickMember = KomicaManager.getInstance().findMemberByMemberId((int) drawerItem.getIdentifier());
                                     if (clickMember != null) {
