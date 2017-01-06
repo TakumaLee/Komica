@@ -1,12 +1,18 @@
 package idv.kuma.app.komica.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -29,6 +35,12 @@ import idv.kuma.app.komica.utils.KLog;
 import idv.kuma.app.komica.views.PostView;
 import idv.kuma.app.komica.widgets.DividerItemDecoration;
 import idv.kuma.app.komica.widgets.KLinearLayoutManager;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import tw.showang.recycleradaterbase.RecyclerAdapterBase;
 
 /**
@@ -41,10 +53,15 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
     private String url;
     private String title;
     private int webType;
+    private String formUrl;
+    private String commentBoxKey;
 
     private RecyclerView recyclerView;
     private KLinearLayoutManager linearLayoutManager;
     private SectionDetailsAdapter adapter;
+
+    private FloatingActionButton addPostFab;
+    private MaterialDialog postDialog;
 
     private List<KPost> postList = Collections.emptyList();
 
@@ -89,6 +106,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
 
     private void initView() {
         recyclerView = findViewById(getView(), R.id.recyclerView_section_details);
+        addPostFab = findViewById(getView(), R.id.fab_section_details_add_post);
 
         adapter = new SectionDetailsAdapter(postList);
         linearLayoutManager = new KLinearLayoutManager(getContext());
@@ -96,6 +114,48 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
+
+        addPostFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (null == postDialog) {
+                    postDialog = new MaterialDialog.Builder(view.getContext())
+                            .customView(R.layout.layout_post, true)
+                            .positiveText(R.string.confirm)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    TextInputEditText commentEditText = (TextInputEditText) postDialog.getCustomView().findViewById(R.id.editText_post_comment);
+                                    MultipartBody.Builder requestBody = new MultipartBody.Builder()
+                                            .setType(MultipartBody.FORM)
+                                            .addFormDataPart(commentBoxKey, commentEditText.getText().toString());
+                                    Request request = new Request.Builder()
+                                            .url(formUrl)
+                                            .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+                                            .addHeader("Content-Type", "multipart/form-data")//; boundary=----
+                                            .addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36")
+                                            .addHeader("Referer", url)
+                                            .post(requestBody.build())
+                                            .build();
+                                    OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+                                    okHttpClient.newCall(request).enqueue(new Callback() {
+                                        @Override
+                                        public void onFailure(Call call, IOException e) {
+                                            KLog.v(TAG, "Exception: " + e);
+                                        }
+
+                                        @Override
+                                        public void onResponse(Call call, Response response) throws IOException {
+                                            KLog.v(TAG, "response: " + response.body().string());
+                                        }
+                                    });
+                                }
+                            })
+                            .build();
+                }
+                postDialog.show();
+            }
+        });
 
         getActivity().setTitle(title);
     }
@@ -110,6 +170,8 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
             @Override
             public void onResponse(int responseCode, String result) {
                 Document document = Jsoup.parse(result);
+                formUrl = url.substring(0, url.lastIndexOf("/") + 1) + document.getElementsByTag("form").attr("action");
+                commentBoxKey = document.getElementsByTag("form").first().getElementsByTag("textarea").attr("name");
                 KTitle head = CrawlerUtils.getPostList(document, url, webType).get(0);
                 postList.add(head);
                 postList.addAll(head.getReplyList());
