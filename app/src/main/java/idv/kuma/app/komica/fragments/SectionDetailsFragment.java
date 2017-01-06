@@ -16,6 +16,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,6 +55,8 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
     private String url;
     private String title;
     private int webType;
+    private Element formElem;
+    private Elements inputElements;
     private String formUrl;
     private String commentBoxKey;
 
@@ -127,12 +131,33 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     TextInputEditText commentEditText = (TextInputEditText) postDialog.getCustomView().findViewById(R.id.editText_post_comment);
                                     MultipartBody.Builder requestBody = new MultipartBody.Builder()
-                                            .setType(MultipartBody.FORM)
-                                            .addFormDataPart(commentBoxKey, commentEditText.getText().toString());
+                                            .setType(MultipartBody.FORM);
+                                    for (Element element : inputElements) {
+                                        if ("sendbtn".equals(element.attr("name"))) {
+                                            continue;
+                                        }
+                                        if ("reply".equals(element.attr("name"))) {
+                                            continue;
+                                        }
+                                        if ("noimg".equals(element.attr("name"))) {
+                                            continue;
+                                        }
+                                        if ("js".equals(element.attr("name"))) {
+                                            requestBody.addFormDataPart(element.attr("name"), "js");
+                                        }
+                                        requestBody.addFormDataPart(element.attr("name"), element.val());
+                                    }
+                                    for (Element element : formElem.getElementsByTag("textarea")) {
+                                        if ("fcom".equals(element.id())) {
+                                            requestBody.addFormDataPart(commentBoxKey, commentEditText.getText().toString());
+                                        } else {
+                                            requestBody.addFormDataPart(element.attr("name"), element.text());
+                                        }
+                                    }
                                     Request request = new Request.Builder()
                                             .url(formUrl)
                                             .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-                                            .addHeader("Content-Type", "multipart/form-data")//; boundary=----
+                                            .addHeader("Content-Type", "multipart/form-data; boundary=----")//
                                             .addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36")
                                             .addHeader("Referer", url)
                                             .post(requestBody.build())
@@ -170,8 +195,10 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
             @Override
             public void onResponse(int responseCode, String result) {
                 Document document = Jsoup.parse(result);
-                formUrl = url.substring(0, url.lastIndexOf("/") + 1) + document.getElementsByTag("form").attr("action");
-                commentBoxKey = document.getElementsByTag("form").first().getElementsByTag("textarea").attr("name");
+                formElem = document.getElementsByTag("form").first();
+                inputElements = formElem.getElementsByTag("input");
+                formUrl = url.substring(0, url.lastIndexOf("/") + 1) + formElem.attr("action");
+                commentBoxKey = formElem.getElementsByTag("textarea").attr("name");
                 KTitle head = CrawlerUtils.getPostList(document, url, webType).get(0);
                 postList.add(head);
                 postList.addAll(head.getReplyList());
