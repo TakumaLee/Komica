@@ -402,6 +402,7 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
                 .withTextColor(ThirdPartyManager.getInstance().isFacebookLogin() ? Color.GRAY : Color.BLUE)
                 .withIcon(CommunityMaterial.Icon.cmd_logout);
         drawer.updateStickyFooterItemAtPosition(loginItem, 1);
+        drawer.removeStickyFooterItemAtPosition(1);
     }
 
     private void refreshAccountPhoto() {
