@@ -8,4 +8,8 @@ public class WebUrlFormaterUtils {
     public static final String getKomicaMenuUrl() {
         return UrlConfigs.KOMICA_MENU;
     }
+
+    public static final String getPromoteListUrl() {
+        return UrlConfigs.PROMOTE_LIST;
+    }
 }

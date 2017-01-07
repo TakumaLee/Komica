@@ -184,14 +184,14 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
                             case -1:
                                 if (ThirdPartyManager.getInstance().isFacebookLogin()) {
                                     tracker.send(new HitBuilders.EventBuilder()
-                                            .setCategory("00. Slide Menu")
+                                            .setCategory("00. 登入追蹤")
                                             .setLabel("登出")
                                             .setAction("登出")
                                             .build());
                                     logout();
                                 } else {
                                     tracker.send(new HitBuilders.EventBuilder()
-                                            .setCategory("00. Slide Menu")
+                                            .setCategory("00. 登入追蹤")
                                             .setLabel("登入")
                                             .setAction("登入")
                                             .build());

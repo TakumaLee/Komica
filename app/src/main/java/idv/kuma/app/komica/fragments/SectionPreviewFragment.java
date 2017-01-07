@@ -372,6 +372,11 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
             postImgErrMsgTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    tracker.send(new HitBuilders.EventBuilder()
+                            .setCategory("00. 登入追蹤")
+                            .setLabel("圖片點擊登入")
+                            .setAction("圖片點擊登入")
+                            .build());
                     ThirdPartyManager.getInstance().loginFacebook((Activity) getContext());
                 }
             });
