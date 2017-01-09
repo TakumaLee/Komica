@@ -32,7 +32,9 @@ import idv.kuma.app.komica.fragments.base.BaseFragment;
 import idv.kuma.app.komica.http.NetworkCallback;
 import idv.kuma.app.komica.http.OkHttpClientConnect;
 import idv.kuma.app.komica.manager.KomicaManager;
+import idv.kuma.app.komica.utils.AppTools;
 import idv.kuma.app.komica.widgets.IndexGridDividerDecoration;
+import tw.showang.recycleradaterbase.RecyclerAdapterBase;
 
 import static android.text.Html.FROM_HTML_MODE_LEGACY;
 
@@ -44,7 +46,6 @@ public class IndexFragment extends BaseFragment {
 
     private static IndexFragment instance = null;
 
-    private TextView textView;
     private RecyclerView recyclerView;
     private PromoteAdapter adapter;
     private GridLayoutManager gridLayoutManager;
@@ -75,20 +76,31 @@ public class IndexFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("首頁");
         recyclerView = findViewById(view, R.id.recyclerView_index);
-        textView = findViewById(view, R.id.textView_index);
 
-        adapter = new PromoteAdapter();
+        TextView footerTextView = new TextView(getContext());
+        footerTextView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        footerTextView.setPadding(AppTools.dpToPx(32), AppTools.dpToPx(32), AppTools.dpToPx(32), AppTools.dpToPx(32));
+
+        adapter = new PromoteAdapter(promotionList);
+        adapter.setFooterView(footerTextView);
         recyclerView.setAdapter(adapter);
 
         gridLayoutManager = new GridLayoutManager(getContext(), 3);
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return position == adapter.getItemCount() - 1 ? 3 : 1;
+            }
+        });
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.addItemDecoration(new IndexGridDividerDecoration());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            textView.setText(Html.fromHtml(getString(R.string.declared_index), FROM_HTML_MODE_LEGACY));
+            footerTextView.setText(Html.fromHtml(getString(R.string.declared_index), FROM_HTML_MODE_LEGACY));
         } else {
-            textView.setText(Html.fromHtml(getString(R.string.declared_index)));
+            footerTextView.setText(Html.fromHtml(getString(R.string.declared_index)));
         }
+
         loadPromotionList();
     }
 
@@ -133,38 +145,40 @@ public class IndexFragment extends BaseFragment {
         });
     }
 
-    private class PromoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private class PromoteAdapter extends RecyclerAdapterBase {
+
+        List<Promotion> promotions;
+
+        protected PromoteAdapter(List<Promotion> dataList) {
+            super(dataList);
+            this.promotions = dataList;
+        }
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        protected RecyclerView.ViewHolder onCreateItemViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_index_promote, parent, false);
             return new PromoteViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-            PromoteViewHolder viewHolder = (PromoteViewHolder) holder;
-            viewHolder.titleTextView.setText(promotionList.get(position).getTitle());
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        protected void onBindItemViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
+            PromoteViewHolder holder = (PromoteViewHolder) viewHolder;
+            holder.titleTextView.setText(promotionList.get(position).getTitle());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     tracker.send(new HitBuilders.EventBuilder()
                             .setCategory("02. Promote")
-                            .setAction(promotionList.get(position).getTitle() + "_Click")
-                            .setLabel(promotionList.get(position).getTitle())
+                            .setAction(promotions.get(position).getTitle() + "_Click")
+                            .setLabel(promotions.get(position).getTitle())
                             .build());
                     Intent intent = new Intent(getContext(), SectionDetailsActivity.class);
-                    intent.putExtra(BundleKeyConfigs.KEY_WEB_URL, promotionList.get(position).getLinkUrl());
-                    intent.putExtra(BundleKeyConfigs.KEY_WEB_TITLE, promotionList.get(position).getTitle());
+                    intent.putExtra(BundleKeyConfigs.KEY_WEB_URL, promotions.get(position).getLinkUrl());
+                    intent.putExtra(BundleKeyConfigs.KEY_WEB_TITLE, promotions.get(position).getTitle());
                     intent.putExtra(BundleKeyConfigs.KEY_WEB_TYPE, KomicaManager.WebType.NORMAL);
                     startActivity(intent);
                 }
             });
-        }
-
-        @Override
-        public int getItemCount() {
-            return promotionList.size();
         }
 
         class PromoteViewHolder extends RecyclerView.ViewHolder {
