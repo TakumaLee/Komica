@@ -406,6 +406,8 @@ public class KomicaManager {
 //            case "Joyful Note":
 
             case "Apple":
+
+            case "綜合2":
                 return WebType.NORMAL;
             default:
                 return WebType.WEB;

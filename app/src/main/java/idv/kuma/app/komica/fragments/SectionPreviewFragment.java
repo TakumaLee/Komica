@@ -25,6 +25,7 @@ import com.google.android.gms.analytics.HitBuilders;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -199,7 +200,15 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                 notifyTitle();
                 titlePostList.addAll(CrawlerUtils.getPostList(document, url, webType));
                 notifyAdapter();
-                pageCount = document.getElementById("page_switch").select("a").size();
+                Element pageSwitch = document.getElementById("page_switch");
+                if (null == pageSwitch) {
+                    pageSwitch = document.getElementsByClass("page_switch").first();
+                }
+                if (null != pageSwitch.select("a")) {
+                    pageCount = pageSwitch.select("a").size();
+                } else {
+                    pageCount = pageSwitch.getElementsByAttributeValueContaining("class", "link").size();
+                }
             }
         });
     }

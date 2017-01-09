@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import at.huber.youtubeExtractor.YouTubeUriExtractor;
+import at.huber.youtubeExtractor.YtFile;
 import idv.kuma.app.komica.R;
 import idv.kuma.app.komica.activities.SectionDetailsActivity;
 import idv.kuma.app.komica.configs.BundleKeyConfigs;
@@ -33,6 +36,7 @@ import idv.kuma.app.komica.http.NetworkCallback;
 import idv.kuma.app.komica.http.OkHttpClientConnect;
 import idv.kuma.app.komica.manager.KomicaManager;
 import idv.kuma.app.komica.utils.AppTools;
+import idv.kuma.app.komica.utils.KLog;
 import idv.kuma.app.komica.widgets.IndexGridDividerDecoration;
 import tw.showang.recycleradaterbase.RecyclerAdapterBase;
 
@@ -43,6 +47,7 @@ import static android.text.Html.FROM_HTML_MODE_LEGACY;
  */
 
 public class IndexFragment extends BaseFragment {
+    private static final String TAG = IndexFragment.class.getSimpleName();
 
     private static IndexFragment instance = null;
 
@@ -102,6 +107,16 @@ public class IndexFragment extends BaseFragment {
         }
 
         loadPromotionList();
+
+
+        new YouTubeUriExtractor(getActivity()) {
+            @Override
+            public void onUrisAvailable(String videoId, String videoTitle, SparseArray<YtFile> ytFiles) {
+                KLog.v(TAG, "onYoutube id: " + videoId);
+                KLog.v(TAG, "onYoutube title: " + videoTitle);
+                KLog.v(TAG, "onYoutube files: " + ytFiles.size() + "_" + ytFiles.get(22).getUrl());
+            }
+        }.execute("https://www.youtube.com/watch?v=iTMTcUtoA40");
     }
 
     private void loadPromotionList() {
