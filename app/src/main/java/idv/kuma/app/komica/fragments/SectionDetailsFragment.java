@@ -10,6 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ConsoleMessage;
+import android.webkit.JsPromptResult;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -19,7 +25,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,20 +34,13 @@ import idv.kuma.app.komica.configs.BundleKeyConfigs;
 import idv.kuma.app.komica.entity.KPost;
 import idv.kuma.app.komica.entity.KTitle;
 import idv.kuma.app.komica.fragments.base.BaseFragment;
-import idv.kuma.app.komica.http.NetworkCallback;
-import idv.kuma.app.komica.http.OkHttpClientConnect;
+import idv.kuma.app.komica.javascripts.JSInterface;
 import idv.kuma.app.komica.manager.KomicaManager;
 import idv.kuma.app.komica.utils.CrawlerUtils;
 import idv.kuma.app.komica.utils.KLog;
 import idv.kuma.app.komica.views.PostView;
 import idv.kuma.app.komica.widgets.DividerItemDecoration;
 import idv.kuma.app.komica.widgets.KLinearLayoutManager;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import tw.showang.recycleradaterbase.RecyclerAdapterBase;
 
 /**
@@ -60,6 +58,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
     private String formUrl;
     private String commentBoxKey;
 
+    private WebView webView;
     private RecyclerView recyclerView;
     private KLinearLayoutManager linearLayoutManager;
     private SectionDetailsAdapter adapter;
@@ -109,6 +108,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
     }
 
     private void initView() {
+        initWebView();
         recyclerView = findViewById(getView(), R.id.recyclerView_section_details);
         addPostFab = findViewById(getView(), R.id.fab_section_details_add_post);
 
@@ -130,50 +130,53 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     TextInputEditText commentEditText = (TextInputEditText) postDialog.getCustomView().findViewById(R.id.editText_post_comment);
-                                    MultipartBody.Builder requestBody = new MultipartBody.Builder()
-                                            .setType(MultipartBody.FORM);
-                                    for (Element element : inputElements) {
-                                        if ("sendbtn".equals(element.attr("name"))) {
-                                            continue;
-                                        }
-                                        if ("reply".equals(element.attr("name"))) {
-                                            continue;
-                                        }
-                                        if ("noimg".equals(element.attr("name"))) {
-                                            continue;
-                                        }
-                                        if ("js".equals(element.attr("name"))) {
-                                            requestBody.addFormDataPart(element.attr("name"), "js");
-                                        }
-                                        requestBody.addFormDataPart(element.attr("name"), element.val());
-                                    }
-                                    for (Element element : formElem.getElementsByTag("textarea")) {
-                                        if ("fcom".equals(element.id())) {
-                                            requestBody.addFormDataPart(commentBoxKey, commentEditText.getText().toString());
-                                        } else {
-                                            requestBody.addFormDataPart(element.attr("name"), element.text());
-                                        }
-                                    }
-                                    Request request = new Request.Builder()
-                                            .url(formUrl)
-                                            .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-                                            .addHeader("Content-Type", "multipart/form-data; boundary=----")//
-                                            .addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36")
-                                            .addHeader("Referer", url)
-                                            .post(requestBody.build())
-                                            .build();
-                                    OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
-                                    okHttpClient.newCall(request).enqueue(new Callback() {
-                                        @Override
-                                        public void onFailure(Call call, IOException e) {
-                                            KLog.v(TAG, "Exception: " + e);
-                                        }
-
-                                        @Override
-                                        public void onResponse(Call call, Response response) throws IOException {
-                                            KLog.v(TAG, "response: " + response.body().string());
-                                        }
-                                    });
+                                    String submitStr = "javascript:" + "document.getElementById('" + formElem.id() + "').submit();";
+                                    webView.loadUrl("javascript:" + "document.getElementById('fcom').value='" + commentEditText.getText().toString() + "';" + submitStr);
+//                                    webView.loadUrl(submitStr);
+//                                    MultipartBody.Builder requestBody = new MultipartBody.Builder()
+//                                            .setType(MultipartBody.FORM);
+//                                    for (Element element : inputElements) {
+//                                        if ("sendbtn".equals(element.attr("name"))) {
+//                                            continue;
+//                                        }
+//                                        if ("reply".equals(element.attr("name"))) {
+//                                            continue;
+//                                        }
+//                                        if ("noimg".equals(element.attr("name"))) {
+//                                            continue;
+//                                        }
+//                                        if ("js".equals(element.attr("name"))) {
+//                                            requestBody.addFormDataPart(element.attr("name"), "js");
+//                                        }
+//                                        requestBody.addFormDataPart(element.attr("name"), element.val());
+//                                    }
+//                                    for (Element element : formElem.getElementsByTag("textarea")) {
+//                                        if ("fcom".equals(element.id())) {
+//                                            requestBody.addFormDataPart(commentBoxKey, commentEditText.getText().toString());
+//                                        } else {
+//                                            requestBody.addFormDataPart(element.attr("name"), element.text());
+//                                        }
+//                                    }
+//                                    Request request = new Request.Builder()
+//                                            .url(formUrl)
+//                                            .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+//                                            .addHeader("Content-Type", "multipart/form-data; boundary=----")//
+//                                            .addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36")
+//                                            .addHeader("Referer", url)
+//                                            .post(requestBody.build())
+//                                            .build();
+//                                    OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+//                                    okHttpClient.newCall(request).enqueue(new Callback() {
+//                                        @Override
+//                                        public void onFailure(Call call, IOException e) {
+//                                            KLog.v(TAG, "Exception: " + e);
+//                                        }
+//
+//                                        @Override
+//                                        public void onResponse(Call call, Response response) throws IOException {
+//                                            KLog.v(TAG, "response: " + response.body().string());
+//                                        }
+//                                    });
                                 }
                             })
                             .build();
@@ -185,15 +188,13 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         getActivity().setTitle(title);
     }
 
-    private void loadSection() {
-        OkHttpClientConnect.excuteAutoGet(url, new NetworkCallback() {
+    private void initWebView() {
+        webView = new WebView(getContext());
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(new JSInterface(new JSInterface.OnCallListener() {
             @Override
-            public void onFailure(IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(int responseCode, String result) {
+            public void onResponse(String result) {
+                // TODO get real html
                 Document document = Jsoup.parse(result);
                 formElem = document.getElementsByTag("form").first();
                 inputElements = formElem.getElementsByTag("input");
@@ -204,7 +205,83 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                 postList.addAll(head.getReplyList());
                 notifyAdapter();
             }
+        }), "HtmlViewer");
+
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                KLog.v(TAG, "onPageFinished");
+                view.loadUrl("javascript:window.HtmlViewer.onResponse" +
+                        "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+            }
+
+            @Override
+            public void onPageCommitVisible(WebView view, String url) {
+                super.onPageCommitVisible(view, url);
+                KLog.v(TAG, "onPageCommitVisible");
+            }
         });
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
+                KLog.v(TAG, "onJsConfirm");
+                return super.onJsConfirm(view, url, message, result);
+            }
+
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                KLog.v(TAG, "onProgressChanged");
+            }
+
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                KLog.v(TAG, "onJsAlert");
+                return super.onJsAlert(view, url, message, result);
+            }
+
+            @Override
+            public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
+                KLog.v(TAG, "onJsPrompt");
+                return super.onJsPrompt(view, url, message, defaultValue, result);
+            }
+
+            @Override
+            public boolean onJsBeforeUnload(WebView view, String url, String message, JsResult result) {
+                KLog.v(TAG, "onJsBeforeUnload");
+                return super.onJsBeforeUnload(view, url, message, result);
+            }
+
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                KLog.v(TAG, "onConsoleMessage");
+                return super.onConsoleMessage(consoleMessage);
+            }
+        });
+    }
+
+    private void loadSection() {
+        if (null == getActivity()) {
+            return;
+        }
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                webView.loadUrl(url);
+            }
+        });
+//        OkHttpClientConnect.excuteAutoGet(url, new NetworkCallback() {
+//            @Override
+//            public void onFailure(IOException e) {
+//
+//            }
+//
+//            @Override
+//            public void onResponse(int responseCode, String result) {
+//
+//            }
+//        });
     }
 
     private void notifyAdapter() {
