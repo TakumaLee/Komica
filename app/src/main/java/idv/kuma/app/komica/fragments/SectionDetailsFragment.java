@@ -25,6 +25,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +35,8 @@ import idv.kuma.app.komica.configs.BundleKeyConfigs;
 import idv.kuma.app.komica.entity.KPost;
 import idv.kuma.app.komica.entity.KTitle;
 import idv.kuma.app.komica.fragments.base.BaseFragment;
+import idv.kuma.app.komica.http.NetworkCallback;
+import idv.kuma.app.komica.http.OkHttpClientConnect;
 import idv.kuma.app.komica.javascripts.JSInterface;
 import idv.kuma.app.komica.manager.KomicaManager;
 import idv.kuma.app.komica.utils.CrawlerUtils;
@@ -132,6 +135,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                                     TextInputEditText commentEditText = (TextInputEditText) postDialog.getCustomView().findViewById(R.id.editText_post_comment);
                                     String submitStr = "javascript:" + "document.getElementById('" + formElem.id() + "').submit();";
                                     webView.loadUrl("javascript:" + "document.getElementById('fcom').value='" + commentEditText.getText().toString() + "';" + submitStr);
+                                    loadSection();
 //                                    webView.loadUrl(submitStr);
 //                                    MultipartBody.Builder requestBody = new MultipartBody.Builder()
 //                                            .setType(MultipartBody.FORM);
@@ -190,20 +194,13 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
 
     private void initWebView() {
         webView = new WebView(getContext());
+        webView.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
         webView.getSettings().setJavaScriptEnabled(true);
         webView.addJavascriptInterface(new JSInterface(new JSInterface.OnCallListener() {
             @Override
             public void onResponse(String result) {
                 // TODO get real html
-                Document document = Jsoup.parse(result);
-                formElem = document.getElementsByTag("form").first();
-                inputElements = formElem.getElementsByTag("input");
-                formUrl = url.substring(0, url.lastIndexOf("/") + 1) + formElem.attr("action");
-                commentBoxKey = formElem.getElementsByTag("textarea").attr("name");
-                KTitle head = CrawlerUtils.getPostList(document, url, webType).get(0);
-                postList.add(head);
-                postList.addAll(head.getReplyList());
-                notifyAdapter();
+
             }
         }), "HtmlViewer");
 
@@ -271,17 +268,25 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                 webView.loadUrl(url);
             }
         });
-//        OkHttpClientConnect.excuteAutoGet(url, new NetworkCallback() {
-//            @Override
-//            public void onFailure(IOException e) {
-//
-//            }
-//
-//            @Override
-//            public void onResponse(int responseCode, String result) {
-//
-//            }
-//        });
+        OkHttpClientConnect.excuteAutoGet(url, new NetworkCallback() {
+            @Override
+            public void onFailure(IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(int responseCode, String result) {
+                Document document = Jsoup.parse(result);
+                formElem = document.getElementsByTag("form").first();
+                inputElements = formElem.getElementsByTag("input");
+                formUrl = url.substring(0, url.lastIndexOf("/") + 1) + formElem.attr("action");
+                commentBoxKey = formElem.getElementsByTag("textarea").attr("name");
+                KTitle head = CrawlerUtils.getPostList(document, url, webType).get(0);
+                postList.add(head);
+                postList.addAll(head.getReplyList());
+                notifyAdapter();
+            }
+        });
     }
 
     private void notifyAdapter() {
