@@ -6,4 +6,5 @@ package idv.kuma.app.komica.configs;
 
 public class UrlConfigs {
     protected static final String KOMICA_MENU = "http://www.komica.org/bbsmenu.html";
+    protected static final String PROMOTE_LIST = "https://raw.githubusercontent.com/TakumaMochizuki/Komica/promotion/api/homepage.json";
 }

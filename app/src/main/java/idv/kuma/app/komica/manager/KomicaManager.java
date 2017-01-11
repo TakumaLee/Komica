@@ -155,6 +155,10 @@ public class KomicaManager {
             @Override
             public void onResponse(int responseCode, String result) {
                 Document document = Jsoup.parse(result);
+                if (document.getElementsByTag("font").size() < 1) {
+                    return;
+
+                }
                 Element element = document.getElementsByTag("font").remove(1);
                 int count = 0;
                 int memberId = 0;
@@ -402,6 +406,8 @@ public class KomicaManager {
 //            case "Joyful Note":
 
             case "Apple":
+
+            case "綜合2":
                 return WebType.NORMAL;
             default:
                 return WebType.WEB;
