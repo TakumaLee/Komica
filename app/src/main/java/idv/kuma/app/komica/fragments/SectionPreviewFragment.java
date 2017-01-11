@@ -13,6 +13,9 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -92,6 +95,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         url = getArguments().getString(BundleKeyConfigs.KEY_WEB_URL);
         indexUrl = url;
         webType = getArguments().getInt(BundleKeyConfigs.KEY_WEB_TYPE);
@@ -112,6 +116,28 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         ThirdPartyManager.getInstance().registerProfileListener(this);
         ThirdPartyManager.getInstance().registerLogoutListener(this);
         KomicaManager.getInstance().registerConfigUpdateListener(this);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_section_preview, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                titlePostList.clear();
+                recyclerView.scrollToPosition(0);
+                url = indexUrl;
+                page = 1;
+                loadSection();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

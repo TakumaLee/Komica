@@ -257,7 +257,7 @@ public class KomicaManager {
 
     public int checkWebType(String menuStr) {
         switch (menuStr) {
-            case "影視":
+//            case "影視":
             case "綜合":
             case "氣象":
             case "歡樂惡搞":

@@ -16,6 +16,7 @@ import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -68,6 +69,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
 
     private FloatingActionButton addPostFab;
     private MaterialDialog postDialog;
+    private boolean isPosting = false;
 
     private List<KPost> postList = Collections.emptyList();
 
@@ -93,7 +95,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_section_details, container, false);
+        return inflater.inflate(R.layout.fragment_section_details, container, false);
     }
 
     @Override
@@ -133,9 +135,22 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     TextInputEditText commentEditText = (TextInputEditText) postDialog.getCustomView().findViewById(R.id.editText_post_comment);
-                                    String submitStr = "javascript:" + "document.getElementById('" + formElem.id() + "').submit();";
-                                    webView.loadUrl("javascript:" + "document.getElementById('fcom').value='" + commentEditText.getText().toString() + "';" + submitStr);
-                                    loadSection();
+                                    switch (webType) {
+                                        case KomicaManager.WebType.INTEGRATED:
+                                            String submitStr = "javascript:" + "document.getElementsByTagName('form')[0].submit();";
+                                            String commentStr = "javascript:" + "document.getElementsByTagName('textarea')[0].value='" + commentEditText.getText().toString().replace("\n", "<br/>") + "';";
+                                            String checkStr = "javascript:" + "document.getElementById('recaptcha-anchor').setAttribute('aria-checked', true);";
+                                            webView.loadUrl(commentStr + checkStr + submitStr);
+                                            break;
+                                        case KomicaManager.WebType.NORMAL:
+                                        default:
+                                            submitStr = "javascript:" + "document.getElementById('" + formElem.id() + "').submit();";
+                                            webView.loadUrl("javascript:" + "document.getElementById('fcom').value='" + commentEditText.getText().toString() + "';" + submitStr);
+                                            isPosting = true;
+                                            Toast.makeText(getContext(), R.string.message_please_wait_for_replying, Toast.LENGTH_LONG).show();
+                                            break;
+                                    }
+//                                    loadSection();
 //                                    webView.loadUrl(submitStr);
 //                                    MultipartBody.Builder requestBody = new MultipartBody.Builder()
 //                                            .setType(MultipartBody.FORM);
@@ -189,6 +204,16 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
             }
         });
 
+        switch (webType) {
+            case KomicaManager.WebType.INTEGRATED:
+                addPostFab.setVisibility(View.GONE);
+                break;
+            case KomicaManager.WebType.NORMAL:
+            default:
+                addPostFab.setVisibility(View.VISIBLE);
+                break;
+        }
+
         getActivity().setTitle(title);
     }
 
@@ -200,6 +225,31 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
             @Override
             public void onResponse(String result) {
                 // TODO get real html
+                KLog.v(TAG, "onJavaScript onResponse");
+
+
+                if (isPosting) {
+                    isPosting = false;
+                    webView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            webView.stopLoading();
+                        }
+                    });
+
+                    loadSection();
+                } else {
+                    Document frameDom = Jsoup.parse(result);
+                    String checkScriptUrl = frameDom.getElementsByTag("iframe").attr("src");
+                    KLog.v(TAG, checkScriptUrl);
+                }
+//                loadScript(checkScriptUrl);
+//                webView.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        webView.loadData(frameDom.getElementsByTag("iframe").outerHtml(), "text/html", "utf-8");
+//                    }
+//                });
 
             }
         }), "HtmlViewer");
@@ -256,6 +306,8 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                 return super.onConsoleMessage(consoleMessage);
             }
         });
+        //TODO for test
+//        ((FrameLayout) findViewById(getView(), R.id.frameLayout_sectionWeb)).addView(webView);
     }
 
     private void loadSection() {
@@ -276,6 +328,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
 
             @Override
             public void onResponse(int responseCode, String result) {
+                postList.clear();
                 Document document = Jsoup.parse(result);
                 formElem = document.getElementsByTag("form").first();
                 inputElements = formElem.getElementsByTag("input");
@@ -298,6 +351,20 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                 }
             });
         }
+    }
+
+    private void loadScript(String url) {
+        OkHttpClientConnect.excuteAutoGet(url, new NetworkCallback() {
+            @Override
+            public void onFailure(IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(int responseCode, String result) {
+
+            }
+        });
     }
 
     @Override
