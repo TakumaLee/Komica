@@ -6,9 +6,4 @@
     android:layout_height="match_parent"
     tools:context="idv.kuma.app.komica.activities.SectionDetailsActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView_section_details"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-
 </RelativeLayout>

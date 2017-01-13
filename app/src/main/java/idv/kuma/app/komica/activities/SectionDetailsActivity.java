@@ -15,11 +15,12 @@ public class SectionDetailsActivity extends BaseOtherActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_section_details);
 
+        String from = getIntent().getStringExtra(BundleKeyConfigs.KEY_WEB_FROM);
         String url = getIntent().getStringExtra(BundleKeyConfigs.KEY_WEB_URL);
         String title = getIntent().getStringExtra(BundleKeyConfigs.KEY_WEB_TITLE);
         int webType = getIntent().getIntExtra(BundleKeyConfigs.KEY_WEB_TYPE, KomicaManager.WebType.INTEGRATED);
         if (null == savedInstanceState) {
-            getSupportFragmentManager().beginTransaction().add(R.id.activity_section_details, SectionDetailsFragment.newInstance(url, title, webType)).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.activity_section_details, SectionDetailsFragment.newInstance(from, url, title, webType)).commit();
         }
     }
 }

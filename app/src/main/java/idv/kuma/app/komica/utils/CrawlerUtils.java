@@ -30,13 +30,16 @@ public class CrawlerUtils {
     }
 
     public static List<KTitle> parseShinBangumiPost(Document document, String url) {
+        if (null == document.getElementById("threads")) {
+            return new ArrayList<>();
+        }
         Elements elements = document.getElementById("threads").children();
         List<KTitle> titlePostList = new ArrayList<>();
         KTitle titlePost = null;
         List<KReply> replyList = new ArrayList<KReply>();
         for (Element element : elements) {
             KLog.v(TAG, "Element: " + element);
-            if ("threadpost".equals(element.className())) {
+            if (element.className().startsWith("threadpost")) {
                 // TODO post head
                 // TODO new a post head, and continue reply to next new.
                 if (null != titlePost) {
@@ -45,7 +48,7 @@ public class CrawlerUtils {
                     replyList = new ArrayList<KReply>();
                 }
                 titlePost = new KTitle(element, url);
-            } else if ("reply".equals(element.className())) {
+            } else if (element.className().startsWith("reply")) {
                 // TODO post reply
                 KReply replyPost = new KReply(element, url);
                 replyList.add(replyPost);
