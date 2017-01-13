@@ -119,8 +119,8 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
         loginItem = new PrimaryDrawerItem()
                 .withIdentifier(-1)
                 .withSelectable(false)
-                .withName(ThirdPartyManager.getInstance().isFacebookLogin() ? R.string.logout_facebook : R.string.login_facebook)
-                .withTextColor(ThirdPartyManager.getInstance().isFacebookLogin() ? Color.GRAY : Color.BLUE)
+                .withName(KomicaAccountManager.getInstance().isLogin() ? R.string.logout_facebook : R.string.login_facebook)
+                .withTextColor(KomicaAccountManager.getInstance().isLogin() ? Color.GRAY : Color.BLUE)
                 .withIcon(CommunityMaterial.Icon.cmd_logout);
 
         headerResult = new AccountHeaderBuilder()
@@ -182,7 +182,7 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
                         Intent intent = null;
                         switch ((int) drawerItem.getIdentifier()) {
                             case -1:
-                                if (ThirdPartyManager.getInstance().isFacebookLogin()) {
+                                if (KomicaAccountManager.getInstance().isLogin()) {
                                     tracker.send(new HitBuilders.EventBuilder()
                                             .setCategory("00. 登入追蹤")
                                             .setLabel("登出")
@@ -398,8 +398,8 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
     private void refreshLoginItem() {
         loginItem
                 .withIdentifier(-1)
-                .withName(ThirdPartyManager.getInstance().isFacebookLogin() ? R.string.logout_facebook : R.string.login_facebook)
-                .withTextColor(ThirdPartyManager.getInstance().isFacebookLogin() ? Color.GRAY : Color.BLUE)
+                .withName(KomicaAccountManager.getInstance().isLogin() ? R.string.logout_facebook : R.string.login_facebook)
+                .withTextColor(KomicaAccountManager.getInstance().isLogin() ? Color.GRAY : Color.BLUE)
                 .withIcon(CommunityMaterial.Icon.cmd_logout);
         drawer.updateStickyFooterItemAtPosition(loginItem, 1);
         drawer.removeStickyFooterItemAtPosition(1);
@@ -407,7 +407,7 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
 
     private void refreshAccountPhoto() {
         final MyAccount myAccount = KomicaAccountManager.getInstance().getMyAccount();
-        if (!ThirdPartyManager.getInstance().isFacebookLogin()) {
+        if (!KomicaAccountManager.getInstance().isLogin()) {
             KomicaAccountManager.getInstance().logout();
             profileDrawerItem.withIcon(R.drawable.anonymous).withName(myAccount.getUsername()).withEmail(myAccount.getEmail());
             headerResult.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.wallpaper));
@@ -426,7 +426,7 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
                     }
                 });
 
-        Glide.with(this).load(ThirdPartyManager.getInstance().isFacebookLogin() ? myAccount.getCoverPic() : R.color.md_blue_500).asBitmap().into(new SimpleTarget<Bitmap>() {
+        Glide.with(this).load(KomicaAccountManager.getInstance().isLogin() ? myAccount.getCoverPic() : R.color.md_blue_500).asBitmap().into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                 headerResult.setBackground(new BitmapDrawable(getResources(), resource));

@@ -13,6 +13,8 @@ public class PushUser {
 
     private List<PushDevice> deviceList;
 
+    private int points = 0;
+
     public PushUser() {
         deviceList = new ArrayList<>();
     }
@@ -27,5 +29,13 @@ public class PushUser {
 
     public List<PushDevice> getDeviceList() {
         return deviceList;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 }
