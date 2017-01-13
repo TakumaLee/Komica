@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <android.support.design.widget.TextInputEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_vertical_margin"
-        android:hint="おなまえ"/>
+        android:hint="おなまえ"
+        android:visibility="gone"/>
 
     <android.support.design.widget.TextInputEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_vertical_margin"
-        android:hint="E-mail"/>
+        android:hint="E-mail"
+        android:visibility="gone"/>
 
     <android.support.design.widget.TextInputEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_vertical_margin"
-        android:hint="題名"/>
+        android:hint="題名"
+        android:visibility="gone"/>
 
     <android.support.design.widget.TextInputEditText
         android:id="@+id/editText_post_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_vertical_margin"
+        android:gravity="top"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
         android:hint="コメント"/>
 
     <android.support.design.widget.TextInputEditText
@@ -34,13 +40,15 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:hint="カテゴリ(複数のカテゴリの間に「,」を入れて入力します)"
-        android:textSize="14sp"/>
+        android:textSize="14sp"
+        android:visibility="gone"/>
 
     <android.support.design.widget.TextInputEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:hint="投稿キー(記事の削除用。英数字で8文字以内)"
-        android:textSize="14sp"/>
+        android:textSize="14sp"
+        android:visibility="gone"/>
 
 </LinearLayout>

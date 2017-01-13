@@ -191,6 +191,7 @@ public class IndexFragment extends BaseFragment {
                     intent.putExtra(BundleKeyConfigs.KEY_WEB_URL, promotions.get(position).getLinkUrl());
                     intent.putExtra(BundleKeyConfigs.KEY_WEB_TITLE, promotions.get(position).getTitle());
                     intent.putExtra(BundleKeyConfigs.KEY_WEB_TYPE, KomicaManager.WebType.NORMAL);
+                    intent.putExtra(BundleKeyConfigs.KEY_WEB_FROM, "Promotion");
                     startActivity(intent);
                 }
             });

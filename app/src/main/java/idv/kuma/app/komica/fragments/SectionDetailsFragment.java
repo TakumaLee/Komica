@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.analytics.HitBuilders;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -57,6 +58,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
     private String url;
     private String title;
     private int webType;
+    private String from;
     private Element formElem;
     private Elements inputElements;
     private String formUrl;
@@ -73,9 +75,10 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
 
     private List<KPost> postList = Collections.emptyList();
 
-    public static SectionDetailsFragment newInstance(String url, String title, int webType) {
+    public static SectionDetailsFragment newInstance(String from, String url, String title, int webType) {
         SectionDetailsFragment fragment = new SectionDetailsFragment();
         Bundle bundle = new Bundle();
+        bundle.putString(BundleKeyConfigs.KEY_WEB_FROM, from);
         bundle.putString(BundleKeyConfigs.KEY_WEB_URL, url);
         bundle.putString(BundleKeyConfigs.KEY_WEB_TITLE, title);
         bundle.putInt(BundleKeyConfigs.KEY_WEB_TYPE, webType);
@@ -86,6 +89,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        from = getArguments().getString(BundleKeyConfigs.KEY_WEB_FROM);
         url = getArguments().getString(BundleKeyConfigs.KEY_WEB_URL);
         title = getArguments().getString(BundleKeyConfigs.KEY_WEB_TITLE);
         webType = getArguments().getInt(BundleKeyConfigs.KEY_WEB_TYPE);
@@ -127,6 +131,11 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         addPostFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                tracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("03. 互動")
+                        .setAction(from + "_" + title + "_開始回文")
+                        .setLabel(from + "_" + title)
+                        .build());
                 if (null == postDialog) {
                     postDialog = new MaterialDialog.Builder(view.getContext())
                             .customView(R.layout.layout_post, true)
@@ -150,6 +159,11 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                                             Toast.makeText(getContext(), R.string.message_please_wait_for_replying, Toast.LENGTH_LONG).show();
                                             break;
                                     }
+                                    tracker.send(new HitBuilders.EventBuilder()
+                                            .setCategory("03. 互動")
+                                            .setAction(from + "_" + title + "_回文發佈")
+                                            .setLabel(from + "_" + title)
+                                            .build());
 //                                    loadSection();
 //                                    webView.loadUrl(submitStr);
 //                                    MultipartBody.Builder requestBody = new MultipartBody.Builder()

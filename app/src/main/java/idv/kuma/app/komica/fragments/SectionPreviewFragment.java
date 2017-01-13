@@ -336,6 +336,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                     intent.putExtra(BundleKeyConfigs.KEY_WEB_URL, head.getDetailLink());
                     intent.putExtra(BundleKeyConfigs.KEY_WEB_TITLE, head.getTitle());
                     intent.putExtra(BundleKeyConfigs.KEY_WEB_TYPE, webType);
+                    intent.putExtra(BundleKeyConfigs.KEY_WEB_FROM, title);
                     startActivity(intent);
                 }
             });
