@@ -13,4 +13,5 @@
 
     <string name="message_please_login_to_view_image">Please login to view the image!</string>
     <string name="message_please_wait_for_replying">Please wait for replying!</string>
+    <string name="message_loading_complete">Loading complete!</string>
 </resources>
