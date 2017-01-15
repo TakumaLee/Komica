@@ -272,7 +272,7 @@ public class KomicaManager {
             case "改造":
             case "委託":
             case "鋼普拉":
-            case "遊戲速報":
+//            case "遊戲速報":
 //            case "行動遊戲":
             case "網路遊戲":
             case "塗鴉王國":
