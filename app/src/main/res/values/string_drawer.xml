@@ -7,6 +7,7 @@
     <!-- Drawer Page -->
     <string name="home_page">Home</string>
     <string name="refresh_menu">Refresh Menu</string>
+    <string name="clear_cache">Clear Cache</string>
     <string name="sponsor">Sponsor</string>
     <string name="others">Others</string>
     <string name="fanpage">Facebook Fans</string>

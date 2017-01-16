@@ -7,6 +7,7 @@
     <!-- Drawer Page -->
     <string name="home_page">首頁</string>
     <string name="refresh_menu">更新列表</string>
+    <string name="clear_cache">清除快取</string>
     <string name="others">其他選項</string>
     <string name="fanpage">Facebook 粉絲團</string>
     <string name="rating">Google Play 評分</string>
