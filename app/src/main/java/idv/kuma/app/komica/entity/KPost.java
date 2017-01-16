@@ -6,6 +6,8 @@ import org.json.JSONObject;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,8 +40,7 @@ public class KPost {
      *
      * */
     protected String quote;
-    protected String imageUrl;
-    protected String imageFileName;
+
     protected boolean hasImage = false;
     protected String videoUrl;
     protected String videoFileName;
@@ -51,6 +52,7 @@ public class KPost {
      * class="img" alt="20 KB" title="20 KB"
      * [file name] - (20 KB, 153x240)
      * */
+    protected List<KPostImage> postImageList = new ArrayList<>();
     protected String thumbUrl;
     protected int thumbWidth;
     protected int thumbHeight;
@@ -85,7 +87,7 @@ public class KPost {
                     setVideoUrl(object.getString("url"));
                     setVideoFileName(object.getString("title"));
                     setThumbUrl(object.getString("thumb"));
-                    setImageUrl(object.getString("thumb"));
+                    postImageList.add(new KPostImage(object.getString("thumb")));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -95,6 +97,7 @@ public class KPost {
         }
         setQuote(quoteElement.html());
         Element thumbElement = element.getElementsByTag("img").first();
+        Elements imgElements = element.getElementsByTag("img");
         setHasImage(thumbElement != null);
         if (hasImage) {
             Element imgElement = element.getElementsByAttributeValue("rel", "_blank").first();
@@ -102,12 +105,17 @@ public class KPost {
                 imgElement = element.getElementsByAttributeValue("target", "_blank").first();
             }
             if (imgElement != null) {
-                setImageUrl(imgElement.attr("href"));
-                setImageFileName(imgElement.text());
+                postImageList.add(new KPostImage(imgElement.attr("href"), imgElement.text()));
             }
-            setThumbUrl(thumbElement.attr("src"));
-            setThumbWidth(findWidthPixel(thumbElement.attr("style")));
-            setThumbHeight(findHeightPixel(thumbElement.attr("style")));
+            if (imgElements.size() > 1) {
+                for (Element img : imgElements) {
+                    postImageList.add(new KPostImage(img.attr("src")));
+                }
+            } else {
+                setThumbUrl(thumbElement.attr("src"));
+                setThumbWidth(findWidthPixel(thumbElement.attr("style")));
+                setThumbHeight(findHeightPixel(thumbElement.attr("style")));
+            }
         }
     }
 
@@ -169,22 +177,6 @@ public class KPost {
         this.quote = quote;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getImageFileName() {
-        return imageFileName;
-    }
-
-    public void setImageFileName(String imageFileName) {
-        this.imageFileName = imageFileName;
-    }
-
     public String getThumbUrl() {
         return thumbUrl;
     }
@@ -207,6 +199,14 @@ public class KPost {
 
     public void setThumbHeight(int thumbHeight) {
         this.thumbHeight = thumbHeight;
+    }
+
+    public void addPostImage(KPostImage postImage) {
+        postImageList.add(postImage);
+    }
+
+    public List<KPostImage> getPostImageList() {
+        return postImageList;
     }
 
     public boolean hasImage() {

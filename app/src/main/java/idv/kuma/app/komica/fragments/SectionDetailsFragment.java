@@ -46,6 +46,7 @@ import idv.kuma.app.komica.utils.KLog;
 import idv.kuma.app.komica.views.PostView;
 import idv.kuma.app.komica.widgets.DividerItemDecoration;
 import idv.kuma.app.komica.widgets.KLinearLayoutManager;
+import tw.showang.recycleradaterbase.LoadMoreListener;
 import tw.showang.recycleradaterbase.RecyclerAdapterBase;
 
 /**
@@ -72,6 +73,9 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
     private FloatingActionButton addPostFab;
     private MaterialDialog postDialog;
     private boolean isPosting = false;
+    private int page = 0;
+    private int pageCount = 0;
+    private boolean hasAnotherPage = false;
 
     private List<KPost> postList = Collections.emptyList();
 
@@ -122,6 +126,12 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         addPostFab = findViewById(getView(), R.id.fab_section_details_add_post);
 
         adapter = new SectionDetailsAdapter(postList);
+        adapter.setLoadMoreListener(new LoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                loadSection();
+            }
+        });
         linearLayoutManager = new KLinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
@@ -325,6 +335,15 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
     }
 
     private void loadSection() {
+        switch (webType) {
+            case KomicaManager.WebType.INTEGRATED:
+                break;
+            case KomicaManager.WebType.NORMAL:
+            default:
+                url = (url.contains("page_num") ? url.substring(0, url.lastIndexOf("&")) : url) + "&page_num=" + page;
+                break;
+        }
+
         if (null == getActivity()) {
             return;
         }
@@ -342,16 +361,25 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
 
             @Override
             public void onResponse(int responseCode, String result) {
-                postList.clear();
+                if (page == 0) {
+                    postList.clear();
+                }
                 Document document = Jsoup.parse(result);
                 formElem = document.getElementsByTag("form").first();
                 inputElements = formElem.getElementsByTag("input");
                 formUrl = url.substring(0, url.lastIndexOf("/") + 1) + formElem.attr("action");
                 commentBoxKey = formElem.getElementsByTag("textarea").attr("name");
                 KTitle head = CrawlerUtils.getPostList(document, url, webType).get(0);
-                postList.add(head);
+                if (page == 0) {
+                    postList.add(head);
+                }
                 postList.addAll(head.getReplyList());
                 notifyAdapter();
+                hasAnotherPage = !document.getElementsByClass("page_switch").isEmpty() && page != pageCount - 1;
+                adapter.setLoadMoreEnable(hasAnotherPage);
+                if (hasAnotherPage) {
+                    pageCount = document.getElementsByClass("page_switch").first().getElementsByClass("link").size() + 1;
+                }
             }
         });
     }
@@ -362,6 +390,9 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                 @Override
                 public void run() {
                     adapter.notifyDataSetChanged();
+                    if (hasAnotherPage) {
+                        page++;
+                    }
                 }
             });
         }

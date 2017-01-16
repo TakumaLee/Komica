@@ -1,6 +1,8 @@
 package idv.kuma.app.komica.fragments;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -57,6 +59,7 @@ import idv.kuma.app.komica.widgets.MutableLinkMovementMethod;
 import tw.showang.recycleradaterbase.LoadMoreListener;
 import tw.showang.recycleradaterbase.RecyclerAdapterBase;
 
+import static android.content.Context.ACTIVITY_SERVICE;
 import static android.text.Html.FROM_HTML_MODE_LEGACY;
 
 /**
@@ -309,6 +312,19 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
 
         @Override
         protected void onBindItemViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+            ActivityManager activityManager =  (ActivityManager) getContext().getSystemService(ACTIVITY_SERVICE);
+            ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+            activityManager.getMemoryInfo(memoryInfo);
+            double max = Runtime.getRuntime().maxMemory() / 1048576L;
+            double free = Runtime.getRuntime().freeMemory() / 1048576L;
+            double total = Runtime.getRuntime().totalMemory() / 1048576L;
+            KLog.i(TAG, "memory max: " + max);
+            KLog.i(TAG, "memory free: " + free);
+            KLog.i(TAG, "memory total: " + total);
+            if (free + total > max / 2) {
+                KLog.w(TAG, "Dangerous for OOM, Clear Memory.");
+                System.gc();
+            }
             SectionPreViewHolder holder = (SectionPreViewHolder) viewHolder;
             KLog.v(TAG, String.valueOf(position));
             final KTitle head = titleList.get(position);
@@ -345,13 +361,18 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                     startActivity(intent);
                 }
             });
-            if (KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin()) {
-                holder.postThumbImageView.setVisibility(View.VISIBLE);
-                holder.postImgErrMsgTextView.setVisibility(View.GONE);
-                Glide.with(getContext()).load(head.getImageUrl()).into(holder.postThumbImageView);
+            if (head.hasVideo() || head.hasImage()) {
+                if (KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin()) {
+                    holder.postThumbImageView.setVisibility(View.VISIBLE);
+                    holder.postImgErrMsgTextView.setVisibility(View.GONE);
+                    Glide.with(getContext()).load(head.getPostImageList().get(0).getImageUrl()).into(holder.postThumbImageView);
+                } else {
+                    holder.postThumbImageView.setVisibility(View.GONE);
+                    holder.postImgErrMsgTextView.setVisibility(View.VISIBLE);
+                }
             } else {
                 holder.postThumbImageView.setVisibility(View.GONE);
-                holder.postImgErrMsgTextView.setVisibility(View.VISIBLE);
+                holder.postImgErrMsgTextView.setVisibility(View.GONE);
             }
             if (titleList.get(position).getReplyList().size() > 0) {
                 holder.replyLinearLayout.setVisibility(View.VISIBLE);
@@ -391,6 +412,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         TextView postQuoteTextView;
         ImageView postThumbImageView;
         TextView postImgErrMsgTextView;
+        LinearLayout postImgListContainer;
 
         TextView postWarnTextView;
         Button moreBtn;
@@ -398,6 +420,8 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
 
         public SectionPreViewHolder(View itemView) {
             super(itemView);
+            LayoutInflater inflate = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            postImgListContainer = (LinearLayout) inflate.inflate(R.layout.layout_section_post_img_list, (ViewGroup) itemView);
             postIdTextView = findViewById(itemView, R.id.textView_section_post_id);
             postTitleTextView = findViewById(itemView, R.id.textView_section_post_title);
             postQuoteTextView = findViewById(itemView, R.id.textView_section_post_quote);
