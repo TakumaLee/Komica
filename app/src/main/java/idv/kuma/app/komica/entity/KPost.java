@@ -1,6 +1,7 @@
 package idv.kuma.app.komica.entity;
 
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -69,6 +70,27 @@ public class KPost {
             setName(label.getElementsByClass("name").text());// loss the time date
         }
         Element quoteElement = element.getElementsByClass("quote").first();
+        Elements moeVideo = quoteElement.getElementsByTag("moe-video");
+        if (!moeVideo.isEmpty()) {
+            quoteElement.getElementsByTag("moe-video").first().remove();
+            quoteElement.getElementsByTag("script").first().remove();
+            setHasVideo(true);
+            setVideoUrl(moeVideo.first().getElementById("videoLink").attr("href"));
+            setVideoFileName(moeVideo.first().getElementById("videoLink").text());
+            Pattern pattern = Pattern.compile("url\\(\"(.*?)\";");
+            Matcher matcher = pattern.matcher(moeVideo.html());
+            if (matcher.find()) {
+                setThumbUrl(matcher.group(1));
+                setImageUrl(matcher.group(1));
+            } else {
+                Pattern encodePattern = Pattern.compile("url\\(&quot;(.*?)&quot;");
+                matcher = encodePattern.matcher(moeVideo.html());
+                if (matcher.find()) {
+                    setThumbUrl(matcher.group(1));
+                    setImageUrl(matcher.group(1));
+                }
+            }
+        }
         setQuote(quoteElement.html());
         Element thumbElement = element.getElementsByTag("img").first();
         setHasImage(thumbElement != null);

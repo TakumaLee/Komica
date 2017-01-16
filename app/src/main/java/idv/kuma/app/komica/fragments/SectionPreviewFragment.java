@@ -18,6 +18,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ConsoleMessage;
+import android.webkit.JsPromptResult;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,6 +50,7 @@ import idv.kuma.app.komica.entity.KTitle;
 import idv.kuma.app.komica.fragments.base.BaseFragment;
 import idv.kuma.app.komica.http.NetworkCallback;
 import idv.kuma.app.komica.http.OkHttpClientConnect;
+import idv.kuma.app.komica.javascripts.JSInterface;
 import idv.kuma.app.komica.manager.FacebookManager;
 import idv.kuma.app.komica.manager.KomicaAccountManager;
 import idv.kuma.app.komica.manager.KomicaManager;
@@ -72,12 +79,15 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
     private String title;
     private int webType;
 
+    private WebView webView;
     private RecyclerView recyclerView;
     private KLinearLayoutManager linearLayoutManager;
     private SectionPreviewAdapter adapter;
 
     private int page = 1;
     private int pageCount = 1;
+
+    private boolean isPosting = false;
 
     private List<KTitle> titlePostList = Collections.emptyList();
 
@@ -114,6 +124,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initView();
+        initWebView();
         loadSection();
         ThirdPartyManager.getInstance().registerProfileListener(this);
         ThirdPartyManager.getInstance().registerLogoutListener(this);
@@ -174,6 +185,110 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         recyclerView.setAdapter(adapter);
     }
 
+    private void initWebView() {
+        webView = new WebView(getContext());
+        webView.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(new JSInterface(new JSInterface.OnCallListener() {
+            @Override
+            public void onResponse(String result) {
+                // TODO get real html
+                KLog.v(TAG, "onJavaScript onResponse");
+
+
+                if (isPosting) {
+                    isPosting = false;
+                    webView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            webView.stopLoading();
+                        }
+                    });
+
+                    loadSection();
+                } else {
+                    Document document = Jsoup.parse(result);
+                    title = document.getElementsByTag("title").text();
+                    notifyTitle();
+                    titlePostList.addAll(CrawlerUtils.getPostList(document, url, webType));
+                    notifyAdapter();
+                    Element pageSwitch = document.getElementById("page_switch");
+                    if (null == pageSwitch) {
+                        pageSwitch = document.getElementsByClass("page_switch").first();
+                    }
+                    if (null != pageSwitch.select("a")) {
+                        pageCount = pageSwitch.select("a").size();
+                    } else {
+                        pageCount = pageSwitch.getElementsByAttributeValueContaining("class", "link").size();
+                    }
+                }
+//                loadScript(checkScriptUrl);
+//                webView.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        webView.loadData(frameDom.getElementsByTag("iframe").outerHtml(), "text/html", "utf-8");
+//                    }
+//                });
+
+            }
+        }), "HtmlViewer");
+
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                KLog.v(TAG, "onPageFinished");
+                view.loadUrl("javascript:window.HtmlViewer.onResponse" +
+                        "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+            }
+
+            @Override
+            public void onPageCommitVisible(WebView view, String url) {
+                super.onPageCommitVisible(view, url);
+                KLog.v(TAG, "onPageCommitVisible");
+            }
+        });
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
+                KLog.v(TAG, "onJsConfirm");
+                return super.onJsConfirm(view, url, message, result);
+            }
+
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                KLog.v(TAG, "onProgressChanged");
+            }
+
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                KLog.v(TAG, "onJsAlert");
+                return super.onJsAlert(view, url, message, result);
+            }
+
+            @Override
+            public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
+                KLog.v(TAG, "onJsPrompt");
+                return super.onJsPrompt(view, url, message, defaultValue, result);
+            }
+
+            @Override
+            public boolean onJsBeforeUnload(WebView view, String url, String message, JsResult result) {
+                KLog.v(TAG, "onJsBeforeUnload");
+                return super.onJsBeforeUnload(view, url, message, result);
+            }
+
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                KLog.v(TAG, "onConsoleMessage");
+                return super.onConsoleMessage(consoleMessage);
+            }
+        });
+        //TODO for test
+//        ((FrameLayout) findViewById(getView(), R.id.frameLayout_sectionWeb)).addView(webView);
+    }
+
     public void loadNewSection(int webType, String url) {
         KomicaManager.getInstance().clearCache();
         recyclerView.scrollToPosition(0);
@@ -225,19 +340,32 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
             @Override
             public void onResponse(int responseCode, String result) {
                 Document document = Jsoup.parse(result);
-                title = document.getElementsByTag("title").text();
-                notifyTitle();
-                titlePostList.addAll(CrawlerUtils.getPostList(document, url, webType));
-                notifyAdapter();
-                Element pageSwitch = document.getElementById("page_switch");
-                if (null == pageSwitch) {
-                    pageSwitch = document.getElementsByClass("page_switch").first();
-                }
-                if (null != pageSwitch.select("a")) {
-                    pageCount = pageSwitch.select("a").size();
+                if (document.getElementsByTag("moe-video").size() > 0) {
+                    reloadWeb();
                 } else {
-                    pageCount = pageSwitch.getElementsByAttributeValueContaining("class", "link").size();
+                    title = document.getElementsByTag("title").text();
+                    notifyTitle();
+                    titlePostList.addAll(CrawlerUtils.getPostList(document, url, webType));
+                    notifyAdapter();
+                    Element pageSwitch = document.getElementById("page_switch");
+                    if (null == pageSwitch) {
+                        pageSwitch = document.getElementsByClass("page_switch").first();
+                    }
+                    if (null != pageSwitch.select("a")) {
+                        pageCount = pageSwitch.select("a").size();
+                    } else {
+                        pageCount = pageSwitch.getElementsByAttributeValueContaining("class", "link").size();
+                    }
                 }
+            }
+        });
+    }
+
+    private void reloadWeb() {
+        getView().post(new Runnable() {
+            @Override
+            public void run() {
+                webView.loadUrl(url);
             }
         });
     }
