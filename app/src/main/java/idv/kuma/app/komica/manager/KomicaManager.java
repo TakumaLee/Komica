@@ -312,6 +312,7 @@ public class KomicaManager {
             case "素材":
             case "求圖":
                 return WebType.INTEGRATED;
+            case "綜合2":
             case "動畫":
 //            case "螢幕攝":
 //            case "漫畫":
@@ -337,7 +338,7 @@ public class KomicaManager {
             case "手工藝":
             case "圖書":
             case "短片":
-
+            case "短片2":
             case "動作遊戲":
             case "格鬥遊戲":
             case "2D STG":
@@ -419,7 +420,6 @@ public class KomicaManager {
 
             case "Apple":
 
-            case "綜合2":
                 return WebType.NORMAL;
             default:
                 return WebType.WEB;

@@ -1,5 +1,8 @@
 package idv.kuma.app.komica.entity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -72,24 +75,23 @@ public class KPost {
         Element quoteElement = element.getElementsByClass("quote").first();
         Elements moeVideo = quoteElement.getElementsByTag("moe-video");
         if (!moeVideo.isEmpty()) {
-            quoteElement.getElementsByTag("moe-video").first().remove();
-            quoteElement.getElementsByTag("script").first().remove();
             setHasVideo(true);
-            setVideoUrl(moeVideo.first().getElementById("videoLink").attr("href"));
-            setVideoFileName(moeVideo.first().getElementById("videoLink").text());
-            Pattern pattern = Pattern.compile("url\\(\"(.*?)\";");
-            Matcher matcher = pattern.matcher(moeVideo.html());
+            Pattern pattern = Pattern.compile("=.*?(\\[.*?\\]);");
+            Matcher matcher = pattern.matcher(quoteElement.html());
             if (matcher.find()) {
-                setThumbUrl(matcher.group(1));
-                setImageUrl(matcher.group(1));
-            } else {
-                Pattern encodePattern = Pattern.compile("url\\(&quot;(.*?)&quot;");
-                matcher = encodePattern.matcher(moeVideo.html());
-                if (matcher.find()) {
-                    setThumbUrl(matcher.group(1));
-                    setImageUrl(matcher.group(1));
+                try {
+                    JSONArray array = new JSONArray(matcher.group(1));
+                    JSONObject object = array.getJSONObject(0);
+                    setVideoUrl(object.getString("url"));
+                    setVideoFileName(object.getString("title"));
+                    setThumbUrl(object.getString("thumb"));
+                    setImageUrl(object.getString("thumb"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
+            quoteElement.getElementsByTag("moe-video").first().remove();
+            quoteElement.getElementsByTag("script").first().remove();
         }
         setQuote(quoteElement.html());
         Element thumbElement = element.getElementsByTag("img").first();
