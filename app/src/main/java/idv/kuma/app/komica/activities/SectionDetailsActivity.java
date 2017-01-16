@@ -23,4 +23,10 @@ public class SectionDetailsActivity extends BaseOtherActivity {
             getSupportFragmentManager().beginTransaction().add(R.id.activity_section_details, SectionDetailsFragment.newInstance(from, url, title, webType)).commit();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        KomicaManager.getInstance().clearCache();
+    }
 }

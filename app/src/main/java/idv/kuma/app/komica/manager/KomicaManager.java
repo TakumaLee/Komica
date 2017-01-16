@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -21,6 +22,7 @@ import java.util.regex.Pattern;
 
 import idv.kuma.app.komica.BuildConfig;
 import idv.kuma.app.komica.configs.WebUrlFormaterUtils;
+import idv.kuma.app.komica.context.ApplicationContextSingleton;
 import idv.kuma.app.komica.entity.KomicaMenuGroup;
 import idv.kuma.app.komica.entity.KomicaMenuMember;
 import idv.kuma.app.komica.http.NetworkCallback;
@@ -72,6 +74,16 @@ public class KomicaManager {
         if (!switchLogin) {
             initConfig();
         }
+    }
+
+    public void clearCache() {
+        Glide.get(ApplicationContextSingleton.getApplicationContext()).clearMemory();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Glide.get(ApplicationContextSingleton.getApplicationContext()).clearDiskCache();
+            }
+        }).start();
     }
 
     public void registerConfigUpdateListener(OnUpdateConfigListener listener) {
@@ -230,7 +242,7 @@ public class KomicaManager {
     }
 
     public boolean checkVisible(String memberTitle) {
-        if (!switchLogin || !ThirdPartyManager.getInstance().isFacebookLogin()) {
+        if (!switchLogin || !KomicaAccountManager.getInstance().isLogin()) {
             switch (checkWebType(memberTitle)) {
                 case WebType.INTEGRATED:
                 case WebType.NORMAL:
@@ -252,7 +264,7 @@ public class KomicaManager {
                 case "妹系":
                 case "寫真":
                 case "高解析度":
-                    return ThirdPartyManager.getInstance().isFacebookLogin();
+                    return KomicaAccountManager.getInstance().isLogin();
                 default:
                     return true;
             }

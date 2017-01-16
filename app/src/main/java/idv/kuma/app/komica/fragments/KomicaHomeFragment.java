@@ -242,6 +242,14 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
                                 Toast.makeText(getContext(), R.string.com_facebook_loading, Toast.LENGTH_LONG).show();
                                 KomicaManager.getInstance().loadKomicaMenu();
                                 break;
+                            case 1006:
+                                tracker.send(new HitBuilders.EventBuilder()
+                                        .setCategory("01. KomicaMenu")
+                                        .setAction("清除快取")
+                                        .setLabel("清除快取")
+                                        .build());
+                                KomicaManager.getInstance().clearCache();
+                                break;
 //                            case 10:
 //                                try {
 //                                    getPackageManager().getPackageInfo("com.facebook.katana", 0);
@@ -344,6 +352,7 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
         List<IDrawerItem> drawerItemList = new ArrayList<>();
         drawerItemList.add(getColorSetting(new PrimaryDrawerItem().withIdentifier(1001).withName(R.string.home_page).withIcon(R.drawable.ic_home)));
         drawerItemList.add(getColorSetting(new PrimaryDrawerItem().withIdentifier(1005).withName(R.string.refresh_menu).withIcon(R.drawable.ic_loop).withSelectable(false)));
+        drawerItemList.add(getColorSetting(new PrimaryDrawerItem().withIdentifier(1006).withName(R.string.clear_cache).withIcon(R.drawable.ic_clear_cache).withSelectable(false)));
         drawerItemList.add(getColorSetting(new PrimaryDrawerItem().withIdentifier(1002).withName(R.string.sponsor).withIcon(R.drawable.ic_sponsor).withSelectable(false)));
         drawerItemList.add(new DividerDrawerItem());
         drawerItemList.add(new SecondaryDrawerItem().withName(R.string.others).withSelectable(false));

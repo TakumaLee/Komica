@@ -45,6 +45,7 @@ import idv.kuma.app.komica.fragments.base.BaseFragment;
 import idv.kuma.app.komica.http.NetworkCallback;
 import idv.kuma.app.komica.http.OkHttpClientConnect;
 import idv.kuma.app.komica.manager.FacebookManager;
+import idv.kuma.app.komica.manager.KomicaAccountManager;
 import idv.kuma.app.komica.manager.KomicaManager;
 import idv.kuma.app.komica.manager.ThirdPartyManager;
 import idv.kuma.app.komica.utils.CrawlerUtils;
@@ -174,6 +175,8 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
     }
 
     public void loadNewSection(int webType, String url) {
+        KomicaManager.getInstance().clearCache();
+        recyclerView.scrollToPosition(0);
         this.webType = webType;
         this.url = url;
         titlePostList.clear();
@@ -340,7 +343,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                     startActivity(intent);
                 }
             });
-            if (KomicaManager.getInstance().isSwitchLogin() && ThirdPartyManager.getInstance().isFacebookLogin()) {
+            if (KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin()) {
                 holder.postThumbImageView.setVisibility(View.VISIBLE);
                 holder.postImgErrMsgTextView.setVisibility(View.GONE);
                 Glide.with(getContext()).load(head.getImageUrl()).into(holder.postThumbImageView);
@@ -403,8 +406,8 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
             moreBtn = findViewById(itemView, R.id.button_section_preview_more);
             replyLinearLayout = findViewById(itemView, R.id.linearLayout_section_preview_replyContainer);
 
-            postThumbImageView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && ThirdPartyManager.getInstance().isFacebookLogin() ? View.VISIBLE : View.GONE);
-            postImgErrMsgTextView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && ThirdPartyManager.getInstance().isFacebookLogin() ? View.GONE : View.VISIBLE);
+            postThumbImageView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin() ? View.VISIBLE : View.GONE);
+            postImgErrMsgTextView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin() ? View.GONE : View.VISIBLE);
             postImgErrMsgTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

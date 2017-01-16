@@ -12,6 +12,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import idv.kuma.app.komica.KomicaApplication;
 import idv.kuma.app.komica.entity.MyAccount;
 import idv.kuma.app.komica.manager.KomicaAccountManager;
+import idv.kuma.app.komica.manager.KomicaManager;
 import idv.kuma.app.komica.manager.ThirdPartyManager;
 
 
@@ -44,6 +45,12 @@ public abstract class KomicaActivityBase extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         GoogleAnalytics.getInstance(this).reportActivityStop(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        KomicaManager.getInstance().clearCache();
     }
 
     @Override

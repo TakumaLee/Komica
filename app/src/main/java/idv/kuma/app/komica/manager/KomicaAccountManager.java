@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import idv.kuma.app.komica.BuildConfig;
 import idv.kuma.app.komica.entity.MyAccount;
 
 /**
@@ -83,7 +84,7 @@ public class KomicaAccountManager {
     }
 
     public boolean isLogin() {
-        return ThirdPartyManager.getInstance().isFacebookLogin();
+        return BuildConfig.DEBUG || ThirdPartyManager.getInstance().isFacebookLogin();
     }
 
 }

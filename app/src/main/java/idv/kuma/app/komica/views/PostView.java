@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 
 import idv.kuma.app.komica.R;
 import idv.kuma.app.komica.entity.KPost;
+import idv.kuma.app.komica.manager.KomicaAccountManager;
 import idv.kuma.app.komica.manager.KomicaManager;
 import idv.kuma.app.komica.manager.ThirdPartyManager;
 
@@ -55,8 +56,8 @@ public class PostView extends LinearLayout {
         postQuoteTextView = (TextView) findViewById(R.id.textView_section_post_quote);
         postImgErrMsgTextView = (TextView) findViewById(R.id.textView_section_post_message);
         postThumbImageView = (ImageView) findViewById(R.id.imageView_section_post_thumb);
-        postThumbImageView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && ThirdPartyManager.getInstance().isFacebookLogin() ? View.VISIBLE : View.GONE);
-        postImgErrMsgTextView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && ThirdPartyManager.getInstance().isFacebookLogin() ? View.GONE : View.VISIBLE);
+        postThumbImageView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin() ? View.VISIBLE : View.GONE);
+        postImgErrMsgTextView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin() ? View.GONE : View.VISIBLE);
         postImgErrMsgTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
