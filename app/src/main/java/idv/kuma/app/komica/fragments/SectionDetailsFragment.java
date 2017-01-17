@@ -376,9 +376,9 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                 postList.addAll(head.getReplyList());
                 notifyAdapter();
                 hasAnotherPage = !document.getElementsByClass("page_switch").isEmpty() && page != pageCount - 1;
-                adapter.setLoadMoreEnable(hasAnotherPage);
                 if (hasAnotherPage) {
                     pageCount = document.getElementsByClass("page_switch").first().getElementsByClass("link").size() + 1;
+                    adapter.setLoadMoreEnable(page < pageCount - 1);
                 }
             }
         });

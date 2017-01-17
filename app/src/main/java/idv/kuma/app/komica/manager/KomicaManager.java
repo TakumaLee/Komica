@@ -276,8 +276,9 @@ public class KomicaManager {
 //            case "影視":
             case "綜合":
             case "氣象":
-            case "歡樂惡搞":
             case "模型":
+            case "玩偶":
+            case "歡樂惡搞":
             case "蘿蔔":
             case "攝影":
             case "軍武":
@@ -314,10 +315,11 @@ public class KomicaManager {
                 return WebType.INTEGRATED;
             case "綜合2":
             case "動畫":
-//            case "螢幕攝":
-//            case "漫畫":
+            case "螢幕攝":
+            case "漫畫":
             case "新番捏他":
             case "新番實況":
+            case "車":
             case "綜合學術":
             case "職業":
             case "財經":
