@@ -79,7 +79,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
     private KLinearLayoutManager linearLayoutManager;
     private SectionPreviewAdapter adapter;
 
-    private int page = 1;
+    private int page = 0;
     private int pageCount = 1;
 
     private boolean isPosting = false;
@@ -165,7 +165,6 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
             public void onLoadMore() {
                 url = url.substring(0, url.lastIndexOf("/") + 1) + page + ".htm";
                 loadSection();
-                page++;
             }
         });
 
@@ -177,6 +176,8 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
     }
 
     public void loadNewSection(int webType, String url) {
+        page = 0;
+        adapter.setLoadMoreEnable(true);
         KomicaManager.getInstance().clearCache();
         recyclerView.scrollToPosition(0);
         this.webType = webType;
@@ -208,9 +209,9 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                 Document document = Jsoup.parse(result);
                 title = document.getElementsByTag("title").text();
                 notifyTitle();
-                int previousSize = titlePostList.size();
+
                 titlePostList.addAll(CrawlerUtils.getIntegratedPostList(document, url));
-                notifyAdapter(previousSize);
+                notifyAdapter();
 
                 pageCount = document.getElementsByAttributeValue("border", "1").first().select("a").size();
             }
@@ -229,9 +230,8 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                 Document document = Jsoup.parse(result);
                 title = document.getElementsByTag("title").text();
                 notifyTitle();
-                int previousSize = titlePostList.size();
                 titlePostList.addAll(CrawlerUtils.getPostList(document, url, webType));
-                notifyAdapter(previousSize);
+                notifyAdapter();
                 Element pageSwitch = document.getElementById("page_switch");
                 if (null == pageSwitch) {
                     pageSwitch = document.getElementsByClass("page_switch").first();
@@ -258,12 +258,13 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         }
     }
 
-    private void notifyAdapter(final int previousSize) {
+    private void notifyAdapter() {
         if (null != getActivity()) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    adapter.notifyItemRangeInserted(previousSize, titlePostList.size());
+                    adapter.notifyDataSetChanged();
+                    page++;
                     if (page > pageCount) {
                         adapter.setLoadMoreEnable(false);
                     }
