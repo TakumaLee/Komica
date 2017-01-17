@@ -2,9 +2,18 @@ package idv.kuma.app.komica.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
 import android.preference.PreferenceManager;
 
-import idv.kuma.app.komica.BuildConfig;
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+
 import idv.kuma.app.komica.entity.MyAccount;
 
 /**
@@ -14,6 +23,7 @@ public class KomicaAccountManager {
     private static final String TAG = KomicaAccountManager.class.getSimpleName();
 
     private static KomicaAccountManager INSTANCE = null;
+    WeakReference<Context> contextWeakReference;
 
     private static final String KOMICA_ACCOUNT_FB_ID = "komica_account_fb_id";
     private static final String KOMICA_ACCOUNT_USERNAME = "komica_account_username";
@@ -28,13 +38,17 @@ public class KomicaAccountManager {
     private SharedPreferences.Editor editor;
     private SharedPreferences noClearSharedPreferences;
 
+    private HandlerThread handlerThread = new HandlerThread(TAG);
+    private Handler handler;
+
     public synchronized static KomicaAccountManager getInstance() {
         return INSTANCE;
     }
 
     public KomicaAccountManager(Context context) {
+        contextWeakReference = new WeakReference<Context>(context);
         myAccount = new MyAccount();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(contextWeakReference.get());
         editor = sharedPreferences.edit();
         myAccount.setFbId(sharedPreferences.getString(KOMICA_ACCOUNT_FB_ID, ""));
         myAccount.setUsername(sharedPreferences.getString(KOMICA_ACCOUNT_USERNAME, "Guest"));
@@ -42,8 +56,30 @@ public class KomicaAccountManager {
         myAccount.setHeaderPic(sharedPreferences.getString(KOMICA_ACCOUNT_PHOTO, ""));
         myAccount.setCoverPic(sharedPreferences.getString(KOMICA_ACCOUNT_COVER, ""));
 
-        noClearSharedPreferences = context.getSharedPreferences("NO_CLEAR", Context.MODE_PRIVATE);
+        noClearSharedPreferences = contextWeakReference.get().getSharedPreferences("NO_CLEAR", Context.MODE_PRIVATE);
         KomicaManager.getInstance().enableSwitchLogin(noClearSharedPreferences.getBoolean(PREFERENCE_SWITCH_LOGIN, false));
+
+        handlerThread.start();
+        handler = new Handler(handlerThread.getLooper()) {
+
+            @Override
+            public void handleMessage(Message msg) {
+                try {
+                    myAccount.setAdId(AdvertisingIdClient.getAdvertisingIdInfo(contextWeakReference.get()).getId());
+                    FirebaseManager.getInstance().updateUserPushData();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } finally {
+                    handlerThread.quit();
+                    handlerThread.interrupt();
+                }
+            }
+        };
+        handler.sendEmptyMessage(0);
     }
 
     public static void initialize(Context context) {
@@ -84,7 +120,7 @@ public class KomicaAccountManager {
     }
 
     public boolean isLogin() {
-        return BuildConfig.DEBUG || ThirdPartyManager.getInstance().isFacebookLogin();
+        return ThirdPartyManager.getInstance().isFacebookLogin();
     }
 
 }

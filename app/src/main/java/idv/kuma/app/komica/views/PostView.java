@@ -97,10 +97,12 @@ public class PostView extends LinearLayout {
         } else {
             postThumbImageView.setVisibility(GONE);
         }
+        postThumbImageView.setVisibility(KomicaAccountManager.getInstance().isLogin() ? VISIBLE : GONE);
         if (post.getPostImageList().size() > 1) {
             postImgListContainer.removeAllViews();
             for (KPostImage postImage : post.getPostImageList()) {
                 final ImageView imageView = new ImageView(getContext());
+                imageView.setVisibility(KomicaAccountManager.getInstance().isLogin() ? VISIBLE : GONE);
                 imageView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 imageView.setAdjustViewBounds(true);
                 if (postImage.getImageUrl().contains("gif")) {

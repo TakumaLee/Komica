@@ -135,6 +135,11 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
+                tracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("04. Menu選項追蹤")
+                        .setAction("更新頁面資訊_" + title)
+                        .setLabel("更新頁面資訊_" + title)
+                        .build());
                 titlePostList.clear();
                 recyclerView.scrollToPosition(0);
                 url = indexUrl;
@@ -142,6 +147,11 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                 loadSection();
                 break;
             case R.id.action_browser:
+                tracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("04. Menu選項追蹤")
+                        .setLabel("使用瀏覽器_" + title)
+                        .setAction("使用瀏覽器_" + title)
+                        .build());
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                 builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.primary));
                 CustomTabsIntent customTabsIntent = builder.build();

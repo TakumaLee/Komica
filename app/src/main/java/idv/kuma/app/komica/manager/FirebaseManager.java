@@ -76,8 +76,12 @@ public class FirebaseManager {
     }
 
     public void updateUserPushData() {
-        KLog.v(TAG, "update user push data.");
-        postUserPushData();
+        if (KomicaAccountManager.getInstance().getMyAccount().getAdId() != null) {
+            KLog.v(TAG, "update user push data.");
+            postUserPushData();
+        } else {
+            KLog.v(TAG, "User push data cannot get adId.");
+        }
     }
 
     private void postUserPushData() {
@@ -92,23 +96,36 @@ public class FirebaseManager {
 
         final PushDevice device = new PushDevice(FirebaseInstanceId.getInstance().getToken());
         final MyAccount myAccount = KomicaAccountManager.getInstance().getMyAccount();
-        databaseRefUsers.child(PushUser.DATABASE_USERS).child(myAccount.getFbId()).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseRefUsers.child(PushUser.DATABASE_USERS).child(myAccount.getAdId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PushUser pushUser = dataSnapshot.getValue(PushUser.class);
                 if (pushUser == null) {
                     pushUser = new PushUser();
+                    if (null != myAccount) {
+                        pushUser.setName(myAccount.getUsername());
+                        pushUser.setFbId(myAccount.getFbId());
+                        pushUser.setPoints(myAccount.getPoints());
+                    }
+                } else {
+                    myAccount.setPoints(pushUser.getPoints());
+                    KomicaAccountManager.getInstance().setMyAccount(myAccount);
+                    KomicaAccountManager.getInstance().savedMyAccout();
                 }
+                boolean hasDevice = false;
                 for (PushDevice pushDevice : pushUser.getDeviceList()) {
                     if (pushDevice.getToken().equals(device.getToken())) {
-                        return;
+                        hasDevice = true;
+                        break;
                     }
-                    if (pushDevice.getDevice() != null && pushDevice.getDevice().equals("android")) {
-                        return;
-                    }
+//                    if (pushDevice.getDevice() != null && pushDevice.getDevice().equals("android")) {
+//                        return;
+//                    }
                 }
-                pushUser.addDeivce(device);
-                databaseRefUsers.child(PushUser.DATABASE_USERS).child(String.valueOf(myAccount.getFbId())).setValue(pushUser);
+                if (!hasDevice) {
+                    pushUser.addDeivce(device);
+                }
+                databaseRefUsers.child(PushUser.DATABASE_USERS).child(myAccount.getAdId()).setValue(pushUser);
             }
 
             @Override
