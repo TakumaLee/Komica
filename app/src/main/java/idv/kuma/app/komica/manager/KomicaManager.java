@@ -320,7 +320,11 @@ public class KomicaManager {
             case "新番捏他":
             case "新番實況":
             case "車":
+            case "COSPLAY":
             case "綜合學術":
+            case "數學":
+            case "歷史":
+            case "地理":
             case "職業":
             case "財經":
             case "生活消費":
@@ -329,16 +333,26 @@ public class KomicaManager {
             case "藝術":
             case "生存遊戲":
             case "燃":
+            case "笑話":
             case "猜謎":
             case "故事接龍":
             case "大自然":
             case "星座命理":
+            case "New Age":
             case "戀愛":
             case "超常現象":
             case "流言終結":
+            case "政治":
             case "旅遊":
+            case "耳機":
+            case "手機":
+            case "美容":
+            case "髮型":
+            case "家政":
             case "手工藝":
             case "圖書":
+            case "讀書筆記":
+
             case "短片":
             case "短片2":
             case "動作遊戲":
@@ -355,33 +369,65 @@ public class KomicaManager {
 
             case "麻將":
             case "遊戲設計":
+            case "RPG Maker":
+            case "STEAM":
 
+            case "CosmicBreak":
+            case "Elsword":
+            case "DNF":
+            case "DOTA2":
             case "FEZ":
+            case "GW2":
             case "GTA":
+            case "LOL":
+            case "Minecraft":
+            case "PAD":
+            case "PSO2":
+            case "SDGO":
+            case "StarCraft":
+            case "T7S":
             case "TOS":
+            case "白貓Project":
+            case "流亡黯道 PoE":
+            case "新瑪奇英雄傳":
             case "戰車世界":
-            case "戰車風雲":
-            case "戰車雷霆":
+            case "戰地風雲":
+            case "戰爭雷霆":
             case "戰機世界":
             case "戰艦世界":
             case "艦隊收藏":
             case "魔物獵人":
-//            case "Minecraft":
+            case "爐石戰記":
+            case "星空幻想":
             case "葉鍵":
             case "涼宮":
+            case "反逆":
+            case "奈葉":
+            case "廢怯少女":
+            case "禁書":
+            case "遊戲王":
+            case "女王之刃":
+            case "Digimon":
             case "Homestuck":
             case "IM@S":
+            case "LoveLive!":
             case "Pokemon":
             case "Pretty Cure":
+            case "Saki":
             case "Strike Witches":
+            case "VOCALOID":
+
+            case "Capcom":
             case "GAINAX":
             case "KOEI":
             case "SQEX":
             case "TYPE-MOON":
-//            case "京都動畫":
+            case "京都動畫":
             case "聲優綜合":
             case "釘宮":
-//            case "田村/堀江/水樹":
+            case "田村/堀江/水樹":
+            case "AKB48":
+
             case "角色配對":
             case "催淚":
             case "性轉換":
@@ -398,9 +444,12 @@ public class KomicaManager {
             case "機娘":
             case "返信娘":
             case "Lolita Fashion":
+            case "傲嬌":
 
             case "塗鴉工廠":
+            case "MMD":
             case "同人2":
+            case "SOHO":
             case "宣傳":
 
             case "酒":
@@ -419,7 +468,7 @@ public class KomicaManager {
 
             case "Pixmicat!":
 //            case "Joyful Note":
-
+            case "網頁設計":
             case "Apple":
 
                 return WebType.NORMAL;

@@ -91,7 +91,7 @@ public class PostView extends LinearLayout {
         } else {
             postQuoteTextView.setText(Html.fromHtml(post.getQuote()));
         }
-        if (post.hasImage() || post.hasVideo() || post.getPostImageList().size() > 0) {
+        if ((post.hasImage() || post.hasVideo()) && post.getPostImageList().size() > 0) {
             postThumbImageView.setVisibility(VISIBLE);
             Glide.with(getContext()).load(post.getPostImageList().get(0).getImageUrl()).into(postThumbImageView);
         } else {

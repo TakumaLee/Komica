@@ -141,6 +141,12 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                 page = 1;
                 loadSection();
                 break;
+            case R.id.action_browser:
+                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.primary));
+                CustomTabsIntent customTabsIntent = builder.build();
+                customTabsIntent.launchUrl(getContext(), Uri.parse(url));
+                break;
             default:
                 break;
         }
@@ -235,6 +241,9 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                 Element pageSwitch = document.getElementById("page_switch");
                 if (null == pageSwitch) {
                     pageSwitch = document.getElementsByClass("page_switch").first();
+                }
+                if (null == pageSwitch) {
+                    pageSwitch = document.getElementById("page_switch");
                 }
                 if (null != pageSwitch.select("a")) {
                     pageCount = pageSwitch.select("a").size();
@@ -363,7 +372,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                     startActivity(intent);
                 }
             });
-            if (head.hasVideo() || head.hasImage()) {
+            if ((head.hasVideo() || head.hasImage()) && head.getPostImageList().size() > 0) {
                 if (KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin()) {
                     holder.postThumbImageView.setVisibility(View.VISIBLE);
                     holder.postImgErrMsgTextView.setVisibility(View.GONE);
