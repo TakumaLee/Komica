@@ -37,6 +37,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import java.util.ArrayList;
 import java.util.List;
 
+import idv.kuma.app.komica.BuildConfig;
 import idv.kuma.app.komica.R;
 import idv.kuma.app.komica.activities.base.KomicaActivityBase;
 import idv.kuma.app.komica.entity.KomicaMenuGroup;
@@ -242,6 +243,14 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
                                 Toast.makeText(getContext(), R.string.com_facebook_loading, Toast.LENGTH_LONG).show();
                                 KomicaManager.getInstance().loadKomicaMenu();
                                 break;
+                            case 1006:
+                                tracker.send(new HitBuilders.EventBuilder()
+                                        .setCategory("01. KomicaMenu")
+                                        .setAction("清除快取")
+                                        .setLabel("清除快取")
+                                        .build());
+                                KomicaManager.getInstance().clearCache();
+                                break;
 //                            case 10:
 //                                try {
 //                                    getPackageManager().getPackageInfo("com.facebook.katana", 0);
@@ -258,8 +267,8 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
                                     if (clickMember != null) {
                                         tracker.send(new HitBuilders.EventBuilder()
                                                 .setCategory("01. KomicaMenu")
+                                                .setAction("Click_" + clickMember.getTitle())
                                                 .setLabel("Title_" + clickMember.getTitle())
-                                                .setAction("Click")
                                                 .build());
                                         BaseFragment tmpFragment = getWebFormatFragment(clickMember);
                                         if (contentFragment == null || !contentFragment.isAdded()) {
@@ -344,6 +353,7 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
         List<IDrawerItem> drawerItemList = new ArrayList<>();
         drawerItemList.add(getColorSetting(new PrimaryDrawerItem().withIdentifier(1001).withName(R.string.home_page).withIcon(R.drawable.ic_home)));
         drawerItemList.add(getColorSetting(new PrimaryDrawerItem().withIdentifier(1005).withName(R.string.refresh_menu).withIcon(R.drawable.ic_loop).withSelectable(false)));
+        drawerItemList.add(getColorSetting(new PrimaryDrawerItem().withIdentifier(1006).withName(R.string.clear_cache).withIcon(R.drawable.ic_clear_cache).withSelectable(false)));
         drawerItemList.add(getColorSetting(new PrimaryDrawerItem().withIdentifier(1002).withName(R.string.sponsor).withIcon(R.drawable.ic_sponsor).withSelectable(false)));
         drawerItemList.add(new DividerDrawerItem());
         drawerItemList.add(new SecondaryDrawerItem().withName(R.string.others).withSelectable(false));
@@ -396,7 +406,6 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
     }
 
     private void logout() {
-        ThirdPartyManager.getInstance().logoutFacebook();
         KomicaAccountManager.getInstance().logout();
         checkFacebookLogin();
     }
@@ -411,13 +420,17 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
     }
 
     private void refreshLoginItem() {
+        KLog.v(TAG, "isLogin: " + KomicaAccountManager.getInstance().isLogin());
         loginItem
                 .withIdentifier(-1)
                 .withName(KomicaAccountManager.getInstance().isLogin() ? R.string.logout_facebook : R.string.login_facebook)
                 .withTextColor(KomicaAccountManager.getInstance().isLogin() ? Color.GRAY : Color.BLUE)
                 .withIcon(CommunityMaterial.Icon.cmd_logout);
         drawer.updateStickyFooterItemAtPosition(loginItem, 1);
-        drawer.removeStickyFooterItemAtPosition(1);
+        drawer.getFooterAdapter().notifyDataSetChanged();
+        if (!BuildConfig.DEBUG && KomicaAccountManager.getInstance().isLogin()) {
+            drawer.removeStickyFooterItemAtPosition(1);
+        }
     }
 
     private void refreshAccountPhoto() {

@@ -40,6 +40,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
 
+        <include
+            android:id="@+id/linearLayout_section_preview_imgList_container"
+            layout="@layout/layout_section_post_img_list" />
+
         <TextView
             android:id="@+id/textView_section_post_quote"
             android:layout_width="match_parent"

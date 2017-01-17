@@ -7,6 +7,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
+import idv.kuma.app.komica.entity.KPostImage;
 import idv.kuma.app.komica.entity.KReply;
 import idv.kuma.app.komica.entity.KTitle;
 import idv.kuma.app.komica.manager.KomicaManager;
@@ -87,10 +88,9 @@ public class CrawlerUtils {
                     if (webmElements != null && webmElements.size() > 0) {
                         head.setVideoUrl(element.attr("href"));
                         head.setHasVideo(true);
-                        head.setImageUrl(element.getElementsByTag("img").attr("src"));
+                        head.addPostImage(new KPostImage(element.getElementsByTag("img").attr("src")));
                     } else {
-                        head.setImageUrl(element.attr("href"));
-                        head.setImageFileName(element.text());
+                        head.addPostImage(new KPostImage(element.attr("href"), element.text()));
                     }
                     head.setHasImage(true);
                 }
@@ -129,8 +129,7 @@ public class CrawlerUtils {
                 reply.setName(titleName.get(1).text());
                 reply.setQuote(element.getElementsByTag("blockquote").html());
                 if (element.getElementsByTag("a").size() > 1) {
-                    reply.setImageUrl(element.getElementsByTag("a").get(1).attr("href"));
-                    reply.setImageFileName(element.getElementsByTag("a").get(1).text());
+                    reply.addPostImage(new KPostImage(element.getElementsByTag("a").get(1).attr("href"), element.getElementsByTag("a").get(1).text()));
                     reply.setHasImage(true);
                 }
                 replyList.add(reply);

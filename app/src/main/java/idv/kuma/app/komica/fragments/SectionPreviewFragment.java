@@ -1,6 +1,8 @@
 package idv.kuma.app.komica.fragments;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -45,6 +47,7 @@ import idv.kuma.app.komica.fragments.base.BaseFragment;
 import idv.kuma.app.komica.http.NetworkCallback;
 import idv.kuma.app.komica.http.OkHttpClientConnect;
 import idv.kuma.app.komica.manager.FacebookManager;
+import idv.kuma.app.komica.manager.KomicaAccountManager;
 import idv.kuma.app.komica.manager.KomicaManager;
 import idv.kuma.app.komica.manager.ThirdPartyManager;
 import idv.kuma.app.komica.utils.CrawlerUtils;
@@ -56,6 +59,7 @@ import idv.kuma.app.komica.widgets.MutableLinkMovementMethod;
 import tw.showang.recycleradaterbase.LoadMoreListener;
 import tw.showang.recycleradaterbase.RecyclerAdapterBase;
 
+import static android.content.Context.ACTIVITY_SERVICE;
 import static android.text.Html.FROM_HTML_MODE_LEGACY;
 
 /**
@@ -75,8 +79,10 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
     private KLinearLayoutManager linearLayoutManager;
     private SectionPreviewAdapter adapter;
 
-    private int page = 1;
+    private int page = 0;
     private int pageCount = 1;
+
+    private boolean isPosting = false;
 
     private List<KTitle> titlePostList = Collections.emptyList();
 
@@ -129,11 +135,27 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
+                tracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("04. Menu選項追蹤")
+                        .setAction("更新頁面資訊_" + title)
+                        .setLabel("更新頁面資訊_" + title)
+                        .build());
                 titlePostList.clear();
                 recyclerView.scrollToPosition(0);
                 url = indexUrl;
                 page = 1;
                 loadSection();
+                break;
+            case R.id.action_browser:
+                tracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("04. Menu選項追蹤")
+                        .setLabel("使用瀏覽器_" + title)
+                        .setAction("使用瀏覽器_" + title)
+                        .build());
+                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.primary));
+                CustomTabsIntent customTabsIntent = builder.build();
+                customTabsIntent.launchUrl(getContext(), Uri.parse(url));
                 break;
             default:
                 break;
@@ -159,10 +181,6 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
             public void onLoadMore() {
                 url = url.substring(0, url.lastIndexOf("/") + 1) + page + ".htm";
                 loadSection();
-                page++;
-                if (page > pageCount) {
-                    adapter.setLoadMoreEnable(false);
-                }
             }
         });
 
@@ -174,6 +192,10 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
     }
 
     public void loadNewSection(int webType, String url) {
+        page = 0;
+        adapter.setLoadMoreEnable(true);
+        KomicaManager.getInstance().clearCache();
+        recyclerView.scrollToPosition(0);
         this.webType = webType;
         this.url = url;
         titlePostList.clear();
@@ -230,6 +252,9 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                 if (null == pageSwitch) {
                     pageSwitch = document.getElementsByClass("page_switch").first();
                 }
+                if (null == pageSwitch) {
+                    pageSwitch = document.getElementById("page_switch");
+                }
                 if (null != pageSwitch.select("a")) {
                     pageCount = pageSwitch.select("a").size();
                 } else {
@@ -258,6 +283,10 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                 @Override
                 public void run() {
                     adapter.notifyDataSetChanged();
+                    page++;
+                    if (page > pageCount) {
+                        adapter.setLoadMoreEnable(false);
+                    }
                 }
             });
         }
@@ -304,6 +333,19 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
 
         @Override
         protected void onBindItemViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+            ActivityManager activityManager =  (ActivityManager) getContext().getSystemService(ACTIVITY_SERVICE);
+            ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+            activityManager.getMemoryInfo(memoryInfo);
+            double max = Runtime.getRuntime().maxMemory() / 1048576L;
+            double free = Runtime.getRuntime().freeMemory() / 1048576L;
+            double total = Runtime.getRuntime().totalMemory() / 1048576L;
+            KLog.i(TAG, "memory max: " + max);
+            KLog.i(TAG, "memory free: " + free);
+            KLog.i(TAG, "memory total: " + total);
+            if (free + total > max / 2) {
+                KLog.w(TAG, "Dangerous for OOM, Clear Memory.");
+                System.gc();
+            }
             SectionPreViewHolder holder = (SectionPreViewHolder) viewHolder;
             KLog.v(TAG, String.valueOf(position));
             final KTitle head = titleList.get(position);
@@ -340,13 +382,18 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                     startActivity(intent);
                 }
             });
-            if (KomicaManager.getInstance().isSwitchLogin() && ThirdPartyManager.getInstance().isFacebookLogin()) {
-                holder.postThumbImageView.setVisibility(View.VISIBLE);
-                holder.postImgErrMsgTextView.setVisibility(View.GONE);
-                Glide.with(getContext()).load(head.getImageUrl()).into(holder.postThumbImageView);
+            if ((head.hasVideo() || head.hasImage()) && head.getPostImageList().size() > 0) {
+                if (KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin()) {
+                    holder.postThumbImageView.setVisibility(View.VISIBLE);
+                    holder.postImgErrMsgTextView.setVisibility(View.GONE);
+                    Glide.with(getContext()).load(head.getPostImageList().get(0).getImageUrl()).into(holder.postThumbImageView);
+                } else {
+                    holder.postThumbImageView.setVisibility(View.GONE);
+                    holder.postImgErrMsgTextView.setVisibility(View.VISIBLE);
+                }
             } else {
                 holder.postThumbImageView.setVisibility(View.GONE);
-                holder.postImgErrMsgTextView.setVisibility(View.VISIBLE);
+                holder.postImgErrMsgTextView.setVisibility(View.GONE);
             }
             if (titleList.get(position).getReplyList().size() > 0) {
                 holder.replyLinearLayout.setVisibility(View.VISIBLE);
@@ -386,6 +433,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         TextView postQuoteTextView;
         ImageView postThumbImageView;
         TextView postImgErrMsgTextView;
+        LinearLayout postImgListContainer;
 
         TextView postWarnTextView;
         Button moreBtn;
@@ -393,6 +441,8 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
 
         public SectionPreViewHolder(View itemView) {
             super(itemView);
+            LayoutInflater inflate = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            postImgListContainer = (LinearLayout) inflate.inflate(R.layout.layout_section_post_img_list, (ViewGroup) itemView);
             postIdTextView = findViewById(itemView, R.id.textView_section_post_id);
             postTitleTextView = findViewById(itemView, R.id.textView_section_post_title);
             postQuoteTextView = findViewById(itemView, R.id.textView_section_post_quote);
@@ -403,8 +453,8 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
             moreBtn = findViewById(itemView, R.id.button_section_preview_more);
             replyLinearLayout = findViewById(itemView, R.id.linearLayout_section_preview_replyContainer);
 
-            postThumbImageView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && ThirdPartyManager.getInstance().isFacebookLogin() ? View.VISIBLE : View.GONE);
-            postImgErrMsgTextView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && ThirdPartyManager.getInstance().isFacebookLogin() ? View.GONE : View.VISIBLE);
+            postThumbImageView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin() ? View.VISIBLE : View.GONE);
+            postImgErrMsgTextView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin() ? View.GONE : View.VISIBLE);
             postImgErrMsgTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

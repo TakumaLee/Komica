@@ -95,6 +95,7 @@ public class ThirdPartyManager {
     }
 
     protected void logout() {
+        LoginManager.getInstance().logOut();
         for (FacebookManager.OnLogoutListener listener : onLogoutListeners) {
             listener.onLogout();
         }
@@ -126,12 +127,12 @@ public class ThirdPartyManager {
                             if (object.has("cover")) {
                                 myAccount.setCoverPic(object.getJSONObject("cover").getString("source"));
                             }
-//                            if (object.has("birthday")) {
-//                                myAccount.setBirthday(object.getString("birthday"));
-//                            }
-//                            if (object.has("gender")) {
-//                                myAccount.setGender(object.getString("gender"));
-//                            }
+                            if (object.has("birthday")) {
+                                myAccount.setBirthday(object.getString("birthday"));
+                            }
+                            if (object.has("gender")) {
+                                myAccount.setGenderStr(object.getString("gender"));
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } finally {
