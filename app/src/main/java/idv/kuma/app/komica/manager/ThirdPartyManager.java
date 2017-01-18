@@ -138,6 +138,7 @@ public class ThirdPartyManager {
                         } finally {
                             KomicaAccountManager.getInstance().setMyAccount(myAccount);
                             KomicaAccountManager.getInstance().savedMyAccout();
+                            FirebaseManager.getInstance().updateUserPushData();
                             if (null != onGetProfileListeners) {
                                 for (FacebookManager.OnGetProfileListener listener : onGetProfileListeners) {
                                     listener.onGetProfile();
