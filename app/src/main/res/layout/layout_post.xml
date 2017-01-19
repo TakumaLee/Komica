@@ -36,6 +36,12 @@
         android:hint="カテゴリ(複数のカテゴリの間に「,」を入れて入力します)"
         android:textSize="14sp"/>
 
+    <android.lib.recaptcha.ReCaptcha
+        android:id="@+id/recaptcha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerInside" />
+
     <android.support.design.widget.TextInputEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

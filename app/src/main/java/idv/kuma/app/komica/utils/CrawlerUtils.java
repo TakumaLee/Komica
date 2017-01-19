@@ -82,7 +82,9 @@ public class CrawlerUtils {
                 if (head != null && ("返信".equals(element.text()) || "Reply".equals(element.text()))) {
                     head.setDetailLink(url.substring(0, url.lastIndexOf("/") + 1) + element.attr("href"));
                 } else if (!element.hasClass("del")) {
-                    head = new KTitle();
+                    if (head == null) {
+                        head = new KTitle();
+                    }
                     Elements webmElements = element.getElementsByAttributeValueContaining("onclick", "expandWebm");
                     if (webmElements != null && webmElements.size() > 0) {
                         head.setVideoUrl(element.attr("href"));
@@ -97,9 +99,10 @@ public class CrawlerUtils {
             }
             if ("input".equals(element.tagName())) {
                 String idName = element.attr("name");
-                if (null != head) {
-                    head.setId(idName);
+                if (null == head) {
+                    head = new KTitle();
                 }
+                head.setId(idName);
             }
             if (head != null && "font".equals(element.tagName())) {
                 String size = element.attr("size");
