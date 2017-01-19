@@ -1,5 +1,6 @@
 package idv.kuma.app.komica.fragments;
 
+import android.lib.recaptcha.ReCaptcha;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -157,7 +158,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                                     switch (webType) {
                                         case KomicaManager.WebType.INTEGRATED:
                                             String submitStr = "javascript:" + "document.getElementsByTagName('form')[0].submit();";
-                                            String commentStr = "javascript:" + "document.getElementsByTagName('textarea')[0].value='" + commentEditText.getText().toString().replace("\n", "<br/>") + "';";
+                                            String commentStr = "javascript:" + "document.getElementsByTagName('textarea')[0].value='" + commentEditText.getText().toString().replaceAll("/\\n|\\r\\n/g","<br />") + "';";
                                             String checkStr = "javascript:" + "document.getElementById('recaptcha-anchor').setAttribute('aria-checked', true);";
                                             webView.loadUrl(commentStr + checkStr + submitStr);
                                             break;
@@ -228,22 +229,22 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
             }
         });
 
-        switch (webType) {
-            case KomicaManager.WebType.INTEGRATED:
-                addPostFab.setVisibility(View.GONE);
-                break;
-            case KomicaManager.WebType.NORMAL:
-            default:
-                addPostFab.setVisibility(View.VISIBLE);
-                break;
-        }
+//        switch (webType) {
+//            case KomicaManager.WebType.INTEGRATED:
+//                addPostFab.setVisibility(View.GONE);
+//                break;
+//            case KomicaManager.WebType.NORMAL:
+//            default:
+//                addPostFab.setVisibility(View.VISIBLE);
+//                break;
+//        }
 
         getActivity().setTitle(title);
     }
 
     private void initWebView() {
         webView = new WebView(getContext());
-        webView.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
+//        webView.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
         webView.getSettings().setJavaScriptEnabled(true);
         webView.addJavascriptInterface(new JSInterface(new JSInterface.OnCallListener() {
             @Override
@@ -264,10 +265,34 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                     loadSection();
                 } else {
                     Document frameDom = Jsoup.parse(result);
-                    String checkScriptUrl = frameDom.getElementsByTag("iframe").attr("src");
-                    KLog.v(TAG, checkScriptUrl);
+                    if (!frameDom.getElementsByClass("g-recaptcha").isEmpty()) {
+//                        Element element = frameDom.getElementsByTag("form").first();
+//                        Element recaptchaElem = frameDom.getElementsByClass("g-recaptcha").first();
+//                        return;
+                    }
+////                    formElem.removeClass("container");
+//                    if (formElem.getElementsByTag("form").size() > 1) {
+//                        formElem.getElementsByTag("form").get(1).remove();
+//                    }
+//                    final Element element = frameDom.getElementsByTag("form").first();
+//                    getActivity().runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+////                            WebView formWebView = new WebView(getContext());
+////                            formWebView.getSettings().setJavaScriptEnabled(true);
+//                            webView.loadData(formElem.toString(), "text/html", "");
+//                            webView.removeJavascriptInterface("HtmlViewer");
+////                            formWebView.loadData(element.toString(), "text/html", "");
+//                            postDialog = new MaterialDialog.Builder(getContext())
+//                                    .customView(webView, true)
+//                                    .build();
+//                        }
+//                    });
+
+//                    String checkScriptUrl = frameDom.getElementsByTag("form").first().getElementsByTag("iframe").attr("src");
+//                    KLog.v(TAG, checkScriptUrl);
+//                    loadScript(checkScriptUrl);
                 }
-//                loadScript(checkScriptUrl);
 //                webView.post(new Runnable() {
 //                    @Override
 //                    public void run() {
@@ -280,9 +305,30 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
-            public void onPageFinished(WebView view, String url) {
+            public void onPageFinished(final WebView view, String url) {
                 super.onPageFinished(view, url);
                 KLog.v(TAG, "onPageFinished");
+//                view.loadUrl("javascript:(function() {" +
+//                        "var items = document.getElementsByClassName('container');" +
+//                        "for (i = 0; i < items.length; i++) {" +
+//                        "items[i].style.display='none'" +
+//                        "}" +
+//                        "document.getElementsByTagName('center')[0].style.display = 'none';" +
+//                        "}) ()");
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+////                            WebView formWebView = new WebView(getContext());
+////                            formWebView.getSettings().setJavaScriptEnabled(true);
+////                        webView.loadData(element.toString(), "text/html", "");
+////                        webView.removeJavascriptInterface("HtmlViewer");
+////                            formWebView.loadData(element.toString(), "text/html", "");
+//                        postDialog = new MaterialDialog.Builder(getContext())
+//                                .customView(webView, true)
+//                                .build();
+//                    }
+//                });
+//                view.loadUrl("javascript:var con = document.getElementsByTagName('page-content'); " +"con[0].style.display = 'none'; ");
                 view.loadUrl("javascript:window.HtmlViewer.onResponse" +
                         "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
             }
@@ -361,6 +407,17 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
 
             @Override
             public void onResponse(int responseCode, String result) {
+                if (result.contains("ReDirUrl")) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            url = url.substring(0, url.lastIndexOf("/") + 1) + "m/";
+                            webView.stopLoading();
+                            webView.loadUrl(url);
+                        }
+                    });
+
+                }
                 if (page == 0) {
                     postList.clear();
                 }
@@ -407,7 +464,8 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
 
             @Override
             public void onResponse(int responseCode, String result) {
-
+                KLog.v(TAG, result);
+                Document document = Jsoup.parse(result);
             }
         });
     }
