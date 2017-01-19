@@ -33,11 +33,11 @@ public class KTitle extends KPost {
         super(element, "threadpost", domainUrl);
         String newUrl = domainUrl.substring(0, domainUrl.lastIndexOf("/") + 1);
         Elements detailLinkElements = element.getElementsContainingOwnText("返信");
-        if (detailLinkElements == null) {
+        if (detailLinkElements == null || detailLinkElements.size() == 0) {
             detailLinkElements = element.getElementsContainingOwnText("回應");
         }
         String hrefUrl = detailLinkElements.attr("href");
-        setDetailLink(newUrl + hrefUrl);
+        setDetailLink(newUrl + hrefUrl);// + "&page_num=0"
         setWarnText(element.getElementsByClass("warn_txt2").text());
     }
 

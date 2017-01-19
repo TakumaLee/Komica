@@ -2,6 +2,7 @@ package idv.kuma.app.komica.widgets;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
 /**
@@ -24,5 +25,14 @@ public class KLinearLayoutManager extends LinearLayoutManager {
 
     public KLinearLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    @Override
+    public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+        try {
+            super.onLayoutChildren(recycler, state);
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +24,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import at.huber.youtubeExtractor.YouTubeUriExtractor;
-import at.huber.youtubeExtractor.YtFile;
 import idv.kuma.app.komica.R;
 import idv.kuma.app.komica.activities.SectionDetailsActivity;
 import idv.kuma.app.komica.configs.BundleKeyConfigs;
@@ -36,7 +34,6 @@ import idv.kuma.app.komica.http.NetworkCallback;
 import idv.kuma.app.komica.http.OkHttpClientConnect;
 import idv.kuma.app.komica.manager.KomicaManager;
 import idv.kuma.app.komica.utils.AppTools;
-import idv.kuma.app.komica.utils.KLog;
 import idv.kuma.app.komica.widgets.IndexGridDividerDecoration;
 import tw.showang.recycleradaterbase.RecyclerAdapterBase;
 
@@ -51,6 +48,7 @@ public class IndexFragment extends BaseFragment {
 
     private static IndexFragment instance = null;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private PromoteAdapter adapter;
     private GridLayoutManager gridLayoutManager;
@@ -81,6 +79,7 @@ public class IndexFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("首頁");
         recyclerView = findViewById(view, R.id.recyclerView_index);
+        swipeRefreshLayout = findViewById(view, R.id.swipeRefreshLayout_index);
 
         TextView footerTextView = new TextView(getContext());
         footerTextView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -106,20 +105,28 @@ public class IndexFragment extends BaseFragment {
             footerTextView.setText(Html.fromHtml(getString(R.string.declared_index)));
         }
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadPromotionList();
+            }
+        });
+
         loadPromotionList();
 
 
-        new YouTubeUriExtractor(getActivity()) {
-            @Override
-            public void onUrisAvailable(String videoId, String videoTitle, SparseArray<YtFile> ytFiles) {
-                KLog.v(TAG, "onYoutube id: " + videoId);
-                KLog.v(TAG, "onYoutube title: " + videoTitle);
-                KLog.v(TAG, "onYoutube files: " + ytFiles.size() + "_" + ytFiles.get(22).getUrl());
-            }
-        }.execute("https://www.youtube.com/watch?v=iTMTcUtoA40");
+//        new YouTubeUriExtractor(getActivity()) {
+//            @Override
+//            public void onUrisAvailable(String videoId, String videoTitle, SparseArray<YtFile> ytFiles) {
+//                KLog.v(TAG, "onYoutube id: " + videoId);
+//                KLog.v(TAG, "onYoutube title: " + videoTitle);
+//                KLog.v(TAG, "onYoutube files: " + ytFiles.size() + "_" + ytFiles.get(22).getUrl());
+//            }
+//        }.execute("https://www.youtube.com/watch?v=iTMTcUtoA40");
     }
 
     private void loadPromotionList() {
+        swipeRefreshLayout.setRefreshing(true);
         OkHttpClientConnect.excuteAutoGet(WebUrlFormaterUtils.getPromoteListUrl(), new NetworkCallback() {
             @Override
             public void onFailure(IOException e) {
@@ -155,6 +162,7 @@ public class IndexFragment extends BaseFragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                swipeRefreshLayout.setRefreshing(false);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -191,6 +199,7 @@ public class IndexFragment extends BaseFragment {
                     intent.putExtra(BundleKeyConfigs.KEY_WEB_URL, promotions.get(position).getLinkUrl());
                     intent.putExtra(BundleKeyConfigs.KEY_WEB_TITLE, promotions.get(position).getTitle());
                     intent.putExtra(BundleKeyConfigs.KEY_WEB_TYPE, KomicaManager.WebType.NORMAL);
+                    intent.putExtra(BundleKeyConfigs.KEY_WEB_FROM, "Promotion");
                     startActivity(intent);
                 }
             });

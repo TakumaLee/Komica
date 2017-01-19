@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -21,6 +22,7 @@ import java.util.regex.Pattern;
 
 import idv.kuma.app.komica.BuildConfig;
 import idv.kuma.app.komica.configs.WebUrlFormaterUtils;
+import idv.kuma.app.komica.context.ApplicationContextSingleton;
 import idv.kuma.app.komica.entity.KomicaMenuGroup;
 import idv.kuma.app.komica.entity.KomicaMenuMember;
 import idv.kuma.app.komica.http.NetworkCallback;
@@ -72,6 +74,16 @@ public class KomicaManager {
         if (!switchLogin) {
             initConfig();
         }
+    }
+
+    public void clearCache() {
+        Glide.get(ApplicationContextSingleton.getApplicationContext()).clearMemory();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Glide.get(ApplicationContextSingleton.getApplicationContext()).clearDiskCache();
+            }
+        }).start();
     }
 
     public void registerConfigUpdateListener(OnUpdateConfigListener listener) {
@@ -230,7 +242,7 @@ public class KomicaManager {
     }
 
     public boolean checkVisible(String memberTitle) {
-        if (!switchLogin || !ThirdPartyManager.getInstance().isFacebookLogin()) {
+        if (!switchLogin || !KomicaAccountManager.getInstance().isLogin()) {
             switch (checkWebType(memberTitle)) {
                 case WebType.INTEGRATED:
                 case WebType.NORMAL:
@@ -252,7 +264,7 @@ public class KomicaManager {
                 case "妹系":
                 case "寫真":
                 case "高解析度":
-                    return ThirdPartyManager.getInstance().isFacebookLogin();
+                    return KomicaAccountManager.getInstance().isLogin();
                 default:
                     return true;
             }
@@ -264,15 +276,16 @@ public class KomicaManager {
 //            case "影視":
             case "綜合":
             case "氣象":
-            case "歡樂惡搞":
             case "模型":
+            case "玩偶":
+            case "歡樂惡搞":
             case "蘿蔔":
             case "攝影":
             case "軍武":
             case "改造":
             case "委託":
             case "鋼普拉":
-            case "遊戲速報":
+//            case "遊戲速報":
 //            case "行動遊戲":
             case "網路遊戲":
             case "塗鴉王國":
@@ -300,12 +313,18 @@ public class KomicaManager {
             case "素材":
             case "求圖":
                 return WebType.INTEGRATED;
+            case "綜合2":
             case "動畫":
-//            case "螢幕攝":
-//            case "漫畫":
+            case "螢幕攝":
+            case "漫畫":
             case "新番捏他":
             case "新番實況":
+            case "車":
+            case "COSPLAY":
             case "綜合學術":
+            case "數學":
+            case "歷史":
+            case "地理":
             case "職業":
             case "財經":
             case "生活消費":
@@ -314,18 +333,28 @@ public class KomicaManager {
             case "藝術":
             case "生存遊戲":
             case "燃":
+            case "笑話":
             case "猜謎":
             case "故事接龍":
             case "大自然":
             case "星座命理":
+            case "New Age":
             case "戀愛":
             case "超常現象":
             case "流言終結":
+            case "政治":
             case "旅遊":
+            case "耳機":
+            case "手機":
+            case "美容":
+            case "髮型":
+            case "家政":
             case "手工藝":
             case "圖書":
-            case "短片":
+            case "讀書筆記":
 
+            case "短片":
+            case "短片2":
             case "動作遊戲":
             case "格鬥遊戲":
             case "2D STG":
@@ -340,33 +369,65 @@ public class KomicaManager {
 
             case "麻將":
             case "遊戲設計":
+            case "RPG Maker":
+            case "STEAM":
 
+            case "CosmicBreak":
+            case "Elsword":
+            case "DNF":
+            case "DOTA2":
             case "FEZ":
+            case "GW2":
             case "GTA":
+            case "LOL":
+            case "Minecraft":
+            case "PAD":
+            case "PSO2":
+            case "SDGO":
+            case "StarCraft":
+            case "T7S":
             case "TOS":
+            case "白貓Project":
+            case "流亡黯道 PoE":
+            case "新瑪奇英雄傳":
             case "戰車世界":
-            case "戰車風雲":
-            case "戰車雷霆":
+            case "戰地風雲":
+            case "戰爭雷霆":
             case "戰機世界":
             case "戰艦世界":
             case "艦隊收藏":
             case "魔物獵人":
-//            case "Minecraft":
+            case "爐石戰記":
+            case "星空幻想":
             case "葉鍵":
             case "涼宮":
+            case "反逆":
+            case "奈葉":
+            case "廢怯少女":
+            case "禁書":
+            case "遊戲王":
+            case "女王之刃":
+            case "Digimon":
             case "Homestuck":
             case "IM@S":
+            case "LoveLive!":
             case "Pokemon":
             case "Pretty Cure":
+            case "Saki":
             case "Strike Witches":
+            case "VOCALOID":
+
+            case "Capcom":
             case "GAINAX":
             case "KOEI":
             case "SQEX":
             case "TYPE-MOON":
-//            case "京都動畫":
+            case "京都動畫":
             case "聲優綜合":
             case "釘宮":
-//            case "田村/堀江/水樹":
+            case "田村/堀江/水樹":
+            case "AKB48":
+
             case "角色配對":
             case "催淚":
             case "性轉換":
@@ -383,9 +444,12 @@ public class KomicaManager {
             case "機娘":
             case "返信娘":
             case "Lolita Fashion":
+            case "傲嬌":
 
             case "塗鴉工廠":
+            case "MMD":
             case "同人2":
+            case "SOHO":
             case "宣傳":
 
             case "酒":
@@ -404,10 +468,9 @@ public class KomicaManager {
 
             case "Pixmicat!":
 //            case "Joyful Note":
-
+            case "網頁設計":
             case "Apple":
 
-            case "綜合2":
                 return WebType.NORMAL;
             default:
                 return WebType.WEB;

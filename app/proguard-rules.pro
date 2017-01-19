@@ -143,7 +143,7 @@
 # This rule will properly ProGuard all the model classes in
 # the package com.yourcompany.models. Modify to fit the structure
 # of your app.
--keepclassmembers class idv.kuma.dmcollector.app.entity.push.** {
+-keepclassmembers class idv.kuma.app.komica.entity.push.** {
   *;
 }
 
@@ -220,13 +220,13 @@
 
 # SQL APP Proguard
 #-dontwarn com.viewpagerindicator.**
--keep class idv.kuma.dmcollector.app.model.**
--keepclassmembers class idv.kuma.dmcollector.app.model.** { *; }
+-keep class idv.kuma.app.komica.model.**
+-keepclassmembers class idv.kuma.app.komica.model.** { *; }
 
--keep class idv.kuma.dmcollector.app.dao.**
--keepclassmembers class idv.kuma.dmcollector.app.dao.** { *; }
+-keep class idv.kuma.app.komica.dao.**
+-keepclassmembers class idv.kuma.app.komica.dao.** { *; }
 
--keepnames class idv.kuma.dmcollector.app.DMCApplication
+-keepnames class idv.kuma.app.komica.DMCApplication
 
 # ANDROID
 -keep class android.support.v7.widget.SearchView { *; }
