@@ -91,7 +91,7 @@ public class CrawlerUtils {
                         head.setVideoUrl(element.attr("href"));
                         head.setHasVideo(true);
                         head.addPostImage(new KPostImage(element.getElementsByTag("img").attr("src")));
-                    } else {
+                    } else if (!"".equals(element.text().trim()) && !element.text().contains("webm")) {
                         head.addPostImage(new KPostImage(element.attr("href"), element.text()));
                     }
                     head.setHasImage(true);

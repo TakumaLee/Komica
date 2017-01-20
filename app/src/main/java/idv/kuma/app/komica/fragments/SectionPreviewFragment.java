@@ -197,6 +197,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         KomicaManager.getInstance().clearCache();
         recyclerView.scrollToPosition(0);
         this.webType = webType;
+        this.indexUrl = url;
         this.url = url;
         titlePostList.clear();
         loadSection();
