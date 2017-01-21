@@ -208,7 +208,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         TextInputEditText commentEditText = (TextInputEditText) postDialog.getCustomView().findViewById(R.id.editText_post_comment);
-                        String comment = commentEditText.getText().toString();//.replaceAll("\\n","<br />");
+                        String comment = commentEditText.getText().toString().replaceAll("\\n", "\\\\n");
                         KLog.v(TAG, comment);
                         switch (webType) {
                             case KomicaManager.WebType.INTEGRATED:
