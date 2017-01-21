@@ -92,12 +92,11 @@ public class PostView extends LinearLayout {
             postQuoteTextView.setText(Html.fromHtml(post.getQuote()));
         }
         if ((post.hasImage() || post.hasVideo()) && post.getPostImageList().size() > 0) {
-            postThumbImageView.setVisibility(VISIBLE);
+            postThumbImageView.setVisibility(KomicaAccountManager.getInstance().isLogin() ? VISIBLE : GONE);
             Glide.with(getContext()).load(post.getPostImageList().get(0).getImageUrl()).into(postThumbImageView);
         } else {
             postThumbImageView.setVisibility(GONE);
         }
-        postThumbImageView.setVisibility(KomicaAccountManager.getInstance().isLogin() ? VISIBLE : GONE);
         if (post.getPostImageList().size() > 1) {
             postImgListContainer.removeAllViews();
             for (KPostImage postImage : post.getPostImageList()) {

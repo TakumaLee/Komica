@@ -38,6 +38,8 @@ public class KomicaAccountManager {
     private SharedPreferences.Editor editor;
     private SharedPreferences noClearSharedPreferences;
 
+    private String adIdTmp;
+
     private HandlerThread handlerThread = new HandlerThread(TAG);
     private Handler handler;
 
@@ -65,7 +67,11 @@ public class KomicaAccountManager {
             @Override
             public void handleMessage(Message msg) {
                 try {
-                    myAccount.setAdId(AdvertisingIdClient.getAdvertisingIdInfo(contextWeakReference.get()).getId());
+                    String adId = AdvertisingIdClient.getAdvertisingIdInfo(contextWeakReference.get()).getId();
+                    adIdTmp = adId;
+                    if (null != myAccount) {
+                        myAccount.setAdId(adId);
+                    }
                     FirebaseManager.getInstance().updateUserPushData();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -117,6 +123,10 @@ public class KomicaAccountManager {
 
     public MyAccount getMyAccount() {
         return myAccount;
+    }
+
+    public String getAdIdTmp() {
+        return adIdTmp;
     }
 
     public boolean isLogin() {

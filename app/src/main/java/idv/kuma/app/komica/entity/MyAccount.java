@@ -77,7 +77,7 @@ public class MyAccount {
         return adId;
     }
 
-    public void setAdId(String adId) {
+    public synchronized void setAdId(String adId) {
         this.adId = adId;
     }
 

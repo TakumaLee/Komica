@@ -62,7 +62,11 @@ public class KPost {
     }
 
     public KPost(Element element, String postType, String domainUrl) {
-        setId(element.getElementsByTag("input").attr("id"));
+        String inputId = element.getElementsByTag("input").attr("id");
+        if (inputId == null) {
+            inputId = element.getElementsByAttributeValue("type", "checkbox").attr("name");
+        }
+        setId(inputId);
         if (element.hasClass(postType)) {
             setIdStr(element.getElementsByClass(postType).attr("id"));
         }

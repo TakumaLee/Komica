@@ -76,8 +76,14 @@ public class FirebaseManager {
     }
 
     public void updateUserPushData() {
-        if (KomicaAccountManager.getInstance().getMyAccount().getAdId() != null) {
+        if (KomicaAccountManager.getInstance().getMyAccount().getAdId() != null || KomicaAccountManager.getInstance().getAdIdTmp() != null) {
             KLog.v(TAG, "update user push data.");
+            if (KomicaAccountManager.getInstance().getMyAccount().getAdId() != null) {
+                MyAccount myAccount = KomicaAccountManager.getInstance().getMyAccount();
+                myAccount.setAdId(KomicaAccountManager.getInstance().getAdIdTmp());
+                KomicaAccountManager.getInstance().setMyAccount(myAccount);
+                KomicaAccountManager.getInstance().savedMyAccout();
+            }
             postUserPushData();
         } else {
             KLog.v(TAG, "User push data cannot get adId.");

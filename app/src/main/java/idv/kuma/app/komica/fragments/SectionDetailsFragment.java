@@ -1,5 +1,8 @@
 package idv.kuma.app.komica.fragments;
 
+import android.annotation.TargetApi;
+import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,8 +17,11 @@ import android.webkit.ConsoleMessage;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -25,7 +31,6 @@ import com.google.android.gms.analytics.HitBuilders;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,11 +66,9 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
     private int webType;
     private String from;
     private Element formElem;
-    private Elements inputElements;
-    private String formUrl;
-    private String commentBoxKey;
 
     private WebView webView;
+    private ProgressBar reCaProgressBar;
     private RecyclerView recyclerView;
     private KLinearLayoutManager linearLayoutManager;
     private SectionDetailsAdapter adapter;
@@ -76,6 +79,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
     private int page = 0;
     private int pageCount = 0;
     private boolean hasAnotherPage = false;
+    private boolean isLoadingFinished = false;
 
     private List<KPost> postList = Collections.emptyList();
 
@@ -120,7 +124,26 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         KomicaManager.getInstance().unRegisterConfigUpdateListener(this);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ((LinearLayout) postDialog.getCustomView().findViewById(R.id.linearLayout_post_container)).removeAllViews();
+        if (webView != null) {
+            webView.stopLoading();
+            webView = null;
+        }
+    }
+
+    @Override
+    public boolean isBackPressed() {
+        if (null != postDialog) {
+            postDialog.dismiss();
+        }
+        return super.isBackPressed();
+    }
+
     private void initView() {
+        initPostDialog();
         initWebView();
         recyclerView = findViewById(getView(), R.id.recyclerView_section_details);
         addPostFab = findViewById(getView(), R.id.fab_section_details_add_post);
@@ -146,103 +169,82 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                         .setAction(from + "_" + title + "_開始回文")
                         .setLabel(from + "_" + title)
                         .build());
-                if (null == postDialog) {
-                    postDialog = new MaterialDialog.Builder(view.getContext())
-                            .customView(R.layout.layout_post, true)
-                            .positiveText(R.string.confirm)
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    TextInputEditText commentEditText = (TextInputEditText) postDialog.getCustomView().findViewById(R.id.editText_post_comment);
-                                    switch (webType) {
-                                        case KomicaManager.WebType.INTEGRATED:
-                                            String submitStr = "javascript:" + "document.getElementsByTagName('form')[0].submit();";
-                                            String commentStr = "javascript:" + "document.getElementsByTagName('textarea')[0].value='" + commentEditText.getText().toString().replace("\n", "<br/>") + "';";
-                                            String checkStr = "javascript:" + "document.getElementById('recaptcha-anchor').setAttribute('aria-checked', true);";
-                                            webView.loadUrl(commentStr + checkStr + submitStr);
-                                            break;
-                                        case KomicaManager.WebType.NORMAL:
-                                        default:
-                                            submitStr = "javascript:" + "document.getElementById('" + formElem.id() + "').submit();";
-                                            webView.loadUrl("javascript:" + "document.getElementById('fcom').value='" + commentEditText.getText().toString() + "';" + submitStr);
-                                            isPosting = true;
-                                            Toast.makeText(getContext(), R.string.message_please_wait_for_replying, Toast.LENGTH_LONG).show();
-                                            break;
-                                    }
-                                    tracker.send(new HitBuilders.EventBuilder()
-                                            .setCategory("03. 互動")
-                                            .setAction(from + "_" + title + "_回文發佈")
-                                            .setLabel(from + "_" + title)
-                                            .build());
-//                                    loadSection();
-//                                    webView.loadUrl(submitStr);
-//                                    MultipartBody.Builder requestBody = new MultipartBody.Builder()
-//                                            .setType(MultipartBody.FORM);
-//                                    for (Element element : inputElements) {
-//                                        if ("sendbtn".equals(element.attr("name"))) {
-//                                            continue;
-//                                        }
-//                                        if ("reply".equals(element.attr("name"))) {
-//                                            continue;
-//                                        }
-//                                        if ("noimg".equals(element.attr("name"))) {
-//                                            continue;
-//                                        }
-//                                        if ("js".equals(element.attr("name"))) {
-//                                            requestBody.addFormDataPart(element.attr("name"), "js");
-//                                        }
-//                                        requestBody.addFormDataPart(element.attr("name"), element.val());
-//                                    }
-//                                    for (Element element : formElem.getElementsByTag("textarea")) {
-//                                        if ("fcom".equals(element.id())) {
-//                                            requestBody.addFormDataPart(commentBoxKey, commentEditText.getText().toString());
-//                                        } else {
-//                                            requestBody.addFormDataPart(element.attr("name"), element.text());
-//                                        }
-//                                    }
-//                                    Request request = new Request.Builder()
-//                                            .url(formUrl)
-//                                            .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-//                                            .addHeader("Content-Type", "multipart/form-data; boundary=----")//
-//                                            .addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36")
-//                                            .addHeader("Referer", url)
-//                                            .post(requestBody.build())
-//                                            .build();
-//                                    OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
-//                                    okHttpClient.newCall(request).enqueue(new Callback() {
-//                                        @Override
-//                                        public void onFailure(Call call, IOException e) {
-//                                            KLog.v(TAG, "Exception: " + e);
-//                                        }
-//
-//                                        @Override
-//                                        public void onResponse(Call call, Response response) throws IOException {
-//                                            KLog.v(TAG, "response: " + response.body().string());
-//                                        }
-//                                    });
-                                }
-                            })
-                            .build();
-                }
                 postDialog.show();
             }
         });
 
         switch (webType) {
             case KomicaManager.WebType.INTEGRATED:
-                addPostFab.setVisibility(View.GONE);
+                ((LinearLayout) postDialog.getCustomView().findViewById(R.id.linearLayout_post_container)).addView(reCaProgressBar);
+                ((LinearLayout) postDialog.getCustomView().findViewById(R.id.linearLayout_post_container)).addView(webView);
+//                postDialog = new MaterialDialog.Builder(getContext())
+//                        .cancelable(false)
+//                        .autoDismiss(false)
+//                        .customView(webView, true)
+//                        .build();
+//                postDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+//                    @Override
+//                    public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
+//                        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//                            isBackPressed();
+//                        }
+//                        return true;
+//                    }
+//                });
                 break;
             case KomicaManager.WebType.NORMAL:
             default:
-                addPostFab.setVisibility(View.VISIBLE);
                 break;
         }
 
         getActivity().setTitle(title);
     }
 
+    private void initPostDialog() {
+        postDialog = new MaterialDialog.Builder(getContext())
+                .customView(R.layout.layout_post, true)
+                .positiveText(R.string.confirm)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        TextInputEditText commentEditText = (TextInputEditText) postDialog.getCustomView().findViewById(R.id.editText_post_comment);
+                        String comment = commentEditText.getText().toString().replaceAll("\\n", "\\\\n");
+                        KLog.v(TAG, comment);
+                        switch (webType) {
+                            case KomicaManager.WebType.INTEGRATED:
+                                String submitStr = "javascript:" + "document.getElementsByTagName('form')[0].submit();";
+                                String commentStr = "javascript:" + "document.getElementsByTagName('textarea')[0].value='" + comment + "';";
+//                                            String checkStr = "javascript:" + "parent.frames['0'].document.getElementById('recaptcha-anchor').setAttribute('aria-checked', true);";
+//                                String checkStr = "javascript:" + "parent.frames['0'].document.getElementById('recaptcha-anchor').click();";
+//                                            String checkStr = "javascript:" + "parent.frames['0'].contentWindow.postMessage(" +
+//                                                    "document.getElementById('recaptcha-anchor').setAttribute('aria-checked', true)," +
+//                                                    Uri.parse(webView.getUrl()).getHost() +
+//                                                    ")";
+                                webView.loadUrl(commentStr + submitStr);
+                                break;
+                            case KomicaManager.WebType.NORMAL:
+                            default:
+                                submitStr = "javascript:" + "document.getElementById('" + formElem.id() + "').submit();";
+                                webView.loadUrl("javascript:" + "document.getElementById('fcom').value='" + comment + "';" + submitStr);
+                                break;
+                        }
+                        isPosting = true;
+                        Toast.makeText(getContext(), R.string.message_please_wait_for_replying, Toast.LENGTH_LONG).show();
+                        tracker.send(new HitBuilders.EventBuilder()
+                                .setCategory("03. 互動")
+                                .setAction(from + "_" + title + "_回文發佈")
+                                .setLabel(from + "_" + title)
+                                .build());
+                    }
+                })
+                .build();
+    }
+
     private void initWebView() {
+        reCaProgressBar = new ProgressBar(getContext());
         webView = new WebView(getContext());
+        webView.setVisibility(View.GONE);
+        webView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         webView.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
         webView.getSettings().setJavaScriptEnabled(true);
         webView.addJavascriptInterface(new JSInterface(new JSInterface.OnCallListener() {
@@ -250,10 +252,67 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
             public void onResponse(String result) {
                 // TODO get real html
                 KLog.v(TAG, "onJavaScript onResponse");
+            }
+        }), "HtmlViewer");
 
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                if (null != reCaProgressBar) {
+                    reCaProgressBar.setVisibility(View.VISIBLE);
+                }
+            }
 
+            @Override
+            public void onPageFinished(final WebView view, String url) {
+                super.onPageFinished(view, url);
+                KLog.v(TAG, "onPageFinished: " + url);
+                view.loadUrl("javascript:(function() {" +
+                        "var items = document.getElementsByTagName('p');" +
+                        "for (i = 0; i < items.length; i++) {" +
+                        "items[i].style.display='none';" +
+                        "}" +
+                        "document.getElementsByTagName('a')[0].style.display = 'none';" +
+                        "document.getElementsByTagName('center')[0].style.display = 'none';" +
+                        "document.getElementsByTagName('form')[1].style.display = 'none';" +
+                        "function hasClass(ele,cls) {" +
+                        "     return ele.getElementsByClassName(cls).length > 0;" +
+                        "}" +
+                        "var trs = document.getElementsByTagName('form')[0].getElementsByTagName('tbody')[0].children;" +
+                        "for (i = 0; i < trs.length; i++) {" +
+                        "console.log(trs.length);" +
+                        "if (hasClass(trs[i], 'g-recaptcha')) {" +
+                        "console.log('Has g-recaptcha');" +
+                        "trs[i].getElementsByTagName('td')[0].style.display = 'none';" +
+                        "} else {" +
+                        "console.log('No g-recaptcha');" +
+                        "trs[i].style.display='none';" +
+                        "}" +
+                        "}" +
+                        "}) ()");
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                            WebView formWebView = new WebView(getContext());
+//                            formWebView.getSettings().setJavaScriptEnabled(true);
+//                        webView.loadData(element.toString(), "text/html", "");
+//                        webView.removeJavascriptInterface("HtmlViewer");
+//                            formWebView.loadData(element.toString(), "text/html", "");
+//                        addPostFab.setVisibility(View.VISIBLE);
+//                    }
+//                });
+//                view.loadUrl("javascript:var con = document.getElementsByTagName('page-content'); " +"con[0].style.display = 'none'; ");
+//                view.loadUrl("javascript:window.HtmlViewer.onResponse" +
+//                        "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+//                view.loadUrl("javascript:window.HtmlViewer.onResponse" +
+//                        "(document.documentElement.outerHTML);");
+                isLoadingFinished = true;
                 if (isPosting) {
                     isPosting = false;
+                    if (null == webView) {
+                        return;
+                    }
                     webView.post(new Runnable() {
                         @Override
                         public void run() {
@@ -262,29 +321,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                     });
 
                     loadSection();
-                } else {
-                    Document frameDom = Jsoup.parse(result);
-                    String checkScriptUrl = frameDom.getElementsByTag("iframe").attr("src");
-                    KLog.v(TAG, checkScriptUrl);
                 }
-//                loadScript(checkScriptUrl);
-//                webView.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        webView.loadData(frameDom.getElementsByTag("iframe").outerHtml(), "text/html", "utf-8");
-//                    }
-//                });
-
-            }
-        }), "HtmlViewer");
-
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                KLog.v(TAG, "onPageFinished");
-                view.loadUrl("javascript:window.HtmlViewer.onResponse" +
-                        "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
             }
 
             @Override
@@ -292,11 +329,39 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                 super.onPageCommitVisible(view, url);
                 KLog.v(TAG, "onPageCommitVisible");
             }
+
+            @Override
+            public void onLoadResource(WebView view, String url) {
+                super.onLoadResource(view, url);
+                KLog.v(TAG, "onLoadResource");
+                if (null == webView) {
+                    return;
+                }
+                if (isLoadingFinished) {
+                    reCaProgressBar.setVisibility(View.GONE);
+                    webView.setVisibility(View.VISIBLE);
+//                    view.loadUrl("javascript:window.HtmlViewer.onResponse" +
+//                            "(document.documentElement.outerHTML);");
+                }
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                KLog.v(TAG, "shouldOverrideUrlLoading Url: " + url);
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                KLog.v(TAG, "shouldOverrideUrlLoading Url: " + request.getUrl().getPath());
+                return super.shouldOverrideUrlLoading(view, request);
+            }
         });
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
-                KLog.v(TAG, "onJsConfirm");
+                KLog.v(TAG, "onJsConfirm: " + message);
                 return super.onJsConfirm(view, url, message, result);
             }
 
@@ -308,7 +373,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
 
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-                KLog.v(TAG, "onJsAlert");
+                KLog.v(TAG, "onJsAlert: " + message);
                 return super.onJsAlert(view, url, message, result);
             }
 
@@ -330,8 +395,6 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                 return super.onConsoleMessage(consoleMessage);
             }
         });
-        //TODO for test
-//        ((FrameLayout) findViewById(getView(), R.id.frameLayout_sectionWeb)).addView(webView);
     }
 
     private void loadSection() {
@@ -347,12 +410,6 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         if (null == getActivity()) {
             return;
         }
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                webView.loadUrl(url);
-            }
-        });
         OkHttpClientConnect.excuteAutoGet(url, new NetworkCallback() {
             @Override
             public void onFailure(IOException e) {
@@ -361,15 +418,31 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
 
             @Override
             public void onResponse(int responseCode, String result) {
+                if (result.contains("ReDirUrl")) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String reDirUrl = url.substring(0, url.lastIndexOf("/") + 1) + "m" + url.substring(url.lastIndexOf("/"));
+                            webView.stopLoading();
+                            webView.loadUrl(reDirUrl);
+                        }
+                    });
+
+                } else {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            webView.loadUrl(url);
+                        }
+                    });
+                }
                 if (page == 0) {
                     postList.clear();
                 }
                 Document document = Jsoup.parse(result);
                 formElem = document.getElementsByTag("form").first();
-                inputElements = formElem.getElementsByTag("input");
-                formUrl = url.substring(0, url.lastIndexOf("/") + 1) + formElem.attr("action");
-                commentBoxKey = formElem.getElementsByTag("textarea").attr("name");
-                KTitle head = CrawlerUtils.getPostList(document, url, webType).get(0);
+                List<KTitle> headList = CrawlerUtils.getPostList(document, url, webType);
+                KTitle head = headList.size() > 0 ? headList.get(0) : new KTitle();
                 if (page == 0) {
                     postList.add(head);
                 }
@@ -396,20 +469,6 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                 }
             });
         }
-    }
-
-    private void loadScript(String url) {
-        OkHttpClientConnect.excuteAutoGet(url, new NetworkCallback() {
-            @Override
-            public void onFailure(IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(int responseCode, String result) {
-
-            }
-        });
     }
 
     @Override
