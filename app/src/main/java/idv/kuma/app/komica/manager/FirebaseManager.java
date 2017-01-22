@@ -81,7 +81,8 @@ public class FirebaseManager {
             if (KomicaAccountManager.getInstance().getMyAccount().getAdId() != null) {
                 MyAccount myAccount = KomicaAccountManager.getInstance().getMyAccount();
                 myAccount.setAdId(KomicaAccountManager.getInstance().getAdIdTmp());
-                KomicaAccountManager.getInstance().setMyAccount(myAccount);
+                KLog.v(TAG, "Compare:\nmyAccount: " + myAccount.getAdId() + "\nKAManager: " + KomicaAccountManager.getInstance().getMyAccount().getAdId());
+//                KomicaAccountManager.getInstance().setMyAccount(myAccount);
                 KomicaAccountManager.getInstance().savedMyAccout();
             }
             postUserPushData();
@@ -115,7 +116,7 @@ public class FirebaseManager {
                     }
                 } else {
                     myAccount.setPoints(pushUser.getPoints());
-                    KomicaAccountManager.getInstance().setMyAccount(myAccount);
+//                    KomicaAccountManager.getInstance().setMyAccount(myAccount);
                     KomicaAccountManager.getInstance().savedMyAccout();
                 }
                 boolean hasDevice = false;
