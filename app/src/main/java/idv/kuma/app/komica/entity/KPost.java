@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import idv.kuma.app.komica.utils.KLog;
+
 /**
  * Created by TakumaLee on 2016/12/11.
  */
@@ -29,6 +31,7 @@ public class KPost {
     protected String idStr;
     protected String title;
     protected String name;
+    protected String time;
 
     /**
      * <div class="quote">作者不是蘿莉控嗎 結婚的都沒有幼女體型的</div>
@@ -54,6 +57,7 @@ public class KPost {
      * */
     protected List<KPostImage> postImageList = new ArrayList<>();
     protected String thumbUrl;
+    protected String thumbName;
     protected int thumbWidth;
     protected int thumbHeight;
 
@@ -62,63 +66,91 @@ public class KPost {
     }
 
     public KPost(Element element, String postType, String domainUrl) {
-        String inputId = element.getElementsByTag("input").attr("id");
-        if (inputId == null) {
-            inputId = element.getElementsByAttributeValue("type", "checkbox").attr("name");
-        }
-        setId(inputId);
-        if (element.hasClass(postType)) {
-            setIdStr(element.getElementsByClass(postType).attr("id"));
-        }
-        Element label = element.getElementsByTag("label").first();
-        if (label == null) {
-            setTitle(element.getElementsByClass("title").text());
-            setName(element.getElementsByClass("name").text());
+        if (!element.getElementsByClass("post-head").isEmpty()) {
+            Element postHead = element.getElementsByClass("post-head").first();
+            setTitle(postHead.getElementsByClass("title").text());
+            setName(postHead.getElementsByClass("name").text());
+            setTime(postHead.getElementsByClass("now").text());
+            setIdStr(postHead.getElementsByClass("id").attr("data-id"));
+            setId(postHead.getElementsByClass("qlink").attr("data-no"));
+            Element quoteElem = element.getElementsByClass("quote").first();
+            String quote = quoteElem.outerHtml();
+            if (!quoteElem.getElementsByClass("-expand-line").isEmpty()) {
+                element.getElementsByClass("quote").first().removeClass("-expand-line");
+            }
+            if (!element.getElementsByClass("backquote").isEmpty()) {
+                quote += "<br>" + element.getElementsByClass("backquote").outerHtml();
+            }
+            quote.replaceAll("<span class=\"hide\">(.*?)</span>", "$1");
+            KLog.v(TAG, quote);
+            setQuote(quote);
+            if (!element.getElementsByClass("file-text").isEmpty()) {
+                setHasImage(true);
+                setThumbName(element.getElementsByClass("file-text").first().getElementsByTag("a").text());
+                setThumbUrl("http:" + element.getElementsByClass("file-text").first().getElementsByTag("a").attr("href"));
+                postImageList.add(
+                        new KPostImage("http:" + element.getElementsByClass("file-text").first().getElementsByTag("a").attr("href")
+                                , element.getElementsByClass("file-text").first().getElementsByTag("a").text()));
+            }
         } else {
-            setTitle(label.getElementsByClass("title").text());
-            setName(label.getElementsByClass("name").text());// loss the time date
-        }
-        Element quoteElement = element.getElementsByClass("quote").first();
-        Elements moeVideo = quoteElement.getElementsByTag("moe-video");
-        if (!moeVideo.isEmpty()) {
-            setHasVideo(true);
-            Pattern pattern = Pattern.compile("=.*?(\\[.*?\\]);");
-            Matcher matcher = pattern.matcher(quoteElement.html());
-            if (matcher.find()) {
-                try {
-                    JSONArray array = new JSONArray(matcher.group(1));
-                    JSONObject object = array.getJSONObject(0);
-                    setVideoUrl(object.getString("url"));
-                    setVideoFileName(object.getString("title"));
-                    setThumbUrl(object.getString("thumb"));
-                    postImageList.add(new KPostImage(object.getString("thumb")));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            String inputId = element.getElementsByTag("input").attr("id");
+            if (inputId == null) {
+                inputId = element.getElementsByAttributeValue("type", "checkbox").attr("name");
             }
-            quoteElement.getElementsByTag("moe-video").first().remove();
-            quoteElement.getElementsByTag("script").first().remove();
-        }
-        setQuote(quoteElement.html());
-        Element thumbElement = element.getElementsByTag("img").first();
-        Elements imgElements = element.getElementsByTag("img");
-        setHasImage(thumbElement != null);
-        if (hasImage) {
-            Element imgElement = element.getElementsByAttributeValue("rel", "_blank").first();
-            if (imgElement == null) {
-                imgElement = element.getElementsByAttributeValue("target", "_blank").first();
+            setId(inputId);
+            if (!element.getElementsByClass(postType).isEmpty()) {
+                setIdStr(element.getElementsByClass(postType).attr("id"));
             }
-            if (imgElement != null) {
-                postImageList.add(new KPostImage(imgElement.attr("href"), imgElement.text()));
-            }
-            if (imgElements.size() > 1) {
-                for (Element img : imgElements) {
-                    postImageList.add(new KPostImage(img.attr("src")));
-                }
+            Element label = element.getElementsByTag("label").first();
+            if (label == null) {
+                setTitle(element.getElementsByClass("title").text());
+                setName(element.getElementsByClass("name").text());
             } else {
-                setThumbUrl(thumbElement.attr("src"));
-                setThumbWidth(findWidthPixel(thumbElement.attr("style")));
-                setThumbHeight(findHeightPixel(thumbElement.attr("style")));
+                setTitle(label.getElementsByClass("title").text());
+                setName(label.getElementsByClass("name").text());// loss the time date
+            }
+            Element quoteElement = element.getElementsByClass("quote").first();
+            Elements moeVideo = quoteElement.getElementsByTag("moe-video");
+            if (!moeVideo.isEmpty()) {
+                setHasVideo(true);
+                Pattern pattern = Pattern.compile("=.*?(\\[.*?\\]);");
+                Matcher matcher = pattern.matcher(quoteElement.html());
+                if (matcher.find()) {
+                    try {
+                        JSONArray array = new JSONArray(matcher.group(1));
+                        JSONObject object = array.getJSONObject(0);
+                        setVideoUrl(object.getString("url"));
+                        setVideoFileName(object.getString("title"));
+                        setThumbUrl(object.getString("thumb"));
+                        postImageList.add(new KPostImage(object.getString("thumb")));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                quoteElement.getElementsByTag("moe-video").first().remove();
+                quoteElement.getElementsByTag("script").first().remove();
+            }
+            setQuote(quoteElement.html());
+            Element thumbElement = element.getElementsByTag("img").first();
+            Elements imgElements = element.getElementsByTag("img");
+            setHasImage(thumbElement != null);
+            if (hasImage) {
+                Element imgElement = element.getElementsByAttributeValue("rel", "_blank").first();
+                if (imgElement == null) {
+                    imgElement = element.getElementsByAttributeValue("target", "_blank").first();
+                }
+                if (imgElement != null) {
+                    postImageList.add(new KPostImage(imgElement.attr("href"), imgElement.text()));
+                }
+                if (imgElements.size() > 1) {
+                    for (Element img : imgElements) {
+                        postImageList.add(new KPostImage(img.attr("src")));
+                    }
+                } else {
+                    setThumbUrl(thumbElement.attr("src"));
+                    setThumbWidth(findWidthPixel(thumbElement.attr("style")));
+                    setThumbHeight(findHeightPixel(thumbElement.attr("style")));
+                }
             }
         }
     }
@@ -173,12 +205,28 @@ public class KPost {
         this.name = name;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     public String getQuote() {
         return quote;
     }
 
     public void setQuote(String quote) {
         this.quote = quote;
+    }
+
+    public String getThumbName() {
+        return thumbName;
+    }
+
+    public void setThumbName(String thumbName) {
+        this.thumbName = thumbName;
     }
 
     public String getThumbUrl() {
