@@ -10,6 +10,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -47,6 +49,7 @@ public class KomicaManager {
     private List<OnUpdateConfigListener> onUpdateConfigListeners;
     private List<OnUpdateMenuListener> onUpdateMenuListeners;
 
+    private JSONObject menuKeyObj;
     private List<KomicaMenuGroup> menuGroupList;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private boolean switchLogin = false;
@@ -159,6 +162,21 @@ public class KomicaManager {
     }
 
     public void loadKomicaMenu() {
+        OkHttpClientConnect.excuteAutoGet(WebUrlFormaterUtils.getKomicaMenuKeyUrl(), new NetworkCallback() {
+            @Override
+            public void onFailure(IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(int responseCode, String result) {
+                try {
+                    menuKeyObj = new JSONObject(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         OkHttpClientConnect.excuteAutoGet(WebUrlFormaterUtils.getKomicaMenuUrl(), new NetworkCallback() {
             @Override
             public void onFailure(IOException e) {
@@ -275,6 +293,17 @@ public class KomicaManager {
     }
 
     public int checkWebType(String menuStr) {
+        try {
+            return menuKeyObj.getInt(menuStr);
+        } catch (NullPointerException e) {
+            return checkLocalWebType(menuStr);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return WebType.WEB;
+    }
+
+    private int checkLocalWebType(String menuStr) {
         switch (menuStr) {
             case "影視":
 

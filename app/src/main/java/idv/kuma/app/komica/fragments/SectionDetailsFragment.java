@@ -174,7 +174,6 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         });
 
         switch (webType) {
-            case KomicaManager.WebType.THREADS:
             case KomicaManager.WebType.INTEGRATED:
                 ((LinearLayout) postDialog.getCustomView().findViewById(R.id.linearLayout_post_container)).addView(reCaProgressBar);
                 ((LinearLayout) postDialog.getCustomView().findViewById(R.id.linearLayout_post_container)).addView(webView);
@@ -193,6 +192,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
 //                    }
 //                });
                 break;
+            case KomicaManager.WebType.THREADS:
             case KomicaManager.WebType.NORMAL:
             default:
                 break;

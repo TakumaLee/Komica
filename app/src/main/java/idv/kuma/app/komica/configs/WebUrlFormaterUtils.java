@@ -12,4 +12,8 @@ public class WebUrlFormaterUtils {
     public static final String getPromoteListUrl() {
         return UrlConfigs.PROMOTE_LIST;
     }
+
+    public static final String getKomicaMenuKeyUrl() {
+        return UrlConfigs.KOMICA_MENU_KEY;
+    }
 }
