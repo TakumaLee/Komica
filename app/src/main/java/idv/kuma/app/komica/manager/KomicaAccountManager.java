@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 import idv.kuma.app.komica.entity.MyAccount;
+import idv.kuma.app.komica.utils.KLog;
 
 /**
  * Created by TakumaLee on 2016/6/2.
@@ -25,6 +26,7 @@ public class KomicaAccountManager {
     private static KomicaAccountManager INSTANCE = null;
     WeakReference<Context> contextWeakReference;
 
+    private static final String KOMICA_ACCOUNT_AD_ID = "komica_account_ad_id";
     private static final String KOMICA_ACCOUNT_FB_ID = "komica_account_fb_id";
     private static final String KOMICA_ACCOUNT_USERNAME = "komica_account_username";
     private static final String KOMICA_ACCOUNT_EMAIL = "komica_account_email";
@@ -52,6 +54,7 @@ public class KomicaAccountManager {
         myAccount = new MyAccount();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(contextWeakReference.get());
         editor = sharedPreferences.edit();
+        myAccount.setAdId(sharedPreferences.getString(KOMICA_ACCOUNT_AD_ID, null));
         myAccount.setFbId(sharedPreferences.getString(KOMICA_ACCOUNT_FB_ID, ""));
         myAccount.setUsername(sharedPreferences.getString(KOMICA_ACCOUNT_USERNAME, "Guest"));
         myAccount.setEmail(sharedPreferences.getString(KOMICA_ACCOUNT_EMAIL, ""));
@@ -85,7 +88,14 @@ public class KomicaAccountManager {
                 }
             }
         };
-        handler.sendEmptyMessage(0);
+        if (myAccount.getAdId() != null) {
+            KLog.v(TAG, "Ad Id is not null.");
+            handlerThread.quit();
+            handlerThread.interrupt();
+        } else {
+            KLog.v(TAG, "Ad Id is null.");
+            handler.sendEmptyMessage(0);
+        }
     }
 
     public static void initialize(Context context) {

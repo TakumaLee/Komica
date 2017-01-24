@@ -10,6 +10,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -47,6 +49,7 @@ public class KomicaManager {
     private List<OnUpdateConfigListener> onUpdateConfigListeners;
     private List<OnUpdateMenuListener> onUpdateMenuListeners;
 
+    private JSONObject menuKeyObj;
     private List<KomicaMenuGroup> menuGroupList;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private boolean switchLogin = false;
@@ -56,6 +59,7 @@ public class KomicaManager {
         public static final int NORMAL = 1;
         // 綜合
         public static final int INTEGRATED = 2;
+        public static final int THREADS = 3;
         public static final int WEB = 10;
     }
 
@@ -158,6 +162,21 @@ public class KomicaManager {
     }
 
     public void loadKomicaMenu() {
+        OkHttpClientConnect.excuteAutoGet(WebUrlFormaterUtils.getKomicaMenuKeyUrl(), new NetworkCallback() {
+            @Override
+            public void onFailure(IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(int responseCode, String result) {
+                try {
+                    menuKeyObj = new JSONObject(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         OkHttpClientConnect.excuteAutoGet(WebUrlFormaterUtils.getKomicaMenuUrl(), new NetworkCallback() {
             @Override
             public void onFailure(IOException e) {
@@ -192,18 +211,19 @@ public class KomicaManager {
                     }
                     if ("a".equals(elem.tagName())) {
                         KomicaMenuMember member = new KomicaMenuMember();
-                        String title = "";
-                        Pattern pattern = Pattern.compile("\\, '(.*?)'\\)");
-                        Matcher matcher = pattern.matcher(elem.attr("onclick"));
-                        if (matcher.find()) {
-                            title = matcher.group(1);
-                        }
+                        String title = elem.text();
                         if ("".equals(title) || title == null) {
-                            title = elem.text();
+                            Pattern pattern = Pattern.compile("\\, '(.*?)'\\)");
+                            Matcher matcher = pattern.matcher(elem.attr("onclick"));
+                            if (matcher.find()) {
+                                title = matcher.group(1);
+                            }
                         }
                         member.setTitle(title);
                         if ("動物綜合".equals(title)) {
                             member.setLinkUrl("http://2nyan.org/animal/");
+                        } else if (elem.attr("href").contains("f6")) {
+                            member.setTitle(member.getTitle() + "C");
                         } else {
                             member.setLinkUrl(elem.attr("href"));
                         }
@@ -244,6 +264,7 @@ public class KomicaManager {
     public boolean checkVisible(String memberTitle) {
         if (!switchLogin || !KomicaAccountManager.getInstance().isLogin()) {
             switch (checkWebType(memberTitle)) {
+                case WebType.THREADS:
                 case WebType.INTEGRATED:
                 case WebType.NORMAL:
                     return true;
@@ -272,9 +293,34 @@ public class KomicaManager {
     }
 
     public int checkWebType(String menuStr) {
+        try {
+            return menuKeyObj.getInt(menuStr);
+        } catch (NullPointerException e) {
+            return checkLocalWebType(menuStr);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return WebType.WEB;
+    }
+
+    private int checkLocalWebType(String menuStr) {
         switch (menuStr) {
-//            case "影視":
+            case "影視":
+
+            case "校園":
+            case "消費電子":
+
+            case "女性角色":
+            case "四格":
+
+            case "遊戲速報":
+
+            case "3D":
+            case "單車":
+            case "程設交流":
+                return WebType.THREADS;
             case "綜合":
+            case "掛圖":
             case "氣象":
             case "模型":
             case "玩偶":
@@ -285,7 +331,6 @@ public class KomicaManager {
             case "改造":
             case "委託":
             case "鋼普拉":
-//            case "遊戲速報":
 //            case "行動遊戲":
             case "網路遊戲":
             case "塗鴉王國":
@@ -296,7 +341,6 @@ public class KomicaManager {
             case "文化交流":
             case "新聞":
             case "寫真":
-            case "女性角色":
             case "男性角色":
             case "中性角色":
             case "擬人化":
@@ -319,6 +363,8 @@ public class KomicaManager {
             case "漫畫":
             case "新番捏他":
             case "新番實況":
+            case "三次實況":
+            case "特攝":
             case "車":
             case "COSPLAY":
             case "綜合學術":
@@ -336,11 +382,13 @@ public class KomicaManager {
             case "笑話":
             case "猜謎":
             case "故事接龍":
+            case "歐美動畫":
             case "大自然":
             case "星座命理":
             case "New Age":
             case "戀愛":
             case "超常現象":
+            case "夢":
             case "流言終結":
             case "政治":
             case "旅遊":

@@ -31,14 +31,21 @@ public class KTitle extends KPost {
 
     public KTitle(Element element, String domainUrl) {
         super(element, "threadpost", domainUrl);
-        String newUrl = domainUrl.substring(0, domainUrl.lastIndexOf("/") + 1);
-        Elements detailLinkElements = element.getElementsContainingOwnText("返信");
-        if (detailLinkElements == null || detailLinkElements.size() == 0) {
-            detailLinkElements = element.getElementsContainingOwnText("回應");
+        if (element.hasClass("post-head")) {
+            Element postHead = element.getElementsByClass("post-head").first();
+            setDetailLink(postHead.getElementsByClass("rlink").first()
+                    .getElementsByTag("a").attr("href"));
+            setWarnText(postHead.getElementsByClass("warn_txt2").text());
+        } else {
+            String newUrl = domainUrl.substring(0, domainUrl.lastIndexOf("/") + 1);
+            Elements detailLinkElements = element.getElementsContainingOwnText("返信");
+            if (detailLinkElements == null || detailLinkElements.size() == 0) {
+                detailLinkElements = element.getElementsContainingOwnText("回應");
+            }
+            String hrefUrl = detailLinkElements.attr("href");
+            setDetailLink(newUrl + hrefUrl);// + "&page_num=0"
+            setWarnText(element.getElementsByClass("warn_txt2").text());
         }
-        String hrefUrl = detailLinkElements.attr("href");
-        setDetailLink(newUrl + hrefUrl);// + "&page_num=0"
-        setWarnText(element.getElementsByClass("warn_txt2").text());
     }
 
     public List<KReply> getReplyList() {

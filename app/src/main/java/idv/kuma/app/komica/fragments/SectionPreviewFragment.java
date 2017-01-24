@@ -142,9 +142,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                         .build());
                 titlePostList.clear();
                 recyclerView.scrollToPosition(0);
-                url = indexUrl;
-                page = 1;
-                loadSection();
+                loadNewSection(webType, indexUrl);
                 break;
             case R.id.action_browser:
                 tracker.send(new HitBuilders.EventBuilder()
@@ -205,6 +203,8 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
 
     private void loadSection() {
         switch (webType) {
+            case KomicaManager.WebType.THREADS:
+                // TODO need webview to load {backquote}
             case KomicaManager.WebType.NORMAL:
                 loadNormalSection();
                 break;

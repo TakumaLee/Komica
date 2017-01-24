@@ -21,6 +21,8 @@ public class CrawlerUtils {
 
     public static List<KTitle> getPostList(Document document, String url, int webType) {
         switch (webType) {
+            case KomicaManager.WebType.THREADS:
+                return parseThreadsPost(document, url);
             case KomicaManager.WebType.NORMAL:
                 return parseShinBangumiPost(document, url);
             case KomicaManager.WebType.INTEGRATED:
@@ -28,6 +30,38 @@ public class CrawlerUtils {
             default:
                 return getIntegratedPostList(document, url);
         }
+    }
+
+    public static List<KTitle> parseThreadsPost(Document document, String url) {
+        if (null == document.getElementById("threads")) {
+            return new ArrayList<>();
+        }
+        Elements threads = document.getElementById("threads").children();
+        List<KTitle> titlePostList = new ArrayList<>();
+        for (Element thread : threads) {
+            KTitle titlePost = null;
+            List<KReply> replyList = new ArrayList<KReply>();
+            for (Element element : thread.children()) {
+//                KLog.v(TAG, "Element: " + element);
+                if (element.className().contains("threadpost")) {
+                    // TODO post head
+                    // TODO new a post head, and continue reply to next new.
+                    if (null != titlePost) {
+                        titlePost.setReplyList(replyList);
+                        titlePostList.add(titlePost);
+                        replyList = new ArrayList<KReply>();
+                    }
+                    titlePost = new KTitle(element, url);
+                } else if (element.className().contains("reply")) {
+                    // TODO post reply
+                    KReply replyPost = new KReply(element, url);
+                    replyList.add(replyPost);
+                }
+            }
+            titlePost.setReplyList(replyList);
+            titlePostList.add(titlePost);
+        }
+        return titlePostList;
     }
 
     public static List<KTitle> parseShinBangumiPost(Document document, String url) {
@@ -40,7 +74,7 @@ public class CrawlerUtils {
         List<KReply> replyList = new ArrayList<KReply>();
         for (Element element : elements) {
             KLog.v(TAG, "Element: " + element);
-            if (element.className().startsWith("threadpost")) {
+            if (element.className().contains("threadpost")) {
                 // TODO post head
                 // TODO new a post head, and continue reply to next new.
                 if (null != titlePost) {
@@ -49,7 +83,7 @@ public class CrawlerUtils {
                     replyList = new ArrayList<KReply>();
                 }
                 titlePost = new KTitle(element, url);
-            } else if (element.className().startsWith("reply")) {
+            } else if (element.className().contains("reply")) {
                 // TODO post reply
                 KReply replyPost = new KReply(element, url);
                 replyList.add(replyPost);

@@ -13,6 +13,7 @@ import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -44,6 +45,7 @@ public class KomicaApplication extends MultiDexApplication {
         KomicaAccountManager.initialize(getApplicationContext());
         ApplicationContextSingleton.initialize(getApplicationContext());
         FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
 //        KumaAdSDK.initSingleton(getApplicationContext());
 
         Glide.get(this).register(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(new OkHttpClient()));

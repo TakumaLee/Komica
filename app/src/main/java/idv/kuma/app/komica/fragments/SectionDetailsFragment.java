@@ -192,6 +192,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
 //                    }
 //                });
                 break;
+            case KomicaManager.WebType.THREADS:
             case KomicaManager.WebType.NORMAL:
             default:
                 break;
@@ -222,6 +223,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
 //                                                    ")";
                                 webView.loadUrl(commentStr + submitStr);
                                 break;
+                            case KomicaManager.WebType.THREADS:
                             case KomicaManager.WebType.NORMAL:
                             default:
                                 submitStr = "javascript:" + "document.getElementById('" + formElem.id() + "').submit();";
@@ -401,6 +403,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         switch (webType) {
             case KomicaManager.WebType.INTEGRATED:
                 break;
+            case KomicaManager.WebType.THREADS:
             case KomicaManager.WebType.NORMAL:
             default:
                 url = (url.contains("page_num") ? url.substring(0, url.lastIndexOf("&")) : url) + "&page_num=" + page;

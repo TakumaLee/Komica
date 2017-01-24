@@ -312,6 +312,7 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
     private BaseFragment getWebFormatFragment(KomicaMenuMember clickMember) {
         int webType = KomicaManager.getInstance().checkWebType(clickMember.getTitle());
         switch (webType) {
+            case KomicaManager.WebType.THREADS:
             case KomicaManager.WebType.INTEGRATED:
             case KomicaManager.WebType.NORMAL:
                 return SectionPreviewFragment.newInstance(clickMember.getLinkUrl(), webType);
@@ -440,6 +441,9 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
             profileDrawerItem.withIcon(R.drawable.anonymous).withName(myAccount.getUsername()).withEmail(myAccount.getEmail());
             headerResult.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.wallpaper));
             headerResult.updateProfile(profileDrawerItem);
+            return;
+        }
+        if (!isAdded()) {
             return;
         }
         Glide.with(this).load(myAccount.getHeaderPic())

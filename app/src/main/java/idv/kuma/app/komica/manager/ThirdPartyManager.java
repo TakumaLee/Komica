@@ -136,7 +136,7 @@ public class ThirdPartyManager {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } finally {
-                            KomicaAccountManager.getInstance().setMyAccount(myAccount);
+//                            KomicaAccountManager.getInstance().setMyAccount(myAccount);
                             KomicaAccountManager.getInstance().savedMyAccout();
                             FirebaseManager.getInstance().updateUserPushData();
                             if (null != onGetProfileListeners) {
