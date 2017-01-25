@@ -27,6 +27,7 @@ public class KTitle extends KPost {
     protected String warnText;
 
     public KTitle() {
+
     }
 
     public KTitle(Element element, String domainUrl) {

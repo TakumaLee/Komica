@@ -300,7 +300,7 @@ public class KomicaManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return WebType.WEB;
+        return checkLocalWebType(menuStr);
     }
 
     private int checkLocalWebType(String menuStr) {

@@ -82,6 +82,8 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
     private int page = 0;
     private int pageCount = 1;
 
+    private String link = "";
+
     private boolean isPosting = false;
 
     private List<KTitle> titlePostList = Collections.emptyList();
@@ -177,7 +179,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         adapter.setLoadMoreListener(new LoadMoreListener() {
             @Override
             public void onLoadMore() {
-                url = url.substring(0, url.lastIndexOf("/") + 1) + page + ".htm";
+                url = url.substring(0, url.lastIndexOf("/") + 1) + page + link;
                 loadSection();
             }
         });
@@ -191,6 +193,8 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
 
     public void loadNewSection(int webType, String url) {
         page = 0;
+        pageCount = 1;
+        link = "";
         adapter.setLoadMoreEnable(true);
         KomicaManager.getInstance().clearCache();
         recyclerView.scrollToPosition(0);
@@ -256,9 +260,12 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                 if (null == pageSwitch) {
                     pageSwitch = document.getElementById("page_switch");
                 }
-                if (null != pageSwitch.select("a")) {
+                if (pageCount <= 1 && null != pageSwitch.select("a")) {
                     pageCount = pageSwitch.select("a").size();
-                } else {
+                    if ("".equals(link) && pageSwitch.select("a").attr("href").contains("?")) {
+                        link = pageSwitch.select("a").attr("href").replaceAll("[0-9]", "");
+                    }
+                } else if (pageCount <= 1) {
                     pageCount = pageSwitch.getElementsByAttributeValueContaining("class", "link").size();
                 }
             }
