@@ -445,7 +445,12 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                 Document document = Jsoup.parse(result);
                 formElem = document.getElementsByTag("form").first();
                 List<KTitle> headList = CrawlerUtils.getPostList(document, url, webType);
-                KTitle head = headList.size() > 0 ? headList.get(0) : new KTitle();
+                KTitle head = headList.size() > 0 ? headList.get(0) : null;
+                //TODO no data to load.
+                if (null == head) {
+                    toastNoMoreData();
+                    return;
+                }
                 if (page == 0) {
                     postList.add(head);
                 }
@@ -458,6 +463,18 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                 }
             }
         });
+    }
+
+    private void toastNoMoreData() {
+        if (null == getActivity()) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getContext(), R.string.message_no_more_data, Toast.LENGTH_LONG).show();
+                    adapter.setLoadMoreEnable(false);
+                }
+            });
+        }
     }
 
     private void notifyAdapter() {
