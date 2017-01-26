@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -375,6 +376,13 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                     CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                     builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.primary));
                     CustomTabsIntent customTabsIntent = builder.build();
+                    final List<ResolveInfo> customTabsApps = getActivity().getPackageManager().queryIntentActivities(customTabsIntent.intent, 0);
+
+                    if (customTabsApps.size() > 0) {
+                        CustomTabActivityHelper.openCustomTab(getActivity(), customTabsIntent, Uri.parse(link), new WebviewFallback());
+                    } else {
+                        // Chrome not installed. Display a toast or something to notify the user
+                    }
                     customTabsIntent.launchUrl(getContext(), uri);
                 }
             });
