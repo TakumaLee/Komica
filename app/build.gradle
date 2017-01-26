@@ -19,7 +19,7 @@ repositories {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "24.0.2"
+    buildToolsVersion "24.0.3"
     defaultConfig {
         applicationId "idv.kuma.app.komica"
         minSdkVersion 16
@@ -34,6 +34,8 @@ android {
     }
     buildTypes {
         debug {
+            jniDebuggable = true
+            debuggable = true
             signingConfig signingConfigs.debug
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -43,6 +45,10 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    productFlavors {
+        noExtensions
+        withExtensions
     }
     dexOptions {
 //        incremental true
@@ -57,12 +63,13 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 //    compile project(':AdSDK')
-    compile 'com.android.support:appcompat-v7:25.0.1'
-    compile 'com.android.support:design:25.0.1'
-    compile 'com.android.support:cardview-v7:25.0.1'
-    compile 'com.android.support:recyclerview-v7:25.0.1'
-    compile 'com.android.support:palette-v7:25.0.1'
-    compile 'com.android.support:customtabs:25.0.1'
+    compile project(':shared')
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:cardview-v7:25.1.0'
+    compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile 'com.android.support:palette-v7:25.1.0'
+    compile 'com.android.support:customtabs:25.1.0'
     compile 'com.android.support:multidex:1.0.1'
 
     compile 'com.google.android.gms:play-services-location:10.0.1'
@@ -84,6 +91,12 @@ dependencies {
 
     compile group: 'org.jsoup', name: 'jsoup', version: '1.8.3'
     compile 'com.github.HaarigerHarald:android-youtubeExtractor:1.5.0'
+    compile 'com.google.android.exoplayer:exoplayer:r2.1.1'
+    compile 'com.google.android.exoplayer:extension-okhttp:r2.1.1'
+//    withExtensionsCompile project(path: ':extension-ffmpeg')
+//    withExtensionsCompile project(path: ':extension-flac')
+//    withExtensionsCompile project(path: ':extension-opus')
+//    withExtensionsCompile project(path: ':extension-vp9')
 
     // UI
     compile 'com.afollestad.material-dialogs:core:0.9.1.0'

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -52,7 +53,9 @@ import idv.kuma.app.komica.manager.KomicaManager;
 import idv.kuma.app.komica.manager.ThirdPartyManager;
 import idv.kuma.app.komica.utils.CrawlerUtils;
 import idv.kuma.app.komica.utils.KLog;
+import idv.kuma.app.komica.views.CustomTabActivityHelper;
 import idv.kuma.app.komica.views.PostView;
+import idv.kuma.app.komica.views.WebViewFallback;
 import idv.kuma.app.komica.widgets.DividerItemDecoration;
 import idv.kuma.app.komica.widgets.KLinearLayoutManager;
 import idv.kuma.app.komica.widgets.MutableLinkMovementMethod;
@@ -375,7 +378,14 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                     CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                     builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.primary));
                     CustomTabsIntent customTabsIntent = builder.build();
-                    customTabsIntent.launchUrl(getContext(), uri);
+                    final List<ResolveInfo> customTabsApps = getActivity().getPackageManager().queryIntentActivities(customTabsIntent.intent, 0);
+
+                    if (customTabsApps.size() > 0) {
+                        CustomTabActivityHelper.openCustomTab(getActivity(), customTabsIntent, Uri.parse(link), new WebViewFallback());
+                    } else {
+                        // Chrome not installed. Display a toast or something to notify the user
+                        customTabsIntent.launchUrl(getContext(), uri);
+                    }
                 }
             });
             holder.postQuoteTextView.setMovementMethod(movementMethod);
