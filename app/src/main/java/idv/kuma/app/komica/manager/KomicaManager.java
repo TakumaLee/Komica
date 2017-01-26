@@ -212,7 +212,7 @@ public class KomicaManager {
                     if ("a".equals(elem.tagName())) {
                         KomicaMenuMember member = new KomicaMenuMember();
                         String title = elem.text();
-                        if ("".equals(title) || title == null) {
+                        if ("".equals(title) || title == null || title.contains("email")) {
                             Pattern pattern = Pattern.compile("\\, '(.*?)'\\)");
                             Matcher matcher = pattern.matcher(elem.attr("onclick"));
                             if (matcher.find()) {

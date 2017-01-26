@@ -1,7 +1,6 @@
 package idv.kuma.app.komica.views;
 
 import android.app.Activity;
-import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.customtabs.CustomTabsClient;
