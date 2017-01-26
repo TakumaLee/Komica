@@ -14,6 +14,12 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.upstream.HttpDataSource;
+import com.google.android.exoplayer2.util.Util;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -38,6 +44,9 @@ public class KomicaApplication extends MultiDexApplication {
 
     private Tracker tracker;
 
+    private OkHttpClient okHttpClient;
+    protected String userAgent;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -47,6 +56,7 @@ public class KomicaApplication extends MultiDexApplication {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
 //        KumaAdSDK.initSingleton(getApplicationContext());
+        initExoplayer();
 
         Glide.get(this).register(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(new OkHttpClient()));
         DrawerImageLoader.init(new AbstractDrawerImageLoader() {
@@ -85,6 +95,24 @@ public class KomicaApplication extends MultiDexApplication {
             }
         });
 
+    }
+
+    private void initExoplayer() {
+        userAgent = Util.getUserAgent(this, "ExoPlayer2");
+
+    }
+
+    public DataSource.Factory buildDataSourceFactory(DefaultBandwidthMeter bandwidthMeter) {
+        return new DefaultDataSourceFactory(this, bandwidthMeter,
+                buildHttpDataSourceFactory(bandwidthMeter));
+    }
+
+    public HttpDataSource.Factory buildHttpDataSourceFactory(DefaultBandwidthMeter bandwidthMeter) {
+        return new DefaultHttpDataSourceFactory(userAgent, bandwidthMeter);
+    }
+
+    public boolean useExtensionRenderers() {
+        return BuildConfig.FLAVOR.equals("withExtensions");
     }
 
     @Override
