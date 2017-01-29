@@ -94,7 +94,7 @@ public class KPost {
             }
         } else {
             String inputId = element.getElementsByTag("input").attr("id");
-            if (inputId == null) {
+            if ("".equals(inputId) || inputId == null) {
                 inputId = element.getElementsByAttributeValue("type", "checkbox").attr("name");
             }
             setId(inputId);
