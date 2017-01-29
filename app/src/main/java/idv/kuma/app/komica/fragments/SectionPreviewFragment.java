@@ -86,6 +86,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
     private int pageCount = 1;
 
     private String link = "";
+    private boolean isLinkPage = false;
 
     private boolean isPosting = false;
 
@@ -182,7 +183,11 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         adapter.setLoadMoreListener(new LoadMoreListener() {
             @Override
             public void onLoadMore() {
-                url = url.substring(0, url.lastIndexOf("/") + 1) + page + link;
+                if (isLinkPage) {
+                    url = url.substring(0, url.lastIndexOf("/") + 1) + link.replaceAll("[0-9]", String.valueOf(page));
+                } else {
+                    url = url.substring(0, url.lastIndexOf("/") + 1) + page + link;
+                }
                 loadSection();
             }
         });
@@ -237,7 +242,15 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                 titlePostList.addAll(CrawlerUtils.getIntegratedPostList(document, url));
                 notifyAdapter();
 
-                pageCount = document.getElementsByAttributeValue("border", "1").first().select("a").size();
+                Element pageElem = document.getElementsByAttributeValue("border", "1").first();
+                pageCount = pageElem.select("a").size();
+                if (pageElem.select("a").isEmpty()) {
+                    return;
+                }
+                String linkTmp = pageElem.select("a").first().attr("href");
+                if ("".equals(link)) {
+                    link = linkTmp.replaceAll("[0-9]", "");
+                }
             }
         });
     }
@@ -263,13 +276,20 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                 if (null == pageSwitch) {
                     pageSwitch = document.getElementById("page_switch");
                 }
-                if (pageCount <= 1 && null != pageSwitch.select("a")) {
+                // TODO has two mode, please watch out it.
+                if (pageCount <= 1 && null != pageSwitch.select("a") && !pageSwitch.getElementsByTag("table").isEmpty()) {
+                    isLinkPage = false;
                     pageCount = pageSwitch.select("a").size();
                     if ("".equals(link) && pageSwitch.select("a").attr("href").contains("?")) {
                         link = pageSwitch.select("a").attr("href").replaceAll("[0-9]", "");
                     }
-                } else if (pageCount <= 1) {
-                    pageCount = pageSwitch.getElementsByAttributeValueContaining("class", "link").size();
+                } else if (pageCount <= 1 && pageSwitch.getElementsByTag("table").isEmpty()) {
+                    isLinkPage = true;
+                    pageCount = pageSwitch.getElementsByAttributeValue("class", "link ").size();
+                    if ("".equals(link)) {
+                        Element pageStartLinkElem = pageSwitch.getElementsByAttributeValue("class", "link ").first();
+                        link = pageStartLinkElem.select("a").attr("href");
+                    }
                 }
             }
         });
