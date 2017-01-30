@@ -421,6 +421,9 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
 
             @Override
             public void onResponse(int responseCode, String result) {
+                if (null == getActivity()) {
+                    return;
+                }
                 if (result.contains("ReDirUrl")) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
