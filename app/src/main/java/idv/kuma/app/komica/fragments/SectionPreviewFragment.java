@@ -401,7 +401,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                     final List<ResolveInfo> customTabsApps = getActivity().getPackageManager().queryIntentActivities(customTabsIntent.intent, 0);
 
                     if (customTabsApps.size() > 0) {
-                        CustomTabActivityHelper.openCustomTab(getActivity(), customTabsIntent, Uri.parse(link), new WebViewFallback());
+                        CustomTabActivityHelper.openCustomTab(getActivity(), customTabsIntent, uri, new WebViewFallback());
                     } else {
                         // Chrome not installed. Display a toast or something to notify the user
                         customTabsIntent.launchUrl(getContext(), uri);
