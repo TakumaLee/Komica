@@ -31,6 +31,7 @@ import java.io.InputStream;
 
 import idv.kuma.app.komica.context.ApplicationContextSingleton;
 import idv.kuma.app.komica.manager.KomicaAccountManager;
+import idv.kuma.app.komica.manager.YoutubeManager;
 import idv.kuma.app.komica.utils.KLog;
 import io.fabric.sdk.android.Fabric;
 import okhttp3.OkHttpClient;
@@ -53,6 +54,7 @@ public class KomicaApplication extends MultiDexApplication {
         Fabric.with(this, new Crashlytics());
         KomicaAccountManager.initialize(getApplicationContext());
         ApplicationContextSingleton.initialize(getApplicationContext());
+        YoutubeManager.initialize(getApplicationContext());
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
 //        KumaAdSDK.initSingleton(getApplicationContext());
