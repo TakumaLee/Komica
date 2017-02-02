@@ -58,8 +58,9 @@ public class PostView extends LinearLayout {
     }
 
     private void initView() {
-        LayoutInflater inflate = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        postImgListContainer = (LinearLayout) inflate.inflate(R.layout.layout_section_post_img_list, this);
+//        LayoutInflater inflate = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        inflate.inflate(R.layout.layout_section_post_img_list, this);
+        postImgListContainer = (LinearLayout) findViewById(R.id.linearLayout_section_preview_imgList_container);
         postIdTextView = (TextView) findViewById(R.id.textView_section_post_id);
         postTitleTextView = (TextView) findViewById(R.id.textView_section_post_title);
         postQuoteTextView = (TextView) findViewById(R.id.textView_section_post_quote);
@@ -97,8 +98,8 @@ public class PostView extends LinearLayout {
         } else {
             postThumbImageView.setVisibility(GONE);
         }
+        postImgListContainer.removeAllViews();
         if (post.getPostImageList().size() > 1) {
-            postImgListContainer.removeAllViews();
             for (KPostImage postImage : post.getPostImageList()) {
                 final ImageView imageView = new ImageView(getContext());
                 imageView.setVisibility(KomicaAccountManager.getInstance().isLogin() ? VISIBLE : GONE);
