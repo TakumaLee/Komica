@@ -50,6 +50,7 @@ import idv.kuma.app.komica.manager.KomicaManager;
 import idv.kuma.app.komica.manager.ThirdPartyManager;
 import idv.kuma.app.komica.utils.AppTools;
 import idv.kuma.app.komica.utils.KLog;
+import idv.kuma.app.player.PlayerActivity;
 
 /**
  * Created by TakumaLee on 2016/12/5.
@@ -216,11 +217,22 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
                                 break;
                             case 1002:
                                 Toast.makeText(getContext(), "Coming soon!!!", Toast.LENGTH_LONG).show();
-                                tracker.send(new HitBuilders.EventBuilder()
-                                        .setCategory("01. KomicaMenu")
-                                        .setAction("贊助點擊")
-                                        .setLabel("贊助")
-                                        .build());
+                                intent = new Intent(getContext(), PlayerActivity.class);
+//                                intent.putExtra(PlayerActivity.PREFER_EXTENSION_DECODERS, preferExtensionDecoders);
+//                                if (drmSchemeUuid != null) {
+//                                    intent.putExtra(PlayerActivity.DRM_SCHEME_UUID_EXTRA, drmSchemeUuid.toString());
+//                                    intent.putExtra(PlayerActivity.DRM_LICENSE_URL, drmLicenseUrl);
+//                                    intent.putExtra(PlayerActivity.DRM_KEY_REQUEST_PROPERTIES, drmKeyRequestProperties);
+//                                }
+                                intent.setData(Uri.parse("http://homu.komica.org/23/src/1485974876671.webm"))
+//                                    .putExtra(PlayerActivity.EXTENSION_EXTRA, extension)
+                                    .setAction(PlayerActivity.ACTION_VIEW);
+//                                tracker.send(new HitBuilders.EventBuilder()
+//                                        .setCategory("01. KomicaMenu")
+//                                        .setAction("贊助點擊")
+//                                        .setLabel("贊助")
+//                                        .build());
+                                startActivity(intent);
                                 break;
                             case 1003:
                                 try {

@@ -87,6 +87,21 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.SectionDetailsActivity"></activity>
+        <activity android:name="idv.kuma.app.player.PlayerActivity">
+            <intent-filter>
+                <action android:name="idv.kuma.app.exoplayer.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:scheme="content"/>
+                <data android:scheme="asset"/>
+                <data android:scheme="file"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="idv.kuma.app.exoplayer.action.VIEW_LIST"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
