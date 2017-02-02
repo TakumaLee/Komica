@@ -1,8 +1,23 @@
 {
   "promoteList":[
     {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2250276",
+      "promotionTitle":"海賊 854",
+      "prmotionImg":""
+    },
+    {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2251648",
       "promotionTitle":"銀魂 622",
+      "prmotionImg":""
+    },
+    {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2250317",
+      "promotionTitle":"食戟 201",
+      "prmotionImg":""
+    },
+    {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2249645",
+      "promotionTitle":"出包 76",
       "prmotionImg":""
     },
     {
@@ -21,23 +36,13 @@
       "prmotionImg":""
     },
     {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2250317",
-      "promotionTitle":"食戟 201",
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/live/pixmicat.php?res=1161693",
+      "promotionTitle":"為這美好的世界\n送上祝福2 04",
       "prmotionImg":""
     },
     {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2249645",
-      "promotionTitle":"出包 76",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/live/pixmicat.php?res=1155849",
-      "promotionTitle":"為這美好的世界\n送上祝福2 03",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/live/pixmicat.php?res=1155506",
-      "promotionTitle":"龍女僕 03",
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/live/pixmicat.php?res=1161612",
+      "promotionTitle":"龍女僕 04",
       "prmotionImg":""
     }
   ]
