@@ -526,7 +526,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
 
         private void notifyVideo(KPost post) {
             this.post = post;
-            if (post.hasVideo()) {
+            if (KomicaAccountManager.getInstance().isLogin() && post.hasVideo()) {
                 postVideoContainer.setVisibility(VISIBLE);
                 postVideoContainer.setOnClickListener(onVideoClickListener);
             } else {

@@ -109,7 +109,9 @@ public class PostView extends LinearLayout {
         if ((post.hasImage() || post.hasVideo()) && post.getPostImageList().size() > 0) {
             postThumbImageView.setVisibility(KomicaAccountManager.getInstance().isLogin() ? VISIBLE : GONE);
             Glide.with(getContext()).load(post.getPostImageList().get(0).getImageUrl()).into(postThumbImageView);
+            notifyVideo();
         } else {
+            postVideoContainer.setVisibility(GONE);
             postThumbImageView.setVisibility(GONE);
         }
         postImgListContainer.removeAllViews();
@@ -144,11 +146,10 @@ public class PostView extends LinearLayout {
                 postImgListContainer.addView(imageView);
             }
         }
-        notifyVideo();
     }
 
     private void notifyVideo() {
-        if (post.hasVideo()) {
+        if (KomicaAccountManager.getInstance().isLogin() && post.hasVideo()) {
             postVideoContainer.setVisibility(VISIBLE);
             postVideoContainer.setOnClickListener(onVideoClickListener);
         } else {
