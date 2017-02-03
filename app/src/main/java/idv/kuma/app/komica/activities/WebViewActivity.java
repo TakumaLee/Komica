@@ -3,6 +3,8 @@ package idv.kuma.app.komica.activities;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 
+import com.google.android.gms.analytics.HitBuilders;
+
 import idv.kuma.app.komica.R;
 import idv.kuma.app.komica.activities.base.BaseOtherActivity;
 import idv.kuma.app.komica.configs.BundleKeyConfigs;
@@ -26,5 +28,8 @@ public class WebViewActivity extends BaseOtherActivity {
         if (null == savedInstanceState) {
             getSupportFragmentManager().beginTransaction().add(R.id.relativeLayout_webView, WebViewFragment.newInstance(getIntent().getExtras())).commit();
         }
+
+        tracker.setScreenName("網頁: " + title);
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 }

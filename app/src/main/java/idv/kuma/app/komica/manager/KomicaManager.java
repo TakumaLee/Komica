@@ -1,5 +1,8 @@
 package idv.kuma.app.komica.manager;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -30,6 +33,7 @@ import idv.kuma.app.komica.entity.KomicaMenuMember;
 import idv.kuma.app.komica.http.NetworkCallback;
 import idv.kuma.app.komica.http.OkHttpClientConnect;
 import idv.kuma.app.komica.utils.KLog;
+import idv.kuma.app.player.PlayerActivity;
 
 /**
  * Created by TakumaLee on 2016/12/6.
@@ -140,6 +144,21 @@ public class KomicaManager {
                 }
             }
         });
+    }
+
+    public void startPlayerActivity(Context context,String title, String url) {
+        Intent intent = new Intent(context, PlayerActivity.class);
+//                                intent.putExtra(PlayerActivity.PREFER_EXTENSION_DECODERS, preferExtensionDecoders);
+//                                if (drmSchemeUuid != null) {
+//                                    intent.putExtra(PlayerActivity.DRM_SCHEME_UUID_EXTRA, drmSchemeUuid.toString());
+//                                    intent.putExtra(PlayerActivity.DRM_LICENSE_URL, drmLicenseUrl);
+//                                    intent.putExtra(PlayerActivity.DRM_KEY_REQUEST_PROPERTIES, drmKeyRequestProperties);
+//                                }
+        intent.setData(Uri.parse(url))
+                .putExtra(PlayerActivity.PLAYER_TITLE, title)
+//                                    .putExtra(PlayerActivity.EXTENSION_EXTRA, extension)
+                .setAction(PlayerActivity.ACTION_VIEW);
+        context.startActivity(intent);
     }
 
     public void setMenuGroupList(List<KomicaMenuGroup> menuGroupList) {

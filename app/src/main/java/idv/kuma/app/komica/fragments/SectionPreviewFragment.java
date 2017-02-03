@@ -8,6 +8,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -38,10 +41,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import at.huber.youtubeExtractor.OnYoutubeParseListener;
+import at.huber.youtubeExtractor.YtFile;
 import idv.kuma.app.komica.R;
 import idv.kuma.app.komica.activities.SectionDetailsActivity;
 import idv.kuma.app.komica.adapters.LoadMoreViewHolder;
 import idv.kuma.app.komica.configs.BundleKeyConfigs;
+import idv.kuma.app.komica.entity.KPost;
 import idv.kuma.app.komica.entity.KReply;
 import idv.kuma.app.komica.entity.KTitle;
 import idv.kuma.app.komica.fragments.base.BaseFragment;
@@ -51,6 +57,7 @@ import idv.kuma.app.komica.manager.FacebookManager;
 import idv.kuma.app.komica.manager.KomicaAccountManager;
 import idv.kuma.app.komica.manager.KomicaManager;
 import idv.kuma.app.komica.manager.ThirdPartyManager;
+import idv.kuma.app.komica.manager.YoutubeManager;
 import idv.kuma.app.komica.utils.CrawlerUtils;
 import idv.kuma.app.komica.utils.KLog;
 import idv.kuma.app.komica.views.CustomTabActivityHelper;
@@ -64,6 +71,8 @@ import tw.showang.recycleradaterbase.RecyclerAdapterBase;
 
 import static android.content.Context.ACTIVITY_SERVICE;
 import static android.text.Html.FROM_HTML_MODE_LEGACY;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 /**
  * Created by TakumaLee on 2016/12/10.
@@ -401,7 +410,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                     final List<ResolveInfo> customTabsApps = getActivity().getPackageManager().queryIntentActivities(customTabsIntent.intent, 0);
 
                     if (customTabsApps.size() > 0) {
-                        CustomTabActivityHelper.openCustomTab(getActivity(), customTabsIntent, Uri.parse(link), new WebViewFallback());
+                        CustomTabActivityHelper.openCustomTab(getActivity(), customTabsIntent, uri, new WebViewFallback());
                     } else {
                         // Chrome not installed. Display a toast or something to notify the user
                         customTabsIntent.launchUrl(getContext(), uri);
@@ -422,19 +431,19 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
             });
             if ((head.hasVideo() || head.hasImage()) && head.getPostImageList().size() > 0) {
                 if (KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin()) {
-                    holder.postThumbImageView.setVisibility(View.VISIBLE);
-                    holder.postImgErrMsgTextView.setVisibility(View.GONE);
+                    holder.postThumbImageView.setVisibility(VISIBLE);
+                    holder.postImgErrMsgTextView.setVisibility(GONE);
                     Glide.with(getContext()).load(head.getPostImageList().get(0).getImageUrl()).into(holder.postThumbImageView);
                 } else {
-                    holder.postThumbImageView.setVisibility(View.GONE);
-                    holder.postImgErrMsgTextView.setVisibility(View.VISIBLE);
+                    holder.postThumbImageView.setVisibility(GONE);
+                    holder.postImgErrMsgTextView.setVisibility(VISIBLE);
                 }
             } else {
-                holder.postThumbImageView.setVisibility(View.GONE);
-                holder.postImgErrMsgTextView.setVisibility(View.GONE);
+                holder.postThumbImageView.setVisibility(GONE);
+                holder.postImgErrMsgTextView.setVisibility(GONE);
             }
             if (titleList.get(position).getReplyList().size() > 0) {
-                holder.replyLinearLayout.setVisibility(View.VISIBLE);
+                holder.replyLinearLayout.setVisibility(VISIBLE);
                 holder.replyLinearLayout.removeAllViews();
                 for (KReply reply : titleList.get(position).getReplyList()) {
                     PostView postView = new PostView(viewHolder.itemView.getContext());
@@ -445,8 +454,9 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                     holder.replyLinearLayout.addView(postView);
                 }
             } else {
-                holder.replyLinearLayout.setVisibility(View.GONE);
+                holder.replyLinearLayout.setVisibility(GONE);
             }
+            holder.notifyVideo(head);
         }
 
         @Override
@@ -458,13 +468,15 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         protected void onBindLoadMoreViewHolder(RecyclerView.ViewHolder viewHolder, boolean isLoadMoreFailed) {
             super.onBindLoadMoreViewHolder(viewHolder, isLoadMoreFailed);
             LoadMoreViewHolder vh = (LoadMoreViewHolder) viewHolder;
-            vh.progressBar.setVisibility(isLoadMoreFailed ? View.GONE : View.VISIBLE);
-            vh.failText.setVisibility(isLoadMoreFailed ? View.VISIBLE : View.GONE);
+            vh.progressBar.setVisibility(isLoadMoreFailed ? GONE : VISIBLE);
+            vh.failText.setVisibility(isLoadMoreFailed ? VISIBLE : GONE);
         }
 
     }
 
     class SectionPreViewHolder extends RecyclerView.ViewHolder {
+
+        KPost post;
 
         TextView postIdTextView;
         TextView postTitleTextView;
@@ -476,6 +488,9 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         TextView postWarnTextView;
         Button moreBtn;
         LinearLayout replyLinearLayout;
+
+        RelativeLayout postVideoContainer;
+        TextView postVideoTitleTextView;
 
         public SectionPreViewHolder(View itemView) {
             super(itemView);
@@ -491,8 +506,8 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
             moreBtn = findViewById(itemView, R.id.button_section_preview_more);
             replyLinearLayout = findViewById(itemView, R.id.linearLayout_section_preview_replyContainer);
 
-            postThumbImageView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin() ? View.VISIBLE : View.GONE);
-            postImgErrMsgTextView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin() ? View.GONE : View.VISIBLE);
+            postThumbImageView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin() ? VISIBLE : GONE);
+            postImgErrMsgTextView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin() ? GONE : VISIBLE);
             postImgErrMsgTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -504,7 +519,52 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                     ThirdPartyManager.getInstance().loginFacebook((Activity) getContext());
                 }
             });
+
+            postVideoContainer = findViewById(itemView, R.id.relativeLayout_section_post_video_content_container);
+            postVideoTitleTextView = findViewById(itemView, R.id.textView_section_post_video_content_title);
         }
+
+        private void notifyVideo(KPost post) {
+            this.post = post;
+            if (KomicaAccountManager.getInstance().isLogin() && post.hasVideo()) {
+                postVideoContainer.setVisibility(VISIBLE);
+                postVideoContainer.setOnClickListener(onVideoClickListener);
+            } else {
+                postVideoContainer.setVisibility(GONE);
+                postVideoContainer.setOnClickListener(null);
+            }
+        }
+
+        private View.OnClickListener onVideoClickListener = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (post.getVideoUrl().contains("youtube") || post.getVideoUrl().contains("youtu.be")) {
+                    YoutubeManager.getInstance().startParseYoutubeUrl(getActivity(), post.getVideoUrl(), new OnYoutubeParseListener() {
+                        @Override
+                        public int describeContents() {
+                            return 0;
+                        }
+
+                        @Override
+                        public void writeToParcel(Parcel dest, int flags) {
+
+                        }
+
+                        @Override
+                        public void onUrisAvailable(String videoId, String videoTitle, SparseArray<YtFile> ytFiles) {
+                            KLog.v(TAG, "onYoutube id: " + videoId);
+                            KLog.v(TAG, "onYoutube title: " + videoTitle);
+                            KLog.v(TAG, "onYoutube files: " + ytFiles.size() + "_" + ytFiles.get(22).getUrl());
+                            KomicaManager.getInstance().startPlayerActivity(getContext(), videoTitle, ytFiles.get(22).getUrl());
+                        }
+                    });
+                } else {
+                    KomicaManager.getInstance().startPlayerActivity(v.getContext(), post.getTitle(), post.getVideoUrl());
+                }
+            }
+        };
+
     }
 
 }
