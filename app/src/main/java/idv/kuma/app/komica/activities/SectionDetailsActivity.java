@@ -2,6 +2,8 @@ package idv.kuma.app.komica.activities;
 
 import android.os.Bundle;
 
+import com.google.android.gms.analytics.HitBuilders;
+
 import idv.kuma.app.komica.R;
 import idv.kuma.app.komica.activities.base.BaseOtherActivity;
 import idv.kuma.app.komica.configs.BundleKeyConfigs;
@@ -23,6 +25,9 @@ public class SectionDetailsActivity extends BaseOtherActivity {
         if (null == savedInstanceState) {
             getSupportFragmentManager().beginTransaction().add(R.id.activity_section_details, SectionDetailsFragment.newInstance(from, url, title, webType)).commit();
         }
+
+        tracker.setScreenName("詳細頁面: " + title);
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override

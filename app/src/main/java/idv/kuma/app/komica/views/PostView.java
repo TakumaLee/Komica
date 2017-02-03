@@ -162,7 +162,7 @@ public class PostView extends LinearLayout {
         @Override
         public void onClick(View v) {
             if (post.getVideoUrl().contains("youtube") || post.getVideoUrl().contains("youtu.be")) {
-                YoutubeManager.getInstance().startParseYoutubeUrl(post.getVideoUrl(), new OnYoutubeParseListener() {
+                YoutubeManager.getInstance().startParseYoutubeUrl((Activity) getContext(), post.getVideoUrl(), new OnYoutubeParseListener() {
                     @Override
                     public int describeContents() {
                         return 0;
@@ -178,11 +178,11 @@ public class PostView extends LinearLayout {
                         KLog.v(TAG, "onYoutube id: " + videoId);
                         KLog.v(TAG, "onYoutube title: " + videoTitle);
                         KLog.v(TAG, "onYoutube files: " + ytFiles.size() + "_" + ytFiles.get(22).getUrl());
-                        KomicaManager.getInstance().startPlayerActivity(getContext(), ytFiles.get(22).getUrl());
+                        KomicaManager.getInstance().startPlayerActivity(getContext(), videoTitle, ytFiles.get(22).getUrl());
                     }
                 });
             } else {
-                KomicaManager.getInstance().startPlayerActivity(v.getContext(), post.getVideoUrl());
+                KomicaManager.getInstance().startPlayerActivity(v.getContext(), post.getTitle(), post.getVideoUrl());
             }
         }
     };

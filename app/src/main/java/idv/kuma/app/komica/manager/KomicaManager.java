@@ -146,7 +146,7 @@ public class KomicaManager {
         });
     }
 
-    public void startPlayerActivity(Context context, String url) {
+    public void startPlayerActivity(Context context,String title, String url) {
         Intent intent = new Intent(context, PlayerActivity.class);
 //                                intent.putExtra(PlayerActivity.PREFER_EXTENSION_DECODERS, preferExtensionDecoders);
 //                                if (drmSchemeUuid != null) {
@@ -155,6 +155,7 @@ public class KomicaManager {
 //                                    intent.putExtra(PlayerActivity.DRM_KEY_REQUEST_PROPERTIES, drmKeyRequestProperties);
 //                                }
         intent.setData(Uri.parse(url))
+                .putExtra(PlayerActivity.PLAYER_TITLE, title)
 //                                    .putExtra(PlayerActivity.EXTENSION_EXTRA, extension)
                 .setAction(PlayerActivity.ACTION_VIEW);
         context.startActivity(intent);

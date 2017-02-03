@@ -15,7 +15,6 @@
  */
 package idv.kuma.app.player;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -67,6 +66,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.gms.analytics.HitBuilders;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -77,12 +77,15 @@ import java.util.UUID;
 
 import idv.kuma.app.komica.KomicaApplication;
 import idv.kuma.app.komica.R;
+import idv.kuma.app.komica.activities.base.BaseOtherActivity;
 
 /**
  * An activity that plays media using {@link SimpleExoPlayer}.
  */
-public class PlayerActivity extends Activity implements OnClickListener, ExoPlayer.EventListener,
+public class PlayerActivity extends BaseOtherActivity implements OnClickListener, ExoPlayer.EventListener,
     PlaybackControlView.VisibilityListener {
+
+  public static final String PLAYER_TITLE = "player_title";
 
   public static final String DRM_SCHEME_UUID_EXTRA = "drm_scheme_uuid";
   public static final String DRM_LICENSE_URL = "drm_license_url";
@@ -148,6 +151,11 @@ public class PlayerActivity extends Activity implements OnClickListener, ExoPlay
     simpleExoPlayerView = (SimpleExoPlayerView) findViewById(R.id.player_view);
     simpleExoPlayerView.setControllerVisibilityListener(this);
     simpleExoPlayerView.requestFocus();
+
+    String title = getIntent().getStringExtra(PLAYER_TITLE);
+    setTitle(title);
+    tracker.setScreenName("播放器: " + title);
+    tracker.send(new HitBuilders.ScreenViewBuilder().build());
   }
 
   @Override
