@@ -46,10 +46,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    productFlavors {
-        noExtensions
-        withExtensions
-    }
+//    productFlavors {
+//        noExtensions
+//        withExtensions
+//    }
     dexOptions {
 //        incremental true
         jumboMode = true

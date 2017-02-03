@@ -110,6 +110,12 @@ public class KPost {
                 setName(label.getElementsByClass("name").text());// loss the time date
             }
             Element quoteElement = element.getElementsByClass("quote").first();
+            if (!quoteElement.getElementsByTag("img").isEmpty()) {
+                for (Element imgElem : quoteElement.getElementsByTag("img")) {
+                    postImageList.add(new KPostImage(imgElem.attr("src")));
+                    imgElem.remove();
+                }
+            }
             Elements moeVideo = quoteElement.getElementsByTag("moe-video");
             if (!moeVideo.isEmpty()) {
                 setHasVideo(true);
@@ -152,6 +158,7 @@ public class KPost {
                     setThumbHeight(findHeightPixel(thumbElement.attr("style")));
                 }
             }
+            setHasImage(postImageList.size() > 0);
         }
     }
 
