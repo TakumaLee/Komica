@@ -1,1 +1,1 @@
-include ':app', ':AppVersionManager', ':shared'
+include ':app', ':AppVersionManager', ':shared', ':YoutubeExtractor'

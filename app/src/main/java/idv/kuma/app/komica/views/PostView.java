@@ -4,27 +4,34 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build;
+import android.os.Parcel;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
+import at.huber.youtubeExtractor.OnYoutubeParseListener;
+import at.huber.youtubeExtractor.YtFile;
 import idv.kuma.app.komica.R;
 import idv.kuma.app.komica.entity.KPost;
 import idv.kuma.app.komica.entity.KPostImage;
 import idv.kuma.app.komica.manager.KomicaAccountManager;
 import idv.kuma.app.komica.manager.KomicaManager;
 import idv.kuma.app.komica.manager.ThirdPartyManager;
+import idv.kuma.app.komica.manager.YoutubeManager;
 import idv.kuma.app.komica.utils.AppTools;
+import idv.kuma.app.komica.utils.KLog;
 
 import static android.text.Html.FROM_HTML_MODE_LEGACY;
 
@@ -33,6 +40,7 @@ import static android.text.Html.FROM_HTML_MODE_LEGACY;
  */
 
 public class PostView extends LinearLayout {
+    private static final String TAG = PostView.class.getSimpleName();
 
     public TextView postIdTextView;
     public TextView postTitleTextView;
@@ -40,6 +48,9 @@ public class PostView extends LinearLayout {
     public ImageView postThumbImageView;
     public TextView postImgErrMsgTextView;
     public LinearLayout postImgListContainer;
+
+    public RelativeLayout postVideoContainer;
+    public TextView postVideoTitleTextView;
 
     private KPost post;
 
@@ -74,6 +85,9 @@ public class PostView extends LinearLayout {
                 ThirdPartyManager.getInstance().loginFacebook((Activity) getContext());
             }
         });
+
+        postVideoContainer = (RelativeLayout) findViewById(R.id.relativeLayout_section_post_video_content_container);
+        postVideoTitleTextView = (TextView) findViewById(R.id.textView_section_post_video_content_title);
     }
 
     public void setPost(KPost post) {
@@ -95,7 +109,9 @@ public class PostView extends LinearLayout {
         if ((post.hasImage() || post.hasVideo()) && post.getPostImageList().size() > 0) {
             postThumbImageView.setVisibility(KomicaAccountManager.getInstance().isLogin() ? VISIBLE : GONE);
             Glide.with(getContext()).load(post.getPostImageList().get(0).getImageUrl()).into(postThumbImageView);
+            notifyVideo();
         } else {
+            postVideoContainer.setVisibility(GONE);
             postThumbImageView.setVisibility(GONE);
         }
         postImgListContainer.removeAllViews();
@@ -131,4 +147,44 @@ public class PostView extends LinearLayout {
             }
         }
     }
+
+    private void notifyVideo() {
+        if (KomicaAccountManager.getInstance().isLogin() && post.hasVideo()) {
+            postVideoContainer.setVisibility(VISIBLE);
+            postVideoContainer.setOnClickListener(onVideoClickListener);
+        } else {
+            postVideoContainer.setVisibility(GONE);
+            postVideoContainer.setOnClickListener(null);
+        }
+    }
+
+    private OnClickListener onVideoClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (post.getVideoUrl().contains("youtube") || post.getVideoUrl().contains("youtu.be")) {
+                YoutubeManager.getInstance().startParseYoutubeUrl(post.getVideoUrl(), new OnYoutubeParseListener() {
+                    @Override
+                    public int describeContents() {
+                        return 0;
+                    }
+
+                    @Override
+                    public void writeToParcel(Parcel dest, int flags) {
+
+                    }
+
+                    @Override
+                    public void onUrisAvailable(String videoId, String videoTitle, SparseArray<YtFile> ytFiles) {
+                        KLog.v(TAG, "onYoutube id: " + videoId);
+                        KLog.v(TAG, "onYoutube title: " + videoTitle);
+                        KLog.v(TAG, "onYoutube files: " + ytFiles.size() + "_" + ytFiles.get(22).getUrl());
+                        KomicaManager.getInstance().startPlayerActivity(getContext(), ytFiles.get(22).getUrl());
+                    }
+                });
+            } else {
+                KomicaManager.getInstance().startPlayerActivity(v.getContext(), post.getVideoUrl());
+            }
+        }
+    };
+
 }
