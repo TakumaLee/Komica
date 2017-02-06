@@ -194,6 +194,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                 break;
             case KomicaManager.WebType.THREADS:
             case KomicaManager.WebType.NORMAL:
+            case KomicaManager.WebType.THREADS_LIST:
             default:
                 break;
         }
@@ -225,6 +226,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                                 break;
                             case KomicaManager.WebType.THREADS:
                             case KomicaManager.WebType.NORMAL:
+                            case KomicaManager.WebType.THREADS_LIST:
                             default:
                                 submitStr = "javascript:" + "document.getElementById('" + formElem.id() + "').submit();";
                                 webView.loadUrl("javascript:" + "document.getElementById('fcom').value='" + comment + "';" + submitStr);
@@ -403,6 +405,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         switch (webType) {
             case KomicaManager.WebType.INTEGRATED:
                 break;
+            case KomicaManager.WebType.THREADS_LIST:
             case KomicaManager.WebType.THREADS:
             case KomicaManager.WebType.NORMAL:
             default:

@@ -146,7 +146,17 @@ public class KPost {
                     imgElement = element.getElementsByAttributeValue("target", "_blank").first();
                 }
                 if (imgElement != null) {
-                    postImageList.add(new KPostImage(imgElement.attr("href"), imgElement.text()));
+                    String link = imgElement.attr("href");
+                    if (!link.startsWith("http")) {
+                        if (link.contains("..") && !imgElement.getElementsByTag("img").isEmpty()) {
+                            link = imgElement.getElementsByTag("img").attr("src");
+//                            link = domainUrl + link.replaceAll("(.*?old/\\.\\.\\/src)", "src");
+//                            if (link.contains("2nyan")) {
+//                                link = link.replaceAll("2nyan", "img.2nyan");
+//                            }
+                        }
+                    }
+                    postImageList.add(new KPostImage(link, imgElement.text()));
                 }
                 if (imgElements.size() > 1) {
                     for (Element img : imgElements) {
