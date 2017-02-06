@@ -64,6 +64,7 @@ public class KomicaManager {
         // 綜合
         public static final int INTEGRATED = 2;
         public static final int THREADS = 3;
+        public static final int THREADS_LIST = 4;
         public static final int WEB = 10;
     }
 
@@ -244,7 +245,7 @@ public class KomicaManager {
                         } else if (elem.attr("href").contains("f6")) {
                             member.setTitle(member.getTitle() + "C");
                         } else {
-                            member.setLinkUrl(elem.attr("href"));
+                            member.setLinkUrl("http:" + elem.attr("href"));
                         }
                         member.setMemberId(memberId++);
                         members.add(member);
@@ -283,6 +284,7 @@ public class KomicaManager {
     public boolean checkVisible(String memberTitle) {
         if (!switchLogin || !KomicaAccountManager.getInstance().isLogin()) {
             switch (checkWebType(memberTitle)) {
+                case WebType.THREADS_LIST:
                 case WebType.THREADS:
                 case WebType.INTEGRATED:
                 case WebType.NORMAL:
@@ -324,12 +326,23 @@ public class KomicaManager {
 
     private int checkLocalWebType(String menuStr) {
         switch (menuStr) {
+            case "繪師":
+            case "天文":
+            case "服飾":
+            case "行動遊戲":
+            case "體感遊戲":
+            case "桌上遊戲":
+            case "龍騎士07":
+            case "咖啡/茶":
+            case "鳥":
+                return WebType.THREADS_LIST;
             case "影視":
 
             case "校園":
             case "消費電子":
 
             case "女性角色":
+            case "男性角色":
             case "四格":
 
             case "遊戲速報":
@@ -360,7 +373,6 @@ public class KomicaManager {
             case "文化交流":
             case "新聞":
             case "寫真":
-            case "男性角色":
             case "中性角色":
             case "擬人化":
             case "少女漫畫":

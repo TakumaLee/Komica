@@ -312,6 +312,7 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
     private BaseFragment getWebFormatFragment(KomicaMenuMember clickMember) {
         int webType = KomicaManager.getInstance().checkWebType(clickMember.getTitle());
         switch (webType) {
+            case KomicaManager.WebType.THREADS_LIST:
             case KomicaManager.WebType.THREADS:
             case KomicaManager.WebType.INTEGRATED:
             case KomicaManager.WebType.NORMAL:

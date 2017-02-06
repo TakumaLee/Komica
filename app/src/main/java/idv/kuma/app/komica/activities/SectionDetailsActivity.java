@@ -26,7 +26,7 @@ public class SectionDetailsActivity extends BaseOtherActivity {
             getSupportFragmentManager().beginTransaction().add(R.id.activity_section_details, SectionDetailsFragment.newInstance(from, url, title, webType)).commit();
         }
 
-        tracker.setScreenName("詳細頁面: " + title);
+        tracker.setScreenName("詳細頁面: " + from + "_" + title);
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
