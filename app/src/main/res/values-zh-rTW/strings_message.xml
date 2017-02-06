@@ -14,4 +14,5 @@
     <string name="message_please_login_to_view_image">請登入後查看貼文圖片！</string>
     <string name="message_please_wait_for_replying">回覆貼帖子中，請稍後</string>
     <string name="message_loading_complete">列表更新完成</string>
+    <string name="message_no_more_data">已是最後一頁</string>
 </resources>

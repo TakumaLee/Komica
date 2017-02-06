@@ -76,6 +76,8 @@ public class KomicaAccountManager {
                         myAccount.setAdId(adId);
                     }
                     FirebaseManager.getInstance().updateUserPushData();
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (GooglePlayServicesNotAvailableException e) {

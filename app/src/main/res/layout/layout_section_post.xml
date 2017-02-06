@@ -34,15 +34,51 @@
             android:background="@color/gray_light"
             android:visibility="gone"/>
 
-        <ImageView
-            android:id="@+id/imageView_section_post_thumb"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1">
 
-        <include
+            <ImageView
+                android:id="@+id/imageView_section_post_thumb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout_section_post_video_content_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/imageView_section_post_thumb"
+                android:layout_alignBottom="@id/imageView_section_post_thumb"
+                android:background="@drawable/background_mask"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/textView_section_post_video_content_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:textColor="@color/white"/>
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_play_arrow"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <!--<include-->
+            <!--android:id="@+id/linearLayout_section_preview_imgList_container"-->
+            <!--layout="@layout/layout_section_post_img_list" />-->
+
+        <LinearLayout
             android:id="@+id/linearLayout_section_preview_imgList_container"
-            layout="@layout/layout_section_post_img_list" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></LinearLayout>
 
         <TextView
             android:id="@+id/textView_section_post_quote"

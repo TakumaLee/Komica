@@ -1,0 +1,19 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "24.0.3"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+dependencies {
+    compile('com.github.evgenyneu:js-evaluator-for-android:v1.0.4') {
+        exclude module: 'appcompat-v7'
+    }
+}

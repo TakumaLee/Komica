@@ -94,7 +94,7 @@ public class KPost {
             }
         } else {
             String inputId = element.getElementsByTag("input").attr("id");
-            if (inputId == null) {
+            if ("".equals(inputId) || inputId == null) {
                 inputId = element.getElementsByAttributeValue("type", "checkbox").attr("name");
             }
             setId(inputId);
@@ -110,6 +110,12 @@ public class KPost {
                 setName(label.getElementsByClass("name").text());// loss the time date
             }
             Element quoteElement = element.getElementsByClass("quote").first();
+            if (!quoteElement.getElementsByTag("img").isEmpty()) {
+                for (Element imgElem : quoteElement.getElementsByTag("img")) {
+                    postImageList.add(new KPostImage(imgElem.attr("src")));
+                    imgElem.remove();
+                }
+            }
             Elements moeVideo = quoteElement.getElementsByTag("moe-video");
             if (!moeVideo.isEmpty()) {
                 setHasVideo(true);
@@ -140,7 +146,17 @@ public class KPost {
                     imgElement = element.getElementsByAttributeValue("target", "_blank").first();
                 }
                 if (imgElement != null) {
-                    postImageList.add(new KPostImage(imgElement.attr("href"), imgElement.text()));
+                    String link = imgElement.attr("href");
+                    if (!link.startsWith("http")) {
+                        if (link.contains("..") && !imgElement.getElementsByTag("img").isEmpty()) {
+                            link = imgElement.getElementsByTag("img").attr("src");
+//                            link = domainUrl + link.replaceAll("(.*?old/\\.\\.\\/src)", "src");
+//                            if (link.contains("2nyan")) {
+//                                link = link.replaceAll("2nyan", "img.2nyan");
+//                            }
+                        }
+                    }
+                    postImageList.add(new KPostImage(link, imgElement.text()));
                 }
                 if (imgElements.size() > 1) {
                     for (Element img : imgElements) {
@@ -152,6 +168,7 @@ public class KPost {
                     setThumbHeight(findHeightPixel(thumbElement.attr("style")));
                 }
             }
+            setHasImage(postImageList.size() > 0);
         }
     }
 

@@ -114,15 +114,6 @@ public class IndexFragment extends BaseFragment {
 
         loadPromotionList();
 
-
-//        new YouTubeUriExtractor(getActivity()) {
-//            @Override
-//            public void onUrisAvailable(String videoId, String videoTitle, SparseArray<YtFile> ytFiles) {
-//                KLog.v(TAG, "onYoutube id: " + videoId);
-//                KLog.v(TAG, "onYoutube title: " + videoTitle);
-//                KLog.v(TAG, "onYoutube files: " + ytFiles.size() + "_" + ytFiles.get(22).getUrl());
-//            }
-//        }.execute("https://www.youtube.com/watch?v=iTMTcUtoA40");
     }
 
     private void loadPromotionList() {

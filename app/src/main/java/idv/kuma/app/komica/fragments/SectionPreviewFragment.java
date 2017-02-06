@@ -1,12 +1,16 @@
 package idv.kuma.app.komica.fragments;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
@@ -14,15 +18,24 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ConsoleMessage;
+import android.webkit.JsPromptResult;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -37,22 +50,29 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import at.huber.youtubeExtractor.OnYoutubeParseListener;
+import at.huber.youtubeExtractor.YtFile;
 import idv.kuma.app.komica.R;
 import idv.kuma.app.komica.activities.SectionDetailsActivity;
 import idv.kuma.app.komica.adapters.LoadMoreViewHolder;
 import idv.kuma.app.komica.configs.BundleKeyConfigs;
+import idv.kuma.app.komica.entity.KPost;
 import idv.kuma.app.komica.entity.KReply;
 import idv.kuma.app.komica.entity.KTitle;
 import idv.kuma.app.komica.fragments.base.BaseFragment;
 import idv.kuma.app.komica.http.NetworkCallback;
 import idv.kuma.app.komica.http.OkHttpClientConnect;
+import idv.kuma.app.komica.javascripts.JSInterface;
 import idv.kuma.app.komica.manager.FacebookManager;
 import idv.kuma.app.komica.manager.KomicaAccountManager;
 import idv.kuma.app.komica.manager.KomicaManager;
 import idv.kuma.app.komica.manager.ThirdPartyManager;
+import idv.kuma.app.komica.manager.YoutubeManager;
 import idv.kuma.app.komica.utils.CrawlerUtils;
 import idv.kuma.app.komica.utils.KLog;
+import idv.kuma.app.komica.views.CustomTabActivityHelper;
 import idv.kuma.app.komica.views.PostView;
+import idv.kuma.app.komica.views.WebViewFallback;
 import idv.kuma.app.komica.widgets.DividerItemDecoration;
 import idv.kuma.app.komica.widgets.KLinearLayoutManager;
 import idv.kuma.app.komica.widgets.MutableLinkMovementMethod;
@@ -61,6 +81,8 @@ import tw.showang.recycleradaterbase.RecyclerAdapterBase;
 
 import static android.content.Context.ACTIVITY_SERVICE;
 import static android.text.Html.FROM_HTML_MODE_LEGACY;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 /**
  * Created by TakumaLee on 2016/12/10.
@@ -75,12 +97,16 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
     private String title;
     private int webType;
 
+    private WebView webView;
     private RecyclerView recyclerView;
     private KLinearLayoutManager linearLayoutManager;
     private SectionPreviewAdapter adapter;
 
     private int page = 0;
     private int pageCount = 1;
+
+    private String link = "";
+    private boolean isLinkPage = false;
 
     private boolean isPosting = false;
 
@@ -167,6 +193,10 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         ThirdPartyManager.getInstance().unRegisterProfileListener(this);
         ThirdPartyManager.getInstance().unRegisterLogoutListener(this);
         KomicaManager.getInstance().unRegisterConfigUpdateListener(this);
+        if (webView != null) {
+            webView.stopLoading();
+            webView = null;
+        }
     }
 
     private void initView() {
@@ -177,7 +207,11 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         adapter.setLoadMoreListener(new LoadMoreListener() {
             @Override
             public void onLoadMore() {
-                url = url.substring(0, url.lastIndexOf("/") + 1) + page + ".htm";
+                if (isLinkPage) {
+                    url = url.substring(0, url.lastIndexOf("/") + 1) + link.replaceAll("[0-9]", String.valueOf(page));
+                } else {
+                    url = url.substring(0, url.lastIndexOf("/") + 1) + page + link;
+                }
                 loadSection();
             }
         });
@@ -187,10 +221,166 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
+
+    }
+
+    private void initWebView() {
+        webView = new WebView(getContext());
+        webView.setVisibility(View.GONE);
+        webView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        webView.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(new JSInterface(new JSInterface.OnCallListener() {
+            @Override
+            public void onResponse(String result) {
+                // TODO get real html
+                KLog.v(TAG, "onJavaScript onResponse");
+                Document document = Jsoup.parse(result);
+                if (document.getElementById("main") != null) {
+                    url = document.getElementById("main").attr("src");
+                    indexUrl = url;
+                    loadNormalSection();
+                }
+            }
+        }), "HtmlViewer");
+
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+            }
+
+            @Override
+            public void onPageFinished(final WebView view, String url) {
+                super.onPageFinished(view, url);
+                KLog.v(TAG, "onPageFinished: " + url);
+//                view.loadUrl("javascript:(function() {" +
+//                        "var items = document.getElementsByTagName('p');" +
+//                        "for (i = 0; i < items.length; i++) {" +
+//                        "items[i].style.display='none';" +
+//                        "}" +
+//                        "document.getElementsByTagName('a')[0].style.display = 'none';" +
+//                        "document.getElementsByTagName('center')[0].style.display = 'none';" +
+//                        "document.getElementsByTagName('form')[1].style.display = 'none';" +
+//                        "function hasClass(ele,cls) {" +
+//                        "     return ele.getElementsByClassName(cls).length > 0;" +
+//                        "}" +
+//                        "var trs = document.getElementsByTagName('form')[0].getElementsByTagName('tbody')[0].children;" +
+//                        "for (i = 0; i < trs.length; i++) {" +
+//                        "console.log(trs.length);" +
+//                        "if (hasClass(trs[i], 'g-recaptcha')) {" +
+//                        "console.log('Has g-recaptcha');" +
+//                        "trs[i].getElementsByTagName('td')[0].style.display = 'none';" +
+//                        "} else {" +
+//                        "console.log('No g-recaptcha');" +
+//                        "trs[i].style.display='none';" +
+//                        "}" +
+//                        "}" +
+//                        "}) ()");
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                            WebView formWebView = new WebView(getContext());
+//                            formWebView.getSettings().setJavaScriptEnabled(true);
+//                        webView.loadData(element.toString(), "text/html", "");
+//                        webView.removeJavascriptInterface("HtmlViewer");
+//                            formWebView.loadData(element.toString(), "text/html", "");
+//                        addPostFab.setVisibility(View.VISIBLE);
+//                    }
+//                });
+//                view.loadUrl("javascript:var con = document.getElementsByTagName('page-content'); " +"con[0].style.display = 'none'; ");
+//                view.loadUrl("javascript:window.HtmlViewer.onResponse" +
+//                        "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+                view.loadUrl("javascript:window.HtmlViewer.onResponse" +
+                        "(document.documentElement.outerHTML);");
+
+//                if (isPosting) {
+//                    isPosting = false;
+//                    if (null == webView) {
+//                        return;
+//                    }
+//                    webView.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            webView.stopLoading();
+//                        }
+//                    });
+//
+//                    loadSection();
+//                }
+            }
+
+            @Override
+            public void onPageCommitVisible(WebView view, String url) {
+                super.onPageCommitVisible(view, url);
+                KLog.v(TAG, "onPageCommitVisible");
+            }
+
+            @Override
+            public void onLoadResource(WebView view, String url) {
+                super.onLoadResource(view, url);
+                KLog.v(TAG, "onLoadResource");
+                if (null == webView) {
+                    return;
+                }
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                KLog.v(TAG, "shouldOverrideUrlLoading Url: " + url);
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                KLog.v(TAG, "shouldOverrideUrlLoading Url: " + request.getUrl().getPath());
+                return super.shouldOverrideUrlLoading(view, request);
+            }
+        });
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
+                KLog.v(TAG, "onJsConfirm: " + message);
+                return super.onJsConfirm(view, url, message, result);
+            }
+
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                KLog.v(TAG, "onProgressChanged");
+            }
+
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                KLog.v(TAG, "onJsAlert: " + message);
+                return super.onJsAlert(view, url, message, result);
+            }
+
+            @Override
+            public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
+                KLog.v(TAG, "onJsPrompt");
+                return super.onJsPrompt(view, url, message, defaultValue, result);
+            }
+
+            @Override
+            public boolean onJsBeforeUnload(WebView view, String url, String message, JsResult result) {
+                KLog.v(TAG, "onJsBeforeUnload");
+                return super.onJsBeforeUnload(view, url, message, result);
+            }
+
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                KLog.v(TAG, "onConsoleMessage");
+                return super.onConsoleMessage(consoleMessage);
+            }
+        });
     }
 
     public void loadNewSection(int webType, String url) {
         page = 0;
+        pageCount = 1;
+        link = "";
         adapter.setLoadMoreEnable(true);
         KomicaManager.getInstance().clearCache();
         recyclerView.scrollToPosition(0);
@@ -203,6 +393,9 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
 
     private void loadSection() {
         switch (webType) {
+            case KomicaManager.WebType.THREADS_LIST:
+//                loadWeb();
+//                break;
             case KomicaManager.WebType.THREADS:
                 // TODO need webview to load {backquote}
             case KomicaManager.WebType.NORMAL:
@@ -212,6 +405,13 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                 loadIntegratedSection();
                 break;
         }
+    }
+    private void loadWeb() {
+        if (null == webView) {
+            initWebView();
+        }
+        webView.loadUrl(url);
+
     }
 
     private void loadIntegratedSection() {
@@ -230,7 +430,18 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                 titlePostList.addAll(CrawlerUtils.getIntegratedPostList(document, url));
                 notifyAdapter();
 
-                pageCount = document.getElementsByAttributeValue("border", "1").first().select("a").size();
+                Element pageElem = document.getElementsByAttributeValue("border", "1").first();
+                if (pageElem == null) {
+                    return;
+                }
+                pageCount = pageElem.select("a").size();
+                if (pageElem.select("a").isEmpty()) {
+                    return;
+                }
+                String linkTmp = pageElem.select("a").first().attr("href");
+                if ("".equals(link)) {
+                    link = linkTmp.replaceAll("[0-9]", "");
+                }
             }
         });
     }
@@ -256,10 +467,20 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                 if (null == pageSwitch) {
                     pageSwitch = document.getElementById("page_switch");
                 }
-                if (null != pageSwitch.select("a")) {
+                // TODO has two mode, please watch out it.
+                if (pageCount <= 1 && null != pageSwitch.select("a") && !pageSwitch.getElementsByTag("table").isEmpty()) {
+                    isLinkPage = false;
                     pageCount = pageSwitch.select("a").size();
-                } else {
-                    pageCount = pageSwitch.getElementsByAttributeValueContaining("class", "link").size();
+                    if ("".equals(link) && pageSwitch.select("a").attr("href").contains("?")) {
+                        link = pageSwitch.select("a").attr("href").replaceAll("[0-9]", "");
+                    }
+                } else if (pageCount <= 1 && pageSwitch.getElementsByTag("table").isEmpty()) {
+                    isLinkPage = true;
+                    pageCount = pageSwitch.getElementsByAttributeValue("class", "link ").size();
+                    if ("".equals(link)) {
+                        Element pageStartLinkElem = pageSwitch.getElementsByAttributeValue("class", "link ").first();
+                        link = pageStartLinkElem.select("a").attr("href");
+                    }
                 }
             }
         });
@@ -368,7 +589,14 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                     CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                     builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.primary));
                     CustomTabsIntent customTabsIntent = builder.build();
-                    customTabsIntent.launchUrl(getContext(), uri);
+                    final List<ResolveInfo> customTabsApps = getActivity().getPackageManager().queryIntentActivities(customTabsIntent.intent, 0);
+
+                    if (customTabsApps.size() > 0) {
+                        CustomTabActivityHelper.openCustomTab(getActivity(), customTabsIntent, uri, new WebViewFallback());
+                    } else {
+                        // Chrome not installed. Display a toast or something to notify the user
+                        customTabsIntent.launchUrl(getContext(), uri);
+                    }
                 }
             });
             holder.postQuoteTextView.setMovementMethod(movementMethod);
@@ -385,19 +613,19 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
             });
             if ((head.hasVideo() || head.hasImage()) && head.getPostImageList().size() > 0) {
                 if (KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin()) {
-                    holder.postThumbImageView.setVisibility(View.VISIBLE);
-                    holder.postImgErrMsgTextView.setVisibility(View.GONE);
+                    holder.postThumbImageView.setVisibility(VISIBLE);
+                    holder.postImgErrMsgTextView.setVisibility(GONE);
                     Glide.with(getContext()).load(head.getPostImageList().get(0).getImageUrl()).into(holder.postThumbImageView);
                 } else {
-                    holder.postThumbImageView.setVisibility(View.GONE);
-                    holder.postImgErrMsgTextView.setVisibility(View.VISIBLE);
+                    holder.postThumbImageView.setVisibility(GONE);
+                    holder.postImgErrMsgTextView.setVisibility(VISIBLE);
                 }
             } else {
-                holder.postThumbImageView.setVisibility(View.GONE);
-                holder.postImgErrMsgTextView.setVisibility(View.GONE);
+                holder.postThumbImageView.setVisibility(GONE);
+                holder.postImgErrMsgTextView.setVisibility(GONE);
             }
             if (titleList.get(position).getReplyList().size() > 0) {
-                holder.replyLinearLayout.setVisibility(View.VISIBLE);
+                holder.replyLinearLayout.setVisibility(VISIBLE);
                 holder.replyLinearLayout.removeAllViews();
                 for (KReply reply : titleList.get(position).getReplyList()) {
                     PostView postView = new PostView(viewHolder.itemView.getContext());
@@ -408,8 +636,9 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                     holder.replyLinearLayout.addView(postView);
                 }
             } else {
-                holder.replyLinearLayout.setVisibility(View.GONE);
+                holder.replyLinearLayout.setVisibility(GONE);
             }
+            holder.notifyVideo(head);
         }
 
         @Override
@@ -421,13 +650,15 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         protected void onBindLoadMoreViewHolder(RecyclerView.ViewHolder viewHolder, boolean isLoadMoreFailed) {
             super.onBindLoadMoreViewHolder(viewHolder, isLoadMoreFailed);
             LoadMoreViewHolder vh = (LoadMoreViewHolder) viewHolder;
-            vh.progressBar.setVisibility(isLoadMoreFailed ? View.GONE : View.VISIBLE);
-            vh.failText.setVisibility(isLoadMoreFailed ? View.VISIBLE : View.GONE);
+            vh.progressBar.setVisibility(isLoadMoreFailed ? GONE : VISIBLE);
+            vh.failText.setVisibility(isLoadMoreFailed ? VISIBLE : GONE);
         }
 
     }
 
     class SectionPreViewHolder extends RecyclerView.ViewHolder {
+
+        KPost post;
 
         TextView postIdTextView;
         TextView postTitleTextView;
@@ -439,6 +670,9 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         TextView postWarnTextView;
         Button moreBtn;
         LinearLayout replyLinearLayout;
+
+        RelativeLayout postVideoContainer;
+        TextView postVideoTitleTextView;
 
         public SectionPreViewHolder(View itemView) {
             super(itemView);
@@ -454,8 +688,8 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
             moreBtn = findViewById(itemView, R.id.button_section_preview_more);
             replyLinearLayout = findViewById(itemView, R.id.linearLayout_section_preview_replyContainer);
 
-            postThumbImageView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin() ? View.VISIBLE : View.GONE);
-            postImgErrMsgTextView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin() ? View.GONE : View.VISIBLE);
+            postThumbImageView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin() ? VISIBLE : GONE);
+            postImgErrMsgTextView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin() ? GONE : VISIBLE);
             postImgErrMsgTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -467,7 +701,52 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                     ThirdPartyManager.getInstance().loginFacebook((Activity) getContext());
                 }
             });
+
+            postVideoContainer = findViewById(itemView, R.id.relativeLayout_section_post_video_content_container);
+            postVideoTitleTextView = findViewById(itemView, R.id.textView_section_post_video_content_title);
         }
+
+        private void notifyVideo(KPost post) {
+            this.post = post;
+            if (KomicaAccountManager.getInstance().isLogin() && post.hasVideo()) {
+                postVideoContainer.setVisibility(VISIBLE);
+                postVideoContainer.setOnClickListener(onVideoClickListener);
+            } else {
+                postVideoContainer.setVisibility(GONE);
+                postVideoContainer.setOnClickListener(null);
+            }
+        }
+
+        private View.OnClickListener onVideoClickListener = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (post.getVideoUrl().contains("youtube") || post.getVideoUrl().contains("youtu.be")) {
+                    YoutubeManager.getInstance().startParseYoutubeUrl(getActivity(), post.getVideoUrl(), new OnYoutubeParseListener() {
+                        @Override
+                        public int describeContents() {
+                            return 0;
+                        }
+
+                        @Override
+                        public void writeToParcel(Parcel dest, int flags) {
+
+                        }
+
+                        @Override
+                        public void onUrisAvailable(String videoId, String videoTitle, SparseArray<YtFile> ytFiles) {
+                            KLog.v(TAG, "onYoutube id: " + videoId);
+                            KLog.v(TAG, "onYoutube title: " + videoTitle);
+                            KLog.v(TAG, "onYoutube files: " + ytFiles.size() + "_" + ytFiles.get(22).getUrl());
+                            KomicaManager.getInstance().startPlayerActivity(getContext(), videoTitle, ytFiles.get(22).getUrl());
+                        }
+                    });
+                } else {
+                    KomicaManager.getInstance().startPlayerActivity(v.getContext(), post.getTitle(), post.getVideoUrl());
+                }
+            }
+        };
+
     }
 
 }

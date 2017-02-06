@@ -5,6 +5,8 @@ import org.jsoup.select.Elements;
 
 import java.util.List;
 
+import idv.kuma.app.komica.manager.KomicaManager;
+
 /**
  * Created by TakumaLee on 2016/12/20.
  */
@@ -27,9 +29,10 @@ public class KTitle extends KPost {
     protected String warnText;
 
     public KTitle() {
+
     }
 
-    public KTitle(Element element, String domainUrl) {
+    public KTitle(Element element, int webType, String domainUrl) {
         super(element, "threadpost", domainUrl);
         if (element.hasClass("post-head")) {
             Element postHead = element.getElementsByClass("post-head").first();
@@ -37,7 +40,7 @@ public class KTitle extends KPost {
                     .getElementsByTag("a").attr("href"));
             setWarnText(postHead.getElementsByClass("warn_txt2").text());
         } else {
-            String newUrl = domainUrl.substring(0, domainUrl.lastIndexOf("/") + 1);
+            String newUrl = webType == KomicaManager.WebType.THREADS_LIST ? "http://2nyan.org" : domainUrl.substring(0, domainUrl.lastIndexOf("/") + 1);
             Elements detailLinkElements = element.getElementsContainingOwnText("返信");
             if (detailLinkElements == null || detailLinkElements.size() == 0) {
                 detailLinkElements = element.getElementsContainingOwnText("回應");

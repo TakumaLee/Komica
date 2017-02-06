@@ -1,5 +1,8 @@
 package idv.kuma.app.komica.manager;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -10,6 +13,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -28,6 +33,7 @@ import idv.kuma.app.komica.entity.KomicaMenuMember;
 import idv.kuma.app.komica.http.NetworkCallback;
 import idv.kuma.app.komica.http.OkHttpClientConnect;
 import idv.kuma.app.komica.utils.KLog;
+import idv.kuma.app.player.PlayerActivity;
 
 /**
  * Created by TakumaLee on 2016/12/6.
@@ -47,6 +53,7 @@ public class KomicaManager {
     private List<OnUpdateConfigListener> onUpdateConfigListeners;
     private List<OnUpdateMenuListener> onUpdateMenuListeners;
 
+    private JSONObject menuKeyObj;
     private List<KomicaMenuGroup> menuGroupList;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private boolean switchLogin = false;
@@ -57,6 +64,7 @@ public class KomicaManager {
         // 綜合
         public static final int INTEGRATED = 2;
         public static final int THREADS = 3;
+        public static final int THREADS_LIST = 4;
         public static final int WEB = 10;
     }
 
@@ -139,6 +147,21 @@ public class KomicaManager {
         });
     }
 
+    public void startPlayerActivity(Context context,String title, String url) {
+        Intent intent = new Intent(context, PlayerActivity.class);
+//                                intent.putExtra(PlayerActivity.PREFER_EXTENSION_DECODERS, preferExtensionDecoders);
+//                                if (drmSchemeUuid != null) {
+//                                    intent.putExtra(PlayerActivity.DRM_SCHEME_UUID_EXTRA, drmSchemeUuid.toString());
+//                                    intent.putExtra(PlayerActivity.DRM_LICENSE_URL, drmLicenseUrl);
+//                                    intent.putExtra(PlayerActivity.DRM_KEY_REQUEST_PROPERTIES, drmKeyRequestProperties);
+//                                }
+        intent.setData(Uri.parse(url))
+                .putExtra(PlayerActivity.PLAYER_TITLE, title)
+//                                    .putExtra(PlayerActivity.EXTENSION_EXTRA, extension)
+                .setAction(PlayerActivity.ACTION_VIEW);
+        context.startActivity(intent);
+    }
+
     public void setMenuGroupList(List<KomicaMenuGroup> menuGroupList) {
         this.menuGroupList = menuGroupList;
     }
@@ -159,6 +182,21 @@ public class KomicaManager {
     }
 
     public void loadKomicaMenu() {
+        OkHttpClientConnect.excuteAutoGet(WebUrlFormaterUtils.getKomicaMenuKeyUrl(), new NetworkCallback() {
+            @Override
+            public void onFailure(IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(int responseCode, String result) {
+                try {
+                    menuKeyObj = new JSONObject(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         OkHttpClientConnect.excuteAutoGet(WebUrlFormaterUtils.getKomicaMenuUrl(), new NetworkCallback() {
             @Override
             public void onFailure(IOException e) {
@@ -194,7 +232,7 @@ public class KomicaManager {
                     if ("a".equals(elem.tagName())) {
                         KomicaMenuMember member = new KomicaMenuMember();
                         String title = elem.text();
-                        if ("".equals(title) || title == null) {
+                        if ("".equals(title) || title == null || title.contains("email")) {
                             Pattern pattern = Pattern.compile("\\, '(.*?)'\\)");
                             Matcher matcher = pattern.matcher(elem.attr("onclick"));
                             if (matcher.find()) {
@@ -207,7 +245,7 @@ public class KomicaManager {
                         } else if (elem.attr("href").contains("f6")) {
                             member.setTitle(member.getTitle() + "C");
                         } else {
-                            member.setLinkUrl(elem.attr("href"));
+                            member.setLinkUrl("http:" + elem.attr("href"));
                         }
                         member.setMemberId(memberId++);
                         members.add(member);
@@ -246,6 +284,7 @@ public class KomicaManager {
     public boolean checkVisible(String memberTitle) {
         if (!switchLogin || !KomicaAccountManager.getInstance().isLogin()) {
             switch (checkWebType(memberTitle)) {
+                case WebType.THREADS_LIST:
                 case WebType.THREADS:
                 case WebType.INTEGRATED:
                 case WebType.NORMAL:
@@ -275,13 +314,35 @@ public class KomicaManager {
     }
 
     public int checkWebType(String menuStr) {
+        try {
+            return menuKeyObj.getInt(menuStr);
+        } catch (NullPointerException e) {
+            return checkLocalWebType(menuStr);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return checkLocalWebType(menuStr);
+    }
+
+    private int checkLocalWebType(String menuStr) {
         switch (menuStr) {
+            case "繪師":
+            case "天文":
+            case "服飾":
+            case "行動遊戲":
+            case "體感遊戲":
+            case "桌上遊戲":
+            case "龍騎士07":
+            case "咖啡/茶":
+            case "鳥":
+                return WebType.THREADS_LIST;
             case "影視":
 
             case "校園":
             case "消費電子":
 
             case "女性角色":
+            case "男性角色":
             case "四格":
 
             case "遊戲速報":
@@ -312,7 +373,6 @@ public class KomicaManager {
             case "文化交流":
             case "新聞":
             case "寫真":
-            case "男性角色":
             case "中性角色":
             case "擬人化":
             case "少女漫畫":

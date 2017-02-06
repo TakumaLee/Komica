@@ -174,7 +174,6 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         });
 
         switch (webType) {
-            case KomicaManager.WebType.THREADS:
             case KomicaManager.WebType.INTEGRATED:
                 ((LinearLayout) postDialog.getCustomView().findViewById(R.id.linearLayout_post_container)).addView(reCaProgressBar);
                 ((LinearLayout) postDialog.getCustomView().findViewById(R.id.linearLayout_post_container)).addView(webView);
@@ -193,7 +192,9 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
 //                    }
 //                });
                 break;
+            case KomicaManager.WebType.THREADS:
             case KomicaManager.WebType.NORMAL:
+            case KomicaManager.WebType.THREADS_LIST:
             default:
                 break;
         }
@@ -225,6 +226,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                                 break;
                             case KomicaManager.WebType.THREADS:
                             case KomicaManager.WebType.NORMAL:
+                            case KomicaManager.WebType.THREADS_LIST:
                             default:
                                 submitStr = "javascript:" + "document.getElementById('" + formElem.id() + "').submit();";
                                 webView.loadUrl("javascript:" + "document.getElementById('fcom').value='" + comment + "';" + submitStr);
@@ -403,6 +405,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         switch (webType) {
             case KomicaManager.WebType.INTEGRATED:
                 break;
+            case KomicaManager.WebType.THREADS_LIST:
             case KomicaManager.WebType.THREADS:
             case KomicaManager.WebType.NORMAL:
             default:
@@ -421,6 +424,9 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
 
             @Override
             public void onResponse(int responseCode, String result) {
+                if (null == getActivity()) {
+                    return;
+                }
                 if (result.contains("ReDirUrl")) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -445,7 +451,12 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                 Document document = Jsoup.parse(result);
                 formElem = document.getElementsByTag("form").first();
                 List<KTitle> headList = CrawlerUtils.getPostList(document, url, webType);
-                KTitle head = headList.size() > 0 ? headList.get(0) : new KTitle();
+                KTitle head = headList.size() > 0 ? headList.get(0) : null;
+                //TODO no data to load.
+                if (null == head) {
+                    toastNoMoreData();
+                    return;
+                }
                 if (page == 0) {
                     postList.add(head);
                 }
@@ -458,6 +469,18 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                 }
             }
         });
+    }
+
+    private void toastNoMoreData() {
+        if (null == getActivity()) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getContext(), R.string.message_no_more_data, Toast.LENGTH_LONG).show();
+                    adapter.setLoadMoreEnable(false);
+                }
+            });
+        }
     }
 
     private void notifyAdapter() {
