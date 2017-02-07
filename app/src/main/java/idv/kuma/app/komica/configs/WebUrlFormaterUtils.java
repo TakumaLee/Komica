@@ -5,7 +5,7 @@ package idv.kuma.app.komica.configs;
  */
 
 public class WebUrlFormaterUtils {
-    public static final String getKomicaMenuUrl() {
+    public static final String getKomicaMenu() {
         return UrlConfigs.KOMICA_MENU;
     }
 
@@ -15,5 +15,9 @@ public class WebUrlFormaterUtils {
 
     public static final String getKomicaMenuKeyUrl() {
         return UrlConfigs.KOMICA_MENU_KEY;
+    }
+
+    public static final String getKomicaMenuUrl() {
+        return UrlConfigs.KOMICA_MENU_URL;
     }
 }
