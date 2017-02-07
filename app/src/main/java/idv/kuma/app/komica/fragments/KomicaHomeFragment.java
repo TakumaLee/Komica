@@ -514,11 +514,15 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
             for (KomicaMenuGroup group : KomicaManager.getInstance().getMenuGroupList()) {
                 JSONObject groupObj = new JSONObject();
                 groupObj.put("title", group.getTitle());
-                JSONObject memObj = new JSONObject();
+                JSONArray memArr = new JSONArray();
+                int count = 0;
                 for (KomicaMenuMember member : group.getMemberList()) {
-                    memObj.put(member.getTitle(), member.getLinkUrl());
+                    JSONObject memObj = new JSONObject();
+                    memObj.put("title", member.getTitle());
+                    memObj.put("url", member.getLinkUrl());
+                    memArr.put(count++, memObj);
                 }
-                groupObj.put("member", memObj);
+                groupObj.put("member", memArr);
                 array.put(group.getGroupPosition(), groupObj);
             }
         } catch (JSONException e) {
