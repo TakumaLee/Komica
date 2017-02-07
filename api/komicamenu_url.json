@@ -1,0 +1,380 @@
+[
+  {
+    "title": "連線板",
+    "member": {
+      "2CAT": "http:\/\/2cat.or.tl\/",
+      "貓管理部": "http:\/\/2cat.or.tl\/~ad\/0d\/",
+      "站務公告": "http:\/\/komica.blogspot.com\/",
+      "動畫": "http:\/\/2cat.or.tl\/~tedc21thc\/anime\/",
+      "漫畫": "http:\/\/2cat.or.tl\/~scribe\/2c\/",
+      "影視": "http:https:\/\/elsa.komica.org\/04\/index.htm",
+      "綜合": "http:\/\/homu.komica.org\/00\/index.htm",
+      "綜合2": "http:\/\/alleyneblade.mymoe.moe\/queensblade\/",
+      "掛圖": "http:\/\/homu.komica.org\/64\/index.htm",
+      "氣象": "http:\/\/homu.komica.org\/62\/index.htm",
+      "新番捏他": "http:\/\/2cat.or.tl\/~tedc21thc\/new\/index.html",
+      "新番實況": "http:\/\/2cat.or.tl\/~tedc21thc\/live\/index.html",
+      "三次實況": "http:\/\/yuutan.mymoe.moe\/pawahuru\/",
+      "模型": "http:\/\/homu.komica.org\/09\/index.htm",
+      "Figure\/GK": "http:\/\/vi.anacel.com\/fg\/vichan\/fg\/",
+      "玩偶": "http:\/\/homu.komica.org\/26\/index.htm",
+      "螢幕攝": "http:\/\/alica.dreamhosters.com\/screenshot\/",
+      "歡樂惡搞": "http:\/\/homu.komica.org\/12\/index.htm",
+      "特攝": "http:\/\/homu.komica.org\/13\/index.htm",
+      "祭典": "http:\/\/rthost.fam.cx\/sd\/",
+      "治癒系": "http:\/\/tsukisiro.snow-sugar.net\/iyasi\/",
+      "蘿蔔": "http:https:\/\/elsa.komica.org\/15\/index.htm",
+      "攝影": "http:\/\/homu.komica.org\/50\/index.htm",
+      "軍武": "http:\/\/homu.komica.org\/17\/index.htm",
+      "車": "http:\/\/no_99.mymoe.moe\/cars\/index.htm",
+      "萌": "http:\/\/2cat.or.tl\/~kirur\/img2\/index.htm",
+      "詢問": "http:\/\/2cat.or.tl\/~kirur\/orz\/index.htm",
+      "AA": "http:\/\/rthost.fam.cx\/aa\/pbbs.html",
+      "COSPLAY": "http:\/\/cosplay.mymoe.moe\/cosplay\/index.htm",
+      "改造": "http:\/\/homu.komica.org\/40\/index.htm",
+      "委託": "http:\/\/homu.komica.org\/41\/index.htm",
+      "投票所": "http:\/\/komica.yucie.net\/vote\/",
+      "問答": "http:\/\/komica.yucie.net\/quiztest\/",
+      "UP": "http:\/\/rthost.fam.cx\/komica-up\/upload.php"
+    }
+  },
+  {
+    "title": "連線二板",
+    "member": {
+      "綜合學術": "http:\/\/gzone-anime.info\/UnitedSites\/academic\/",
+      "數學": "http:\/\/study.mymoe.moe\/math\/",
+      "歷史": "http:\/\/study.mymoe.moe\/history\/",
+      "地理": "http:\/\/study.mymoe.moe\/geography\/",
+      "校園": "http:\/\/komicolle.dreamhosters.com\/school\/",
+      "職業": "http:\/\/komica.dbfoxtw.me\/occupation\/",
+      "財經": "http:\/\/komica.dbfoxtw.me\/finance\/",
+      "生活消費": "http:\/\/gzone-anime.info\/UnitedSites\/shopping\/",
+      "法律": "http:\/\/komica.dbfoxtw.me\/law\/",
+      "海外": "http:\/\/kyonbuster.nagatoyuki.org\/vichan\/outremer\/",
+      "閒談@香港": "http:\/\/kagaminerin.org\/hongkong\/",
+      "消費電子": "http:\/\/komicolle.dreamhosters.com\/digital\/",
+      "藝術": "http:\/\/gzone-anime.info\/UnitedSites\/art\/",
+      "繪師": "http:\/\/2cat.org\/~artist\/",
+      "交易合購": "http:\/\/komica.yucie.net\/trade\/",
+      "鋼普拉": "http:\/\/homu.komica.org\/61\/index.htm",
+      "生存遊戲": "http:\/\/2cat.or.tl\/~gtr2003\/pixmicat1\/",
+      "鐵道": "http:\/\/tsukisiro.snow-sugar.net\/tetsudou\/",
+      "燃": "http:\/\/ningen.dreamhosters.com\/moe\/",
+      "笑話": "http:\/\/touhonoob.mymoe.moe\/kjoker\/",
+      "猜謎": "http:\/\/komica.dbfoxtw.me\/quiz\/",
+      "故事接龍": "http:\/\/storysol2.boguspix.com\/",
+      "歐美漫畫": "http:\/\/miyarei.org\/AmericanSuperHeroes\/",
+      "歐美動畫": "http:\/\/mymoe.moe\/boards\/wei75631\/komicartoon\/",
+      "大自然": "http:\/\/2cat.or.tl\/~rt\/pd\/",
+      "天文": "http:\/\/2cat.org\/~astronomy\/",
+      "星座命理": "http:\/\/kagaminerin.org\/horoscope\/",
+      "New Age": "http:\/\/crystal.mymoe.moe\/newage\/",
+      "戀愛": "http:\/\/moecorner.com\/iboards\/Relationship\/",
+      "超常現象": "http:\/\/komica.dbfoxtw.me\/supernature\/",
+      "夢": "http:\/\/komicolle.dreamhosters.com\/dream\/",
+      "流言終結": "http:\/\/myth.nagatoyuki.org\/",
+      "政治": "http:\/\/politics.mymoe.moe\/index\/",
+      "旅遊": "http:\/\/travel.voidfactory.com\/",
+      "耳機": "http:\/\/norrk.mymoe.moe\/headphone\/",
+      "手機": "http:\/\/phone.mymoe.moe\/pda\/",
+      "服飾": "http:\/\/2cat.org\/~pixmicat\/",
+      "美容": "http:\/\/kagaminerin.org\/cosmetic\/",
+      "髮型": "http:\/\/yuutan.mymoe.moe\/kaminoke\/",
+      "家政": "http:\/\/mymoe.moe\/boards\/24\/house\/",
+      "手工藝": "http:\/\/komica.chiisana.net\/diy\/",
+      "圖書": "http:\/\/gzone-anime.info\/UnitedSites\/books\/",
+      "讀書筆記": "http:\/\/mymoe.moe\/boards\/24\/mindmap\/",
+      "煩惱相談": "http:\/\/kyonbuster.nagatoyuki.org\/vichan\/despair\/",
+      "安價": "http:\/\/kyonbuster.nagatoyuki.org\/vichan\/anchor\/"
+    }
+  },
+  {
+    "title": "影音",
+    "member": {
+      "短片": "http:\/\/2cat.or.tl\/~touhonoob\/21d\/",
+      "短片2": "http:\/\/touhonoob.mymoe.moe\/video2\/",
+      "彈幕": "http:\/\/komica.yucie.net\/video\/",
+      "直播": "http:\/\/komica.yucie.net\/boardcast\/",
+      "Video": "http:\/\/homu.komica.org\/up4\/index.php"
+    }
+  },
+  {
+    "title": "遊戲",
+    "member": {
+      "遊戲速報": "http:https:\/\/elsa.komica.org\/27\/index.htm",
+      "綜合遊戲": "http:\/\/tehepero.org\/komica\/",
+      "動作遊戲": "http:\/\/kagaminerin.org\/act\/",
+      "格鬥遊戲": "http:\/\/komica.yucie.net\/fight\/",
+      "2D STG": "http:\/\/kagaminerin.org\/stg\/",
+      "3D STG": "http:\/\/kagaminerin.org\/fps\/",
+      "冒險遊戲": "http:\/\/kagaminerin.org\/avg\/",
+      "RPG": "http:\/\/kagaminerin.org\/rpg\/",
+      "賽車遊戲": "http:\/\/2cat.or.tl\/~caradmin\/rcg-slg\/",
+      "戰略遊戲": "http:\/\/2cat.or.tl\/~caradmin\/rcg-slg\/",
+      "養成遊戲": "http:\/\/komica.yucie.net\/slg\/",
+      "戀愛遊戲": "http:\/\/komica.yucie.net\/renai\/",
+      "女性向遊戲": "http:\/\/2cat.org\/~boylove\/",
+      "音樂遊戲": "http:\/\/komica.chiisana.net\/musicgame\/",
+      "網頁遊戲": "http:\/\/komica.chiisana.net\/webgame\/",
+      "獨立遊戲": "http:\/\/komica.dbfoxtw.me\/indiegame\/",
+      "行動遊戲": "http:\/\/2cat.org\/~handheld\/",
+      "體感遊戲": "http:\/\/2cat.org\/~motion\/",
+      "桌上遊戲": "http:\/\/2cat.org\/~boardgame\/",
+      "麻將": "http:\/\/moecorner.com\/iboards\/Mahjong\/",
+      "遊戲設計": "http:\/\/komica.dbfoxtw.me\/gameprogramming\/",
+      "RPG Maker": "http:\/\/rm2k3xpvx.mymoe.moe\/rm\/",
+      "STEAM": "http:\/\/steam.mymoe.moe\/STEAM\/index.htm",
+      "網路遊戲": "http:\/\/homu.komica.org\/52\/index.htm"
+    }
+  },
+  {
+    "title": "遊戲作品",
+    "member": {
+      "CosmicBreak": "http:\/\/gamegroup.mymoe.moe\/cosmicbreak\/",
+      "Elsword": "http:\/\/palladium.mymoe.moe\/ElswordNew\/",
+      "DNF": "http:\/\/sdgo.mymoe.moe\/GGCDNF\/",
+      "DOTA2": "http:\/\/lordofdota2.mymoe.moe\/DOTA2\/",
+      "FEZ": "http:\/\/komica.yucie.net\/fez\/",
+      "GW2": "http:\/\/fina.mymoe.moe\/gw2\/",
+      "GTA": "http:\/\/fenrisulfr.org\/gta\/",
+      "LOL": "http:\/\/klol.mymoe.moe\/komicaLOL\/",
+      "Minecraft": "http:\/\/komica.peroneko.org\/minecraft\/",
+      "PAD": "http:\/\/phone.mymoe.moe\/bazudora\/index.htm",
+      "PSO2": "http:\/\/2012.mymoe.moe\/pso2\/",
+      "SDGO": "http:\/\/touhonoob.mymoe.moe\/sd_gundum\/",
+      "StarCraft": "http:\/\/mymoe.moe\/boards\/touhonoob\/starcraft\/",
+      "T7S": "http:\/\/www.karlsland.net\/t7s\/",
+      "TOS": "http:\/\/tos.pixmi.net\/",
+      "WOW": "http:\/\/www.wowhk.org\/",
+      "白貓Project": "http:\/\/acs5566.mymoe.moe\/shironeko\/",
+      "流亡黯道 PoE": "http:\/\/pathofexile.mymoe.moe\/komicaPOE\/",
+      "新瑪奇英雄傳": "http:\/\/kvindictus.mymoe.moe\/Vindictus\/",
+      "戰車世界": "http:\/\/fenrisulfr.org\/wot\/",
+      "戰地風雲": "http:\/\/fenrisulfr.org\/battlefield\/",
+      "戰爭雷霆": "http:\/\/fenrisulfr.org\/war_thunder\/",
+      "戰機世界": "http:\/\/fenrisulfr.org\/wowp\/",
+      "戰艦世界": "http:\/\/fenrisulfr.org\/wows\/",
+      "艦隊收藏": "http:\/\/acgspace.wsfun.com\/kancolle\/",
+      "魔物獵人": "http:\/\/strange-komica.com\/MonsterHunter\/",
+      "爐石戰記": "http:\/\/lordofdota2.mymoe.moe\/Hearthstone\/",
+      "星空幻想": "http:\/\/ttr_rb.mymoe.moe\/ttrrb\/"
+    }
+  },
+  {
+    "title": "動漫作品",
+    "member": {
+      "東方": "http:\/\/2cat.or.tl\/~kirur\/touhou\/index.htm",
+      "葉鍵": "http:\/\/ningen.dreamhosters.com\/leafkey\/",
+      "龍騎士07": "http:\/\/2cat.org\/~07expansion\/",
+      "涼宮": "http:\/\/futaba.nagatoyuki.org\/",
+      "反逆": "http:\/\/komica.chiisana.net\/pizzahut\/",
+      "奈葉": "http:\/\/nanoha.boguspix.com\/",
+      "廢怯少女": "http:\/\/mymoe.moe\/boards\/21\/madoka\/",
+      "禁書": "http:\/\/index.mymoe.moe\/index\/",
+      "遊戲王": "http:\/\/yugioh.mymoe.moe\/20110517\/",
+      "女王之刃": "http:\/\/alleyneblade.mymoe.moe\/0002\/",
+      "APH": "http:\/\/kagaminerin.org\/aph1\/",
+      "Digimon": "http:\/\/joshua.mymoe.moe\/digimon\/",
+      "Homestuck": "http:\/\/komica.dbfoxtw.me\/homestuck\/",
+      "IM@S": "http:\/\/idolma.ster.tw\/imgbbs\/",
+      "LoveLive!": "http:\/\/lovelive.mymoe.moe\/lovelive\/",
+      "Pokemon": "http:\/\/kagaminerin.org\/pokemon\/",
+      "Pretty Cure": "http:\/\/komica.yucie.net\/prettycure\/",
+      "Saki": "http:\/\/neet1145.mymoe.moe\/shizuno\/",
+      "Strike Witches": "http:\/\/www.karlsland.net\/sw\/",
+      "VOCALOID": "http:\/\/vocaloid.orzhk.net\/"
+    }
+  },
+  {
+    "title": "製作公司",
+    "member": {
+      "Capcom": "http:\/\/no_99.mymoe.moe\/capcom\/",
+      "GAINAX": "http:\/\/kagaminerin.org\/gainax\/",
+      "KOEI": "http:\/\/www.karlsland.net\/koei\/",
+      "SQEX": "http:\/\/moecorner.com\/iboards\/Square_Enix\/",
+      "TYPE-MOON": "http:\/\/gzone-anime.info\/UnitedSites\/TypeMoon\/",
+      "京都動畫": "http:\/\/komica.yucie.net\/kyoutoanimate\/"
+    }
+  },
+  {
+    "title": "聲優藝人",
+    "member": {
+      "聲優綜合": "http:\/\/komica.yucie.net\/seiyuu\/",
+      "釘宮": "http:\/\/komica.yucie.net\/kugimiya\/",
+      "田村\/堀江\/水樹": "http:\/\/komica.yucie.net\/nana\/",
+      "川澄\/能登": "http:\/\/mamiko.keyfans.net\/",
+      "花澤": "http:\/\/kana.keyfans.net\/",
+      "偶像": "http:\/\/yuutan.mymoe.moe\/idol\/",
+      "AKB48": "http:\/\/akb48.mymoe.moe\/akb48\/",
+      "Sound Horizon": "http:\/\/laurenthorizon.weebly.com\/"
+    }
+  },
+  {
+    "title": "專題板",
+    "member": {
+      "角色配對": "http:\/\/kagaminerin.org\/flash\/",
+      "催淚": "http:\/\/kagaminerin.org\/tearing\/",
+      "性轉換": "http:\/\/komica.chiisana.net\/genderswap\/",
+      "Maid": "http:\/\/ningen.dreamhosters.com\/maid\/",
+      "巫女": "http:\/\/alica.dreamhosters.com\/miko\/",
+      "魔女": "http:\/\/komica.yucie.net\/magic\/",
+      "蘿莉": "http:\/\/komica.yucie.net\/lori\/",
+      "正太": "http:\/\/p.komica.acg.club.tw\/s\/",
+      "御姊": "http:\/\/sister.boguspix.com\/",
+      "兄貴": "http:\/\/p.komica.acg.club.tw\/a\/",
+      "妹系": "http:\/\/komica.yucie.net\/imoto\/",
+      "人外": "http:\/\/komica.dbfoxtw.me\/jingai\/",
+      "獸": "http:\/\/kemono.wtako.net\/kemono\/",
+      "機娘": "http:\/\/msgirls.boguspix.com\/",
+      "返信娘": "http:\/\/2cat.or.tl\/~rt\/hd\/",
+      "Lolita Fashion": "http:\/\/komica.yucie.net\/lolita\/",
+      "傲嬌": "http:\/\/komica.chiisana.net\/tsundere\/"
+    }
+  },
+  {
+    "title": "創作",
+    "member": {
+      "塗鴉王國": "http:\/\/homu.komica.org\/30\/index.htm",
+      "線上繪圖": "http:\/\/homu.komica.org\/poti\/index.htm",
+      "塗鴉保育區": "http:\/\/kemono.wtako.net\/kemozone\/",
+      "塗鴉工廠": "http:\/\/broken.goodluck.com.tw\/",
+      "3D": "http:\/\/komicolle.dreamhosters.com\/3d\/",
+      "MMD": "http:\/\/valerinty.mymoe.moe\/mmdance\/",
+      "同人2": "http:\/\/doujin2.acgmoe.com\/board\/",
+      "SOHO": "http:\/\/durudurudadada.mymoe.moe\/soho\/",
+      "宣傳": "http:\/\/homu.komica.org\/20d\/index.htm"
+    }
+  },
+  {
+    "title": "飲食",
+    "member": {
+      "飲食": "http:\/\/homu.komica.org\/58\/index.htm",
+      "酒": "http:\/\/sake.nagatoyuki.org\/",
+      "咖啡\/茶": "http:\/\/2cat.org\/~coffee\/",
+      "烹飪": "http:\/\/2cat.org\/~cooking\/",
+      "素食": "http:\/\/kagaminerin.org\/vegetarian\/"
+    }
+  },
+  {
+    "title": "體育運動",
+    "member": {
+      "體育": "http:\/\/homu.komica.org\/49\/index.htm",
+      "足球": "http:\/\/komica.yucie.net\/worldcup\/",
+      "單車": "http:\/\/komicolle.dreamhosters.com\/bicycle\/",
+      "武術": "http:\/\/komica.yucie.net\/budou\/"
+    }
+  },
+  {
+    "title": "動物",
+    "member": {
+      "動物綜合": "http:\/\/2nyan.org\/animal\/",
+      "犬": "http:\/\/komica.yucie.net\/dog\/",
+      "貓": "http:\/\/komica.yucie.net\/cat\/",
+      "鳥": "http:\/\/2cat.org\/~bird\/",
+      "蟲": "http:\/\/spg-web.sytes.net\/PasteChart\/insect\/",
+      "水族": "http:\/\/komica.yucie.net\/aquarium\/",
+      "認養": "http:\/\/komica.yucie.net\/adopt\/"
+    }
+  },
+  {
+    "title": "桌布壁紙",
+    "member": {
+      "二次壁": "http:\/\/2cat.or.tl\/~twocat\/5d\/",
+      "三次壁": "http:\/\/2nee.org\/bg_photo",
+      "手機壁": "http:\/\/komica.csie.org\/~cellwall\/",
+      "PSP壁": "http:\/\/2cat.or.tl\/~touhonoob\/14d\/"
+    }
+  },
+  {
+    "title": "電腦網路",
+    "member": {
+      "電腦": "http:\/\/homu.komica.org\/37\/index.htm",
+      "Pixmicat!": "http:\/\/2cat.or.tl\/~scribe\/pixmicat_dev\/",
+      "Joyful Note": "http:\/\/rthost.fam.cx\/joyful\/",
+      "程設交流": "http:\/\/komicolle.dreamhosters.com\/cs\/",
+      "網頁設計": "http:\/\/touhonoob.mymoe.moe\/webdevelop\/",
+      "Apple": "http:\/\/moecorner.com\/iboards\/Apple\/"
+    }
+  },
+  {
+    "title": "本地板",
+    "member": {
+      "文化交流": "http:\/\/homu.komica.org\/22\/index.htm",
+      "新聞": "http:\/\/homu.komica.org\/25\/index.htm",
+      "寫真": "http:\/\/homu.komica.org\/16\/index.htm",
+      "女性角色": "http:https:\/\/elsa.komica.org\/19\/index.htm",
+      "男性角色": "http:https:\/\/elsa.komica.org\/38\/index.htm",
+      "中性角色": "http:\/\/homu.komica.org\/57\/index.htm",
+      "四格": "http:https:\/\/elsa.komica.org\/42\/index.htm",
+      "擬人化": "http:\/\/homu.komica.org\/36\/index.htm",
+      "少女漫畫": "http:\/\/homu.komica.org\/47\/index.htm",
+      "音樂": "http:\/\/homu.komica.org\/29\/index.htm",
+      "布袋戲": "http:\/\/homu.komica.org\/46\/index.htm",
+      "小說": "http:\/\/homu.komica.org\/35\/index.htm",
+      "奇幻": "http:\/\/homu.komica.org\/60\/index.htm",
+      "紙牌": "http:\/\/homu.komica.org\/10\/index.htm",
+      "高解析度": "http:\/\/homu.komica.org\/33\/index.htm",
+      "GIF": "http:\/\/homu.komica.org\/23\/index.htm",
+      "FLASH": "http:\/\/homu.komica.org\/24\/index.htm",
+      "MAD": "http:\/\/homu.komica.org\/39\/index.htm",
+      "素材": "http:\/\/homu.komica.org\/44\/index.htm",
+      "求圖": "http:\/\/homu.komica.org\/45\/index.htm",
+      "測試": "http:\/\/komica42.dreamhosters.com\/99\/index.htm"
+    }
+  },
+  {
+    "title": "文字板",
+    "member": {
+      "綜合討論": "http:\/\/homu.komica.org\/f1\/index.php",
+      "連結": "http:\/\/homu.komica.org\/f3\/index.php",
+      "豆知識": "http:\/\/homu.komica.org\/f5\/index.php",
+      "單身": "http:\/\/homu.komica.org\/f7b\/index.php",
+      "寫作": "http:\/\/homu.komica.org\/f9\/index.php"
+    }
+  },
+  {
+    "title": "其他",
+    "member": {
+      "KomicaWiki": "http:https:\/\/wiki.komica.org\/wiki5\/",
+      "精華區": "http:\/\/homu.komica.org\/up\/index.php",
+      "Komicolle": "http:\/\/komicolle.org\/"
+    }
+  },
+  {
+    "title": "聊天室",
+    "member": {
+      "BarGiko": "http:\/\/l4cs.jpn.org\/gikopoi\/",
+      "IRC": "http:irc:\/\/irc.freenode.net\/2cat",
+      "(Web)": "http:\/\/2cat.or.tl\/~rt\/irc\/"
+    }
+  },
+  {
+    "title": "外部連結",
+    "member": {
+      "Komica2": "http:\/\/pink.komica.org\/",
+      "0rz.tw": "http:\/\/0rz.tw\/",
+      "Google 日本": "http:\/\/www.google.co.jp\/ja",
+      "goo 辞書": "http:\/\/dictionary.goo.ne.jp\/",
+      "Yahoo! 字典": "http:\/\/tw.dictionary.yahoo.com\/",
+      "英漢字典": "http:\/\/cdict.net\/",
+      "國語辭典": "http:\/\/dict.revised.moe.edu.tw\/cbdic\/index.html",
+      "Excite 翻訳": "http:\/\/www.excite.co.jp\/world\/chinese\/",
+      "Babel Fish": "http:\/\/www.babelfish.com\/",
+      "維基百科": "http:\/\/zh.wikipedia.org\/",
+      "Yahoo! 知識+": "http:\/\/tw.knowledge.yahoo.com\/",
+      "繁簡轉換": "http:\/\/www.tdctrade.com\/putonghua\/index.htm",
+      "假名注音": "http:\/\/www.hiragana.jp\/",
+      "漢字轉換": "http:\/\/www.j-talk.com\/nihongo\/"
+    }
+  },
+  {
+    "title": "失效連結",
+    "member": {
+      "SF": "http:\/\/orzistic.org\/s\/",
+      "國際政治": "http:\/\/orzistic.org\/i\/",
+      "樂器．作曲": "http:\/\/www.svwind.org\/bbs\/",
+      "同人": "http:\/\/langley.dreamhosters.com\/doujin\/",
+      "角色商品": "http:\/\/netaba.re\/cat\/"
+    }
+  }
+]

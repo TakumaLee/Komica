@@ -34,6 +34,10 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -505,5 +509,21 @@ public class KomicaHomeFragment extends BaseFragment implements FacebookManager.
     public void onMenuUpdated() {
         Toast.makeText(getContext(), R.string.message_loading_complete, Toast.LENGTH_LONG).show();
         refreshDrawerItems();
+        JSONArray array = new JSONArray();
+        try {
+            for (KomicaMenuGroup group : KomicaManager.getInstance().getMenuGroupList()) {
+                JSONObject groupObj = new JSONObject();
+                groupObj.put("title", group.getTitle());
+                JSONObject memObj = new JSONObject();
+                for (KomicaMenuMember member : group.getMemberList()) {
+                    memObj.put(member.getTitle(), member.getLinkUrl());
+                }
+                groupObj.put("member", memObj);
+                array.put(group.getGroupPosition(), groupObj);
+            }
+        } catch (JSONException e) {
+
+        }
+        KLog.v(TAG, "JA: " + array);
     }
 }
