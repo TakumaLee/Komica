@@ -13,17 +13,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import idv.kuma.app.komica.BuildConfig;
 import idv.kuma.app.komica.configs.WebUrlFormaterUtils;
@@ -205,54 +201,33 @@ public class KomicaManager {
 
             @Override
             public void onResponse(int responseCode, String result) {
-                Document document = Jsoup.parse(result);
-                if (document.getElementsByTag("font").size() < 1) {
-                    return;
-
-                }
-                Element element = document.getElementsByTag("font").remove(1);
                 int count = 0;
                 int memberId = 0;
-                KomicaMenuGroup group = null;
                 List<KomicaMenuGroup> groupList = new ArrayList<>();
-                List<KomicaMenuMember> members = new ArrayList<>();
-                for (Element elem : element.children()) {
-                    if ("b".equals(elem.tagName())) {
-                        if (group != null && members.size() > 0) {
-                            group.setMemberList(members);
-                            groupList.add(group);
-                            members = new ArrayList<>();
+                try {
+                    JSONArray array = new JSONArray(result);
+                    for (int i = 0; i < array.length(); i++) {
+                        String title = array.getJSONObject(i).getString("title");
+                        KomicaMenuGroup group = new KomicaMenuGroup();
+                        group.setGroupId(i);
+                        group.setGroupPosition(i);
+                        group.setTitle(title);
+                        JSONArray memArr = array.getJSONObject(i).getJSONArray("member");
+                        List<KomicaMenuMember> members = new ArrayList<>();
+                        for (int j = 0; j < memArr.length(); j++) {
+                            KomicaMenuMember member = new KomicaMenuMember();
+                            JSONObject object = memArr.getJSONObject(j);
+                            member.setTitle(object.getString("title"));
+                            member.setLinkUrl(object.getString("url"));
+                            member.setMemberId(memberId++);
+                            members.add(member);
                         }
-                        group = new KomicaMenuGroup();
-                        group.setGroupId(count);
-                        group.setGroupPosition(count++);
-                        group.setTitle(elem.text());
-                        continue;
+                        group.setMemberList(members);
+                        groupList.add(group);
                     }
-                    if ("a".equals(elem.tagName())) {
-                        KomicaMenuMember member = new KomicaMenuMember();
-                        String title = elem.text();
-                        if ("".equals(title) || title == null || title.contains("email")) {
-                            Pattern pattern = Pattern.compile("\\, '(.*?)'\\)");
-                            Matcher matcher = pattern.matcher(elem.attr("onclick"));
-                            if (matcher.find()) {
-                                title = matcher.group(1);
-                            }
-                        }
-                        member.setTitle(title);
-                        if ("動物綜合".equals(title)) {
-                            member.setLinkUrl("http://2nyan.org/animal/");
-                        } else if (elem.attr("href").contains("f6")) {
-                            member.setTitle(member.getTitle() + "C");
-                        } else {
-                            member.setLinkUrl("http:" + elem.attr("href"));
-                        }
-                        member.setMemberId(memberId++);
-                        members.add(member);
-                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                group.setMemberList(members);
-                groupList.add(group);
                 setMenuGroupList(groupList);
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(new Runnable() {

@@ -48,30 +48,18 @@ public class OkHttpClientConnect {
     private static OkHttpClient okHttpClient = new OkHttpClient.Builder().connectionPool(threadPoolExecutor).build();
 
     public static RequestPoolItem excuteAutoGet(String url) {
-        if (url.startsWith("//")) {
-            url = "http:" + url;
-        }
         return new RequestPoolItem(url.contains("https") ? excuteSSLGet(url) : excuteGet(url, null), null);
     }
 
     public static RequestPoolItem excuteAutoGet(String url, NetworkCallback callback) {
-        if (url.startsWith("//")) {
-            url = "http:" + url;
-        }
         return new RequestPoolItem(url.contains("https") ? excuteSSLGet(url, callback) : excuteGet(url, callback), callback);
     }
 
     public static RequestPoolItem excuteAutoGet(String url, String contentType, NetworkCallback callback) {
-        if (url.startsWith("//")) {
-            url = "http:" + url;
-        }
         return new RequestPoolItem(url.contains("https") ? excuteSSLGet(url, callback) : excuteGet(url, contentType, callback), callback);
     }
 
     public static RequestPoolItem excuteAutoPost(String url, String json, @Nullable NetworkCallback callback) {
-        if (url.startsWith("//")) {
-            url = "http:" + url;
-        }
         RequestPoolItem item = new RequestPoolItem(url.contains("https") ? excuteSSLPost(url, json, CONTENT_TYPE_JSON, callback)
                 : excutePost(url, json, CONTENT_TYPE_JSON, callback), callback);
         item.setBody(json);
@@ -79,9 +67,6 @@ public class OkHttpClientConnect {
     }
 
     public static RequestPoolItem excuteAutoPost(String url, String json, String contentType, @Nullable NetworkCallback callback) {
-        if (url.startsWith("//")) {
-            url = "http:" + url;
-        }
         RequestPoolItem item = new RequestPoolItem(url.contains("https") ? excuteSSLPost(url, json, contentType, callback)
                 : excutePost(url, json, contentType, callback), callback);
         item.setBody(json);
@@ -89,9 +74,6 @@ public class OkHttpClientConnect {
     }
 
     public static RequestPoolItem excuteAutoPost(String header, String headerValue, String url, String json, String contentType, @Nullable NetworkCallback callback) {
-        if (url.startsWith("//")) {
-            url = "http:" + url;
-        }
         RequestPoolItem item = new RequestPoolItem(url.contains("https") ? excuteSSLPost(header, headerValue, url, json, contentType, callback)
                 : excutePost(header, headerValue, url, json, contentType, callback), callback);
         item.setBody(json);
@@ -99,18 +81,12 @@ public class OkHttpClientConnect {
     }
 
     public static RequestPoolItem excuteAutoMultiPartRequest(String url, MultipartBody.Builder bodyBuilder, NetworkCallback callback) {
-        if (url.startsWith("//")) {
-            url = "http:" + url;
-        }
         RequestPoolItem item = excuteAutoMultiPartRequest(url, bodyBuilder.build(), callback);
         item.setMultipartBodyBuilder(bodyBuilder);
         return item;
     }
 
     private static RequestPoolItem excuteAutoMultiPartRequest(String url, RequestBody body, NetworkCallback callback) {
-        if (url.startsWith("//")) {
-            url = "http:" + url;
-        }
         return new RequestPoolItem(url.contains("https") ? excuteSSLMultiPartRequest(url, body, callback)
                 : excuteMultiPartRequest(url, body, callback), callback);
     }
