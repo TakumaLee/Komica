@@ -2,8 +2,6 @@ package idv.kuma.app.komica.activities;
 
 import android.os.Bundle;
 
-import com.google.android.gms.analytics.HitBuilders;
-
 import idv.kuma.app.komica.R;
 import idv.kuma.app.komica.activities.base.BaseActivity;
 import idv.kuma.app.komica.fragments.KomicaHomeFragment;
@@ -17,9 +15,6 @@ public class KomicaHomeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_komica_home);
-
-        tracker.setScreenName("首頁");
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         fragment = new KomicaHomeFragment();
         if (null == savedInstanceState) {
