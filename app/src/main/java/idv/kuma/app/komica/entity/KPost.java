@@ -127,7 +127,11 @@ public class KPost {
                         JSONObject object = array.getJSONObject(0);
                         setVideoUrl(object.getString("url"));
                         setVideoFileName(object.getString("title"));
-                        setThumbUrl(object.getString("thumb"));
+                        String thumbUrl = object.getString("thumb");
+                        if (!thumbUrl.startsWith("http")) {
+                            thumbUrl = "http:" + thumbUrl;
+                        }
+                        setThumbUrl(thumbUrl);
                         postImageList.add(new KPostImage(object.getString("thumb")));
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -157,6 +161,12 @@ public class KPost {
                         }
                     }
                     postImageList.add(new KPostImage(link, imgElement.text()));
+                } else {
+                    if (!element.getElementsByClass("img_container").isEmpty()) {
+                        String hideImgUrl = element.getElementsByClass("img_container").first().getElementsByTag("img").attr("title");
+                        String showImgUrl = element.getElementsByClass("img_container").first().getElementsByTag("img").attr("src");
+                        postImageList.add(new KPostImage(showImgUrl, hideImgUrl, "Hide"));
+                    }
                 }
                 if (imgElements.size() > 1) {
                     for (Element img : imgElements) {
