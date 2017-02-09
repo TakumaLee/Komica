@@ -6,6 +6,7 @@ package idv.kuma.app.komica.entity;
 
 public class KPostImage {
     protected String imageUrl;
+    protected String hideImgUrl;
     protected String imageFileName;
 
     public KPostImage(String imageUrl) {
@@ -13,8 +14,23 @@ public class KPostImage {
     }
 
     public KPostImage(String imageUrl, String imageFileName) {
+        this(imageUrl, null, imageFileName);
+    }
+
+    public KPostImage(String imageUrl, String hideImgUrl, String imageFileName) {
+        if (!imageUrl.startsWith("http")) {
+            imageUrl = "http:" + imageUrl;
+        }
+        if (hideImgUrl != null && !hideImgUrl.startsWith("http")) {
+            hideImgUrl = "http:" + hideImgUrl;
+        }
         this.imageUrl = imageUrl;
+        this.hideImgUrl = hideImgUrl;
         this.imageFileName = imageFileName;
+    }
+
+    public boolean isHide() {
+        return hideImgUrl == null;
     }
 
     public String getImageUrl() {
@@ -23,6 +39,14 @@ public class KPostImage {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getHideImgUrl() {
+        return hideImgUrl;
+    }
+
+    public void setHideImgUrl(String hideImgUrl) {
+        this.hideImgUrl = hideImgUrl;
     }
 
     public String getImageFileName() {
