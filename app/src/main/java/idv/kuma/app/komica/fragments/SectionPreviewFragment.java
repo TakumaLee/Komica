@@ -39,6 +39,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.analytics.HitBuilders;
 
@@ -46,7 +49,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -61,8 +63,6 @@ import idv.kuma.app.komica.entity.KPost;
 import idv.kuma.app.komica.entity.KReply;
 import idv.kuma.app.komica.entity.KTitle;
 import idv.kuma.app.komica.fragments.base.BaseFragment;
-import idv.kuma.app.komica.http.NetworkCallback;
-import idv.kuma.app.komica.http.OkHttpClientConnect;
 import idv.kuma.app.komica.javascripts.JSInterface;
 import idv.kuma.app.komica.manager.FacebookManager;
 import idv.kuma.app.komica.manager.KomicaAccountManager;
@@ -416,47 +416,43 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
     }
 
     private void loadIntegratedSection() {
-        OkHttpClientConnect.excuteAutoGet(url, new NetworkCallback() {
-            @Override
-            public void onFailure(IOException e) {
+        AndroidNetworking.get(url).build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        Document document = Jsoup.parse(response);
+                        title = document.getElementsByTag("title").text();
+                        notifyTitle();
 
-            }
+                        titlePostList.addAll(CrawlerUtils.getIntegratedPostList(document, url));
+                        notifyAdapter();
 
-            @Override
-            public void onResponse(int responseCode, String result) {
-                Document document = Jsoup.parse(result);
-                title = document.getElementsByTag("title").text();
-                notifyTitle();
+                        Element pageElem = document.getElementsByAttributeValue("border", "1").first();
+                        if (pageElem == null) {
+                            return;
+                        }
+                        pageCount = pageElem.select("a").size();
+                        if (pageElem.select("a").isEmpty()) {
+                            return;
+                        }
+                        String linkTmp = pageElem.select("a").first().attr("href");
+                        if ("".equals(link)) {
+                            link = linkTmp.replaceAll("[0-9]", "");
+                        }
+                    }
 
-                titlePostList.addAll(CrawlerUtils.getIntegratedPostList(document, url));
-                notifyAdapter();
+                    @Override
+                    public void onError(ANError anError) {
 
-                Element pageElem = document.getElementsByAttributeValue("border", "1").first();
-                if (pageElem == null) {
-                    return;
-                }
-                pageCount = pageElem.select("a").size();
-                if (pageElem.select("a").isEmpty()) {
-                    return;
-                }
-                String linkTmp = pageElem.select("a").first().attr("href");
-                if ("".equals(link)) {
-                    link = linkTmp.replaceAll("[0-9]", "");
-                }
-            }
-        });
+                    }
+                });
     }
 
     private void loadNormalSection() {
-        OkHttpClientConnect.excuteAutoGet(url, new NetworkCallback() {
+        AndroidNetworking.get(url).build().getAsString(new StringRequestListener() {
             @Override
-            public void onFailure(IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(int responseCode, String result) {
-                Document document = Jsoup.parse(result);
+            public void onResponse(String response) {
+                Document document = Jsoup.parse(response);
                 title = document.getElementsByTag("title").text();
                 notifyTitle();
                 titlePostList.addAll(CrawlerUtils.getPostList(document, url, webType));
@@ -483,6 +479,11 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                         link = pageStartLinkElem.select("a").attr("href");
                     }
                 }
+            }
+
+            @Override
+            public void onError(ANError anError) {
+
             }
         });
     }

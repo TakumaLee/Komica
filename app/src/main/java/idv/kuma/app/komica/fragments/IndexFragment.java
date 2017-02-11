@@ -13,13 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.analytics.HitBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,8 +32,6 @@ import idv.kuma.app.komica.configs.BundleKeyConfigs;
 import idv.kuma.app.komica.configs.WebUrlFormaterUtils;
 import idv.kuma.app.komica.entity.Promotion;
 import idv.kuma.app.komica.fragments.base.BaseFragment;
-import idv.kuma.app.komica.http.NetworkCallback;
-import idv.kuma.app.komica.http.OkHttpClientConnect;
 import idv.kuma.app.komica.manager.KomicaManager;
 import idv.kuma.app.komica.utils.AppTools;
 import idv.kuma.app.komica.widgets.IndexGridDividerDecoration;
@@ -118,17 +118,13 @@ public class IndexFragment extends BaseFragment {
 
     private void loadPromotionList() {
         swipeRefreshLayout.setRefreshing(true);
-        OkHttpClientConnect.excuteAutoGet(WebUrlFormaterUtils.getPromoteListUrl(), new NetworkCallback() {
+        AndroidNetworking.get(WebUrlFormaterUtils.getPromoteListUrl())
+                .build().getAsString(new StringRequestListener() {
             @Override
-            public void onFailure(IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(int responseCode, String result) {
+            public void onResponse(String response) {
                 promotionList.clear();
                 try {
-                    JSONObject object = new JSONObject(result);
+                    JSONObject object = new JSONObject(response);
                     JSONArray array = object.getJSONArray("promoteList");
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject promoObj = array.getJSONObject(i);
@@ -142,6 +138,11 @@ public class IndexFragment extends BaseFragment {
                     e.printStackTrace();
                 }
                 notifyAdapter();
+            }
+
+            @Override
+            public void onError(ANError anError) {
+
             }
         });
     }

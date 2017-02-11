@@ -26,13 +26,15 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.analytics.HitBuilders;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -42,8 +44,6 @@ import idv.kuma.app.komica.configs.BundleKeyConfigs;
 import idv.kuma.app.komica.entity.KPost;
 import idv.kuma.app.komica.entity.KTitle;
 import idv.kuma.app.komica.fragments.base.BaseFragment;
-import idv.kuma.app.komica.http.NetworkCallback;
-import idv.kuma.app.komica.http.OkHttpClientConnect;
 import idv.kuma.app.komica.javascripts.JSInterface;
 import idv.kuma.app.komica.manager.KomicaManager;
 import idv.kuma.app.komica.utils.CrawlerUtils;
@@ -416,59 +416,60 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         if (null == getActivity()) {
             return;
         }
-        OkHttpClientConnect.excuteAutoGet(url, new NetworkCallback() {
-            @Override
-            public void onFailure(IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(int responseCode, String result) {
-                if (null == getActivity()) {
-                    return;
-                }
-                if (result.contains("ReDirUrl")) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String reDirUrl = url.substring(0, url.lastIndexOf("/") + 1) + "m" + url.substring(url.lastIndexOf("/"));
-                            webView.stopLoading();
-                            webView.loadUrl(reDirUrl);
+        AndroidNetworking.get(url).build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (null == getActivity()) {
+                            return;
                         }
-                    });
+                        if (response.contains("ReDirUrl")) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String reDirUrl = url.substring(0, url.lastIndexOf("/") + 1) + "m" + url.substring(url.lastIndexOf("/"));
+                                    webView.stopLoading();
+                                    webView.loadUrl(reDirUrl);
+                                }
+                            });
 
-                } else {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            webView.loadUrl(url);
+                        } else {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    webView.loadUrl(url);
+                                }
+                            });
                         }
-                    });
-                }
-                if (page == 0) {
-                    postList.clear();
-                }
-                Document document = Jsoup.parse(result);
-                formElem = document.getElementsByTag("form").first();
-                List<KTitle> headList = CrawlerUtils.getPostList(document, url, webType);
-                KTitle head = headList.size() > 0 ? headList.get(0) : null;
-                //TODO no data to load.
-                if (null == head) {
-                    toastNoMoreData();
-                    return;
-                }
-                if (page == 0) {
-                    postList.add(head);
-                }
-                postList.addAll(head.getReplyList());
-                notifyAdapter();
-                hasAnotherPage = !document.getElementsByClass("page_switch").isEmpty() && page != pageCount - 1;
-                if (hasAnotherPage) {
-                    pageCount = document.getElementsByClass("page_switch").first().getElementsByClass("link").size() + 1;
-                    adapter.setLoadMoreEnable(page < pageCount - 1);
-                }
-            }
-        });
+                        if (page == 0) {
+                            postList.clear();
+                        }
+                        Document document = Jsoup.parse(response);
+                        formElem = document.getElementsByTag("form").first();
+                        List<KTitle> headList = CrawlerUtils.getPostList(document, url, webType);
+                        KTitle head = headList.size() > 0 ? headList.get(0) : null;
+                        //TODO no data to load.
+                        if (null == head) {
+                            toastNoMoreData();
+                            return;
+                        }
+                        if (page == 0) {
+                            postList.add(head);
+                        }
+                        postList.addAll(head.getReplyList());
+                        notifyAdapter();
+                        hasAnotherPage = !document.getElementsByClass("page_switch").isEmpty() && page != pageCount - 1;
+                        if (hasAnotherPage) {
+                            pageCount = document.getElementsByClass("page_switch").first().getElementsByClass("link").size() + 1;
+                            adapter.setLoadMoreEnable(page < pageCount - 1);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+
+                    }
+                });
     }
 
     private void toastNoMoreData() {
