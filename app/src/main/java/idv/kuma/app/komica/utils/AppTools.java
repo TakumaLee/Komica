@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +28,13 @@ public class AppTools {
             e.printStackTrace();
         }
         return versionName;
+    }
+
+    public static void hideKeyboard(View view) {
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     public static int getWindowSizeWidth(Context context) {

@@ -4,5 +4,7 @@
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
 
+    <string name="reply">Reply</string>
+
     <string name="menu_open_browser">Open with a Browser</string>
 </resources>
