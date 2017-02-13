@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
@@ -54,6 +55,9 @@ public class IndexFragment extends BaseFragment {
     private GridLayoutManager gridLayoutManager;
 
     private List<Promotion> promotionList = Collections.emptyList();
+    private String info = "";
+
+    private MaterialDialog materialDialog;
 
     public static IndexFragment newInstance() {
         if (null == instance) {
@@ -93,7 +97,10 @@ public class IndexFragment extends BaseFragment {
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return position == adapter.getItemCount() - 1 ? 3 : 1;
+                if (position == adapter.getItemCount() - 1 || position == 0) {
+                    return 3;
+                }
+                return 1;
             }
         });
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -113,6 +120,11 @@ public class IndexFragment extends BaseFragment {
         });
 
         loadPromotionList();
+
+        materialDialog = new MaterialDialog.Builder(getContext())
+                .title("最新消息")
+                .content("")
+                .build();
 
     }
 
@@ -134,6 +146,7 @@ public class IndexFragment extends BaseFragment {
                         promotion.setImageUrl(promoObj.getString("prmotionImg"));
                         promotionList.add(promotion);
                     }
+                    info = object.getString("promoteInfo");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -156,6 +169,26 @@ public class IndexFragment extends BaseFragment {
             public void run() {
                 swipeRefreshLayout.setRefreshing(false);
                 adapter.notifyDataSetChanged();
+                View headerView = LayoutInflater.from(getContext()).inflate(R.layout.adapter_index_promote, null);
+                TextView infoTextView = findViewById(headerView, R.id.textView_index_adapter_promote);
+                infoTextView.setText("最新消息");
+                adapter.setHeaderView(infoTextView);
+                infoTextView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            materialDialog.getContentView().setText(Html.fromHtml(info, FROM_HTML_MODE_LEGACY));
+                        } else {
+                            materialDialog.getContentView().setText(Html.fromHtml(info));
+                        }
+                        materialDialog.show();
+                        tracker.send(new HitBuilders.EventBuilder()
+                                .setCategory("02. Promote")
+                                .setAction("查看最新消息")
+                                .setLabel("最新消息")
+                                .build());
+                    }
+                });
             }
         });
     }

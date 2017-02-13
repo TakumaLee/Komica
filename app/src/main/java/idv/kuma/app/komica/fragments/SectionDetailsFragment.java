@@ -181,18 +181,8 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                 preparePost = !preparePost;
                 if (preparePost) {
                     showPostInput();
-                    tracker.send(new HitBuilders.EventBuilder()
-                            .setCategory("03. 互動")
-                            .setAction(from + "_" + title + "_開始回文")
-                            .setLabel(from + "_" + title)
-                            .build());
                 } else {
                     hidePostInput();
-                    tracker.send(new HitBuilders.EventBuilder()
-                            .setCategory("03. 互動")
-                            .setAction(from + "_" + title + "_關閉回文")
-                            .setLabel(from + "_" + title)
-                            .build());
                 }
             }
         });
@@ -278,6 +268,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                commentEditText.setText("");
                 hidePostInput();
             }
         });
@@ -516,6 +507,11 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         confirmBtn.setVisibility(View.VISIBLE);
         cancelBtn.setVisibility(View.VISIBLE);
         postContainer.setVisibility(View.VISIBLE);
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory("03. 互動")
+                .setAction(from + "_" + title + "_開始回文")
+                .setLabel(from + "_" + title)
+                .build());
     }
 
     private void hidePostInput() {
@@ -524,6 +520,11 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         cancelBtn.setVisibility(View.GONE);
         postContainer.setVisibility(View.GONE);
         AppTools.hideKeyboard(addPostFab);
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory("03. 互動")
+                .setAction(from + "_" + title + "_關閉回文")
+                .setLabel(from + "_" + title)
+                .build());
     }
 
     private void toastNoMoreData() {

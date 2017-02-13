@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@color/md_amber_300"
+            android:background="@color/md_blue_50"
             android:orientation="vertical">
 
             <LinearLayout
@@ -35,9 +35,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:background="@color/md_amber_300"
+                    android:background="@color/white"
                     android:text="@string/cancel"
-                    android:textColor="@color/white"
+                    android:textColor="@color/primary"
                     android:visibility="gone"/>
 
                 <TextView
@@ -46,9 +46,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:background="@color/md_amber_300"
+                    android:background="@color/white"
                     android:text="@string/confirm"
-                    android:textColor="@color/white"
+                    android:textColor="@color/primary"
                     android:visibility="gone"/>
 
             </LinearLayout>
@@ -69,10 +69,10 @@
         android:layout_height="64dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        app:backgroundTint="@color/white"
+        app:backgroundTint="@color/primary"
         app:layout_anchor="@id/linearLayout_section_post_container"
         app:layout_anchorGravity="top|center"
         android:src="@drawable/ic_add"
-        android:tint="@color/md_amber_500"/>
+        android:tint="@color/white"/>
 
 </android.support.design.widget.CoordinatorLayout>
