@@ -7,12 +7,17 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
+import android.os.Parcel;
+import android.util.SparseArray;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import at.huber.youtubeExtractor.OnYoutubeParseListener;
 import at.huber.youtubeExtractor.YouTubeUriExtractor;
+import at.huber.youtubeExtractor.YtFile;
 import idv.kuma.app.komica.R;
+import idv.kuma.app.komica.utils.KLog;
 
 /**
  * Created by TakumaLee on 2017/2/3.
@@ -80,6 +85,37 @@ public class YoutubeManager {
         bundle.putParcelable(YOUTUBE_INTERFACE, onYoutubeParseListener);
         message.setData(bundle);
         handler.sendMessage(message);
+    }
+
+    public void playYoutube(final Context context, String url) {
+        YoutubeManager.getInstance().startParseYoutubeUrl((Activity) context, url, new OnYoutubeParseListener() {
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+
+            }
+
+            @Override
+            public void onUrisAvailable(String videoId, String videoTitle, SparseArray<YtFile> ytFiles) {
+                KLog.v(TAG, "onYoutube id: " + videoId);
+                KLog.v(TAG, "onYoutube title: " + videoTitle);
+                startPlayer(context, videoTitle, ytFiles);
+            }
+        });
+    }
+
+    private void startPlayer(Context context, String videoTitle, SparseArray<YtFile> ytFiles) {
+        if (ytFiles == null) {
+            Toast.makeText(context, "此影片目前無法觀看", Toast.LENGTH_LONG).show();
+            return;
+        }
+//                            KLog.v(TAG, "onYoutube files: " + ytFiles.size() + "_" + ytFiles.get(22).getUrl());
+        int index = ytFiles.size() > 1 ? 1 : 0;
+        KomicaManager.getInstance().startPlayerActivity(context, videoTitle, ytFiles.get(ytFiles.keyAt(index)).getUrl());
     }
 
     public void dismissProgressDialog() {

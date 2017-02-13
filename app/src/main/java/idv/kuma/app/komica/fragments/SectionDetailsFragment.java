@@ -1,13 +1,18 @@
 package idv.kuma.app.komica.fragments;
 
 import android.annotation.TargetApi;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,6 +27,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -38,6 +44,8 @@ import org.jsoup.nodes.Element;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import idv.kuma.app.komica.R;
 import idv.kuma.app.komica.configs.BundleKeyConfigs;
@@ -46,11 +54,15 @@ import idv.kuma.app.komica.entity.KTitle;
 import idv.kuma.app.komica.fragments.base.BaseFragment;
 import idv.kuma.app.komica.javascripts.JSInterface;
 import idv.kuma.app.komica.manager.KomicaManager;
+import idv.kuma.app.komica.manager.YoutubeManager;
 import idv.kuma.app.komica.utils.CrawlerUtils;
 import idv.kuma.app.komica.utils.KLog;
+import idv.kuma.app.komica.views.CustomTabActivityHelper;
 import idv.kuma.app.komica.views.PostView;
+import idv.kuma.app.komica.views.WebViewFallback;
 import idv.kuma.app.komica.widgets.DividerItemDecoration;
 import idv.kuma.app.komica.widgets.KLinearLayoutManager;
+import idv.kuma.app.komica.widgets.MutableLinkMovementMethod;
 import tw.showang.recycleradaterbase.LoadMoreListener;
 import tw.showang.recycleradaterbase.RecyclerAdapterBase;
 
@@ -60,6 +72,8 @@ import tw.showang.recycleradaterbase.RecyclerAdapterBase;
 
 public class SectionDetailsFragment extends BaseFragment implements KomicaManager.OnUpdateConfigListener {
     private static final String TAG = SectionDetailsFragment.class.getSimpleName();
+
+    private static final String REPLY_TO_SOMEONE = ">>No.";
 
     private String url;
     private String title;
@@ -506,6 +520,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
     class SectionDetailsAdapter extends RecyclerAdapterBase {
 
         private List<KPost> postList;
+        private RecyclerView.ViewHolder findViewHolder;
 
         protected SectionDetailsAdapter(List<KPost> dataList) {
             super(dataList);
@@ -526,12 +541,74 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
             KPost post = postList.get(getItemPosition(holder));
             ((PostView) holder.itemView).setPost(post);
             ((PostView) holder.itemView).notifyDataSetChanged();
+            MutableLinkMovementMethod movementMethod = new MutableLinkMovementMethod();
+            movementMethod.setOnUrlClickListener(new MutableLinkMovementMethod.OnUrlClickListener() {
+                @Override
+                public void onUrlClick(TextView widget, Uri uri) {
+//                    Intent intent = new Intent(getContext(), WebViewActivity.class);
+//                    intent.putExtra(BundleKeyConfigs.KEY_WEB_URL, uri.toString());
+//                    startActivity(intent);
+                    if (uri.toString().contains("youtube") || uri.toString().contains("youtu.be")) {
+                        YoutubeManager.getInstance().playYoutube(getActivity(), uri.toString());
+                    } else if (uri.toString().startsWith("http")) {
+                        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                        builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.primary));
+                        CustomTabsIntent customTabsIntent = builder.build();
+                        final List<ResolveInfo> customTabsApps = getActivity().getPackageManager().queryIntentActivities(customTabsIntent.intent, 0);
+
+                        if (customTabsApps.size() > 0) {
+                            CustomTabActivityHelper.openCustomTab(getActivity(), customTabsIntent, uri, new WebViewFallback());
+                        } else {
+                            // Chrome not installed. Display a toast or something to notify the user
+                            customTabsIntent.launchUrl(getContext(), uri);
+                        }
+                    } else {
+                        Pattern pattern = Pattern.compile("(\\d+)(?!.*\\d)");
+                        Matcher matcher = pattern.matcher(uri.toString());
+                        String id = null;
+                        if (matcher.find()) {
+                            id = matcher.group(1);
+                            KLog.v(TAG, id);
+                        }
+                        if (id == null) {
+                            id = "";
+                        }
+                        if (null != findViewHolder) {
+                            findViewHolder.itemView.setBackgroundResource(R.color.md_blue_50);
+                        }
+                        final int pos = findPostPosition(id);
+                        if (pos != -1) {
+                            recyclerView.scrollToPosition(pos);
+                            recyclerView.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    findViewHolder = recyclerView.findViewHolderForLayoutPosition(pos);
+                                    if (null != findViewHolder) {
+                                        findViewHolder.itemView.setBackgroundColor(Color.GREEN);
+                                    }
+                                }
+                            }, 100);
+
+                        }
+                    }
+                }
+            });
+            ((PostView) holder.itemView).setLinkMovementMethod(movementMethod);
             if (position == 0) {
                 holder.itemView.setBackgroundResource(R.color.white);
             } else {
                 holder.itemView.setBackgroundResource(R.color.md_blue_50);
             }
 
+        }
+
+        private int findPostPosition(String id) {
+            for (int i = 0; i < postList.size(); i++) {
+                if (id.equals(postList.get(i).getId())) {
+                    return i;
+                }
+            }
+            return -1;
         }
 
     }

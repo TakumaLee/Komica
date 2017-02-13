@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -177,8 +178,13 @@ public class PostView extends LinearLayout {
                     public void onUrisAvailable(String videoId, String videoTitle, SparseArray<YtFile> ytFiles) {
                         KLog.v(TAG, "onYoutube id: " + videoId);
                         KLog.v(TAG, "onYoutube title: " + videoTitle);
-                        KLog.v(TAG, "onYoutube files: " + ytFiles.size() + "_" + ytFiles.get(22).getUrl());
-                        KomicaManager.getInstance().startPlayerActivity(getContext(), videoTitle, ytFiles.get(22).getUrl());
+                        if (ytFiles == null) {
+                            Toast.makeText(getContext(), "此影片目前無法觀看", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+//                            KLog.v(TAG, "onYoutube files: " + ytFiles.size() + "_" + ytFiles.get(22).getUrl());
+                        int index = ytFiles.size() > 1 ? 1 : 0;
+                        KomicaManager.getInstance().startPlayerActivity(getContext(), videoTitle, ytFiles.get(ytFiles.keyAt(index)).getUrl());
                     }
                 });
             } else {

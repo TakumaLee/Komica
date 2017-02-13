@@ -7,10 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
@@ -18,7 +18,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,7 +36,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
@@ -52,9 +50,9 @@ import org.jsoup.nodes.Element;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import at.huber.youtubeExtractor.OnYoutubeParseListener;
-import at.huber.youtubeExtractor.YtFile;
 import idv.kuma.app.komica.R;
 import idv.kuma.app.komica.activities.SectionDetailsActivity;
 import idv.kuma.app.komica.adapters.LoadMoreViewHolder;
@@ -62,6 +60,7 @@ import idv.kuma.app.komica.configs.BundleKeyConfigs;
 import idv.kuma.app.komica.entity.KPost;
 import idv.kuma.app.komica.entity.KReply;
 import idv.kuma.app.komica.entity.KTitle;
+import idv.kuma.app.komica.entity.PostPosition;
 import idv.kuma.app.komica.fragments.base.BaseFragment;
 import idv.kuma.app.komica.javascripts.JSInterface;
 import idv.kuma.app.komica.manager.FacebookManager;
@@ -69,6 +68,7 @@ import idv.kuma.app.komica.manager.KomicaAccountManager;
 import idv.kuma.app.komica.manager.KomicaManager;
 import idv.kuma.app.komica.manager.ThirdPartyManager;
 import idv.kuma.app.komica.manager.YoutubeManager;
+import idv.kuma.app.komica.utils.AppTools;
 import idv.kuma.app.komica.utils.CrawlerUtils;
 import idv.kuma.app.komica.utils.KLog;
 import idv.kuma.app.komica.views.CustomTabActivityHelper;
@@ -544,6 +544,8 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
     class SectionPreviewAdapter extends RecyclerAdapterBase {
 
         private List<KTitle> titleList;
+        private PostPosition pos;
+        private SectionPreViewHolder findViewHolder;
 
         protected SectionPreviewAdapter(List<KTitle> dataList) {
             super(dataList);
@@ -570,7 +572,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                 KLog.w(TAG, "Dangerous for OOM, Clear Memory.");
                 System.gc();
             }
-            SectionPreViewHolder holder = (SectionPreViewHolder) viewHolder;
+            final SectionPreViewHolder holder = (SectionPreViewHolder) viewHolder;
             KLog.v(TAG, String.valueOf(position));
             final KTitle head = titleList.get(position);
             holder.postIdTextView.setText("No. " + head.getId());
@@ -588,16 +590,58 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
 //                    Intent intent = new Intent(getContext(), WebViewActivity.class);
 //                    intent.putExtra(BundleKeyConfigs.KEY_WEB_URL, uri.toString());
 //                    startActivity(intent);
-                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                    builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.primary));
-                    CustomTabsIntent customTabsIntent = builder.build();
-                    final List<ResolveInfo> customTabsApps = getActivity().getPackageManager().queryIntentActivities(customTabsIntent.intent, 0);
+                    if (uri.toString().contains("youtube") || uri.toString().contains("youtu.be")) {
+                        YoutubeManager.getInstance().playYoutube(getActivity(), uri.toString());
+                    } else if (uri.toString().startsWith("http")) {
+                        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                        builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.primary));
+                        CustomTabsIntent customTabsIntent = builder.build();
+                        final List<ResolveInfo> customTabsApps = getActivity().getPackageManager().queryIntentActivities(customTabsIntent.intent, 0);
 
-                    if (customTabsApps.size() > 0) {
-                        CustomTabActivityHelper.openCustomTab(getActivity(), customTabsIntent, uri, new WebViewFallback());
+                        if (customTabsApps.size() > 0) {
+                            CustomTabActivityHelper.openCustomTab(getActivity(), customTabsIntent, uri, new WebViewFallback());
+                        } else {
+                            // Chrome not installed. Display a toast or something to notify the user
+                            customTabsIntent.launchUrl(getContext(), uri);
+                        }
                     } else {
-                        // Chrome not installed. Display a toast or something to notify the user
-                        customTabsIntent.launchUrl(getContext(), uri);
+                        Pattern pattern = Pattern.compile("(\\d+)(?!.*\\d)");
+                        Matcher matcher = pattern.matcher(uri.toString());
+                        String id = null;
+                        if (matcher.find()) {
+                            id = matcher.group(1);
+                            KLog.v(TAG, id);
+                        }
+                        if (id == null) {
+                            id = "";
+                        }
+                        if (null != findViewHolder && null != pos) {
+                            if (pos.reply != -1) {
+                                findViewHolder.replyLinearLayout.getChildAt(pos.reply).setBackgroundResource(R.color.md_blue_50);
+                            } else {
+                                findViewHolder.postView.setBackgroundResource(R.color.md_blue_50);
+                            }
+                        }
+                        pos = findPostPosition(id);
+                        if (pos.title != -1 || pos.reply != -1) {
+//                            recyclerView.scrollToPosition(pos.title);
+                            if (pos.reply != -1) {
+                                holder.replyLinearLayout.getChildAt(pos.reply).setBackgroundColor(Color.GREEN);
+                                int[] originalPos = new int[2];
+                                holder.replyLinearLayout.getChildAt(pos.reply).getLocationOnScreen(originalPos);
+                                KLog.d(TAG, "text: " + AppTools.getWindowSizeHeight(widget.getContext()) / 2 + "\nTo: " + originalPos[1]);
+                                recyclerView.scrollBy(0, originalPos[1] - AppTools.getWindowSizeHeight(widget.getContext()) / 2);
+                                findViewHolder = holder;
+                            }
+                        } else {
+                            url = url.substring(0, url.lastIndexOf("/") + 1) + uri.toString();
+                            Intent intent = new Intent(getContext(), SectionDetailsActivity.class);
+                            intent.putExtra(BundleKeyConfigs.KEY_WEB_URL, url);
+                            intent.putExtra(BundleKeyConfigs.KEY_WEB_TITLE, head.getTitle());
+                            intent.putExtra(BundleKeyConfigs.KEY_WEB_TYPE, webType);
+                            intent.putExtra(BundleKeyConfigs.KEY_WEB_FROM, title);
+                            startActivity(intent);
+                        }
                     }
                 }
             });
@@ -656,12 +700,35 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
             vh.failText.setVisibility(isLoadMoreFailed ? VISIBLE : GONE);
         }
 
+        private PostPosition findPostPosition(String id) {
+            PostPosition postPosition = new PostPosition();
+            for (int i = 0; i < titleList.size(); i++) {
+                if (id.equals(titleList.get(i).getId())) {
+                    postPosition.title = i;
+                    postPosition.reply = -1;
+                    break;
+                }
+                if (null == titleList.get(i).getReplyList()) {
+                    continue;
+                }
+                for (int j = 0; j < titleList.get(i).getReplyList().size(); j++) {
+                    if (id.equals(titleList.get(i).getReplyList().get(j).getId())) {
+                        postPosition.title = i;
+                        postPosition.reply = j;
+                        break;
+                    }
+                }
+            }
+            return postPosition;
+        }
+
     }
 
     class SectionPreViewHolder extends RecyclerView.ViewHolder {
 
         KPost post;
 
+        View postView;
         TextView postIdTextView;
         TextView postTitleTextView;
         TextView postQuoteTextView;
@@ -679,6 +746,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         public SectionPreViewHolder(View itemView) {
             super(itemView);
             LayoutInflater inflate = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            postView = findViewById(itemView, R.id.postView_section_preview);
             postImgListContainer = (LinearLayout) inflate.inflate(R.layout.layout_section_post_img_list, (ViewGroup) itemView);
             postIdTextView = findViewById(itemView, R.id.textView_section_post_id);
             postTitleTextView = findViewById(itemView, R.id.textView_section_post_title);
@@ -724,30 +792,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
             @Override
             public void onClick(View v) {
                 if (post.getVideoUrl().contains("youtube") || post.getVideoUrl().contains("youtu.be")) {
-                    YoutubeManager.getInstance().startParseYoutubeUrl(getActivity(), post.getVideoUrl(), new OnYoutubeParseListener() {
-                        @Override
-                        public int describeContents() {
-                            return 0;
-                        }
-
-                        @Override
-                        public void writeToParcel(Parcel dest, int flags) {
-
-                        }
-
-                        @Override
-                        public void onUrisAvailable(String videoId, String videoTitle, SparseArray<YtFile> ytFiles) {
-                            KLog.v(TAG, "onYoutube id: " + videoId);
-                            KLog.v(TAG, "onYoutube title: " + videoTitle);
-                            if (ytFiles == null) {
-                                Toast.makeText(getContext(), "此影片目前無法觀看", Toast.LENGTH_LONG).show();
-                                return;
-                            }
-//                            KLog.v(TAG, "onYoutube files: " + ytFiles.size() + "_" + ytFiles.get(22).getUrl());
-                            int index = ytFiles.size() > 1 ? 1 : 0;
-                            KomicaManager.getInstance().startPlayerActivity(getContext(), videoTitle, ytFiles.get(ytFiles.keyAt(index)).getUrl());
-                        }
-                    });
+                    YoutubeManager.getInstance().playYoutube(getActivity(), post.getVideoUrl());
                 } else {
                     KomicaManager.getInstance().startPlayerActivity(v.getContext(), post.getTitle(), post.getVideoUrl());
                 }

@@ -4,7 +4,9 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_section_post"/>
+    <include
+        android:id="@+id/postView_section_preview"
+        layout="@layout/layout_section_post"/>
 
     <Button
         android:id="@+id/button_section_preview_more"
