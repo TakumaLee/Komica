@@ -268,6 +268,11 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("03. 互動")
+                        .setAction(from + "_" + title + "_回文清空")
+                        .setLabel(from + "_" + title)
+                        .build());
                 commentEditText.setText("");
                 hidePostInput();
             }
@@ -576,6 +581,11 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                 @Override
                 public void onGetReplyId(String id) {
                     showPostInput();
+                    tracker.send(new HitBuilders.EventBuilder()
+                            .setCategory("03. 互動")
+                            .setAction(from + "_" + title + "_回覆單一貼文")
+                            .setLabel(from + "_" + title + "_No." + id)
+                            .build());
                     String comment = commentEditText.getText().toString() + REPLY_TO_SOMEONE + id + "\n";
                     commentEditText.setText(comment);
                 }
