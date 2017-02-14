@@ -2,6 +2,9 @@ package idv.kuma.app.komica.manager;
 
 import android.support.annotation.NonNull;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -17,12 +20,9 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-
 import idv.kuma.app.komica.entity.MyAccount;
 import idv.kuma.app.komica.entity.push.PushDevice;
 import idv.kuma.app.komica.entity.push.PushUser;
-import idv.kuma.app.komica.http.NetworkCallback;
 import idv.kuma.app.komica.http.OkHttpClientConnect;
 import idv.kuma.app.komica.utils.KLog;
 
@@ -231,15 +231,18 @@ public class FirebaseManager {
         if ((url == null || url.isEmpty()) && (key == null || key.isEmpty())) {
             return;
         }
-        OkHttpClientConnect.excuteAutoPost("Authorization", key, url, object.toString(), OkHttpClientConnect.CONTENT_TYPE_JSON, new NetworkCallback() {
+        AndroidNetworking.post(url)
+                .addHeaders("Authorization", key)
+                .addHeaders("Content-Type", OkHttpClientConnect.CONTENT_TYPE_JSON)
+                .addBodyParameter(object).build().getAsString(new StringRequestListener() {
             @Override
-            public void onFailure(IOException e) {
-                KLog.v(TAG, "onFailure: " + e);
+            public void onResponse(String response) {
+                KLog.v(TAG, response);
             }
 
             @Override
-            public void onResponse(int responseCode, String result) {
-                KLog.v(TAG, result);
+            public void onError(ANError anError) {
+                KLog.v(TAG, "onFailure: " + anError);
             }
         });
     }

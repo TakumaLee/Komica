@@ -13,13 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.analytics.HitBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,8 +33,6 @@ import idv.kuma.app.komica.configs.BundleKeyConfigs;
 import idv.kuma.app.komica.configs.WebUrlFormaterUtils;
 import idv.kuma.app.komica.entity.Promotion;
 import idv.kuma.app.komica.fragments.base.BaseFragment;
-import idv.kuma.app.komica.http.NetworkCallback;
-import idv.kuma.app.komica.http.OkHttpClientConnect;
 import idv.kuma.app.komica.manager.KomicaManager;
 import idv.kuma.app.komica.utils.AppTools;
 import idv.kuma.app.komica.widgets.IndexGridDividerDecoration;
@@ -54,6 +55,9 @@ public class IndexFragment extends BaseFragment {
     private GridLayoutManager gridLayoutManager;
 
     private List<Promotion> promotionList = Collections.emptyList();
+    private String info = "";
+
+    private MaterialDialog materialDialog;
 
     public static IndexFragment newInstance() {
         if (null == instance) {
@@ -93,7 +97,10 @@ public class IndexFragment extends BaseFragment {
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return position == adapter.getItemCount() - 1 ? 3 : 1;
+                if (position == adapter.getItemCount() - 1 || position == 0) {
+                    return 3;
+                }
+                return 1;
             }
         });
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -114,21 +121,22 @@ public class IndexFragment extends BaseFragment {
 
         loadPromotionList();
 
+        materialDialog = new MaterialDialog.Builder(getContext())
+                .title("最新消息")
+                .content("")
+                .build();
+
     }
 
     private void loadPromotionList() {
         swipeRefreshLayout.setRefreshing(true);
-        OkHttpClientConnect.excuteAutoGet(WebUrlFormaterUtils.getPromoteListUrl(), new NetworkCallback() {
+        AndroidNetworking.get(WebUrlFormaterUtils.getPromoteListUrl())
+                .build().getAsString(new StringRequestListener() {
             @Override
-            public void onFailure(IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(int responseCode, String result) {
+            public void onResponse(String response) {
                 promotionList.clear();
                 try {
-                    JSONObject object = new JSONObject(result);
+                    JSONObject object = new JSONObject(response);
                     JSONArray array = object.getJSONArray("promoteList");
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject promoObj = array.getJSONObject(i);
@@ -138,10 +146,16 @@ public class IndexFragment extends BaseFragment {
                         promotion.setImageUrl(promoObj.getString("prmotionImg"));
                         promotionList.add(promotion);
                     }
+                    info = object.getString("promoteInfo");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 notifyAdapter();
+            }
+
+            @Override
+            public void onError(ANError anError) {
+
             }
         });
     }
@@ -155,6 +169,26 @@ public class IndexFragment extends BaseFragment {
             public void run() {
                 swipeRefreshLayout.setRefreshing(false);
                 adapter.notifyDataSetChanged();
+                View headerView = LayoutInflater.from(getContext()).inflate(R.layout.adapter_index_promote, null);
+                TextView infoTextView = findViewById(headerView, R.id.textView_index_adapter_promote);
+                infoTextView.setText("最新消息");
+                adapter.setHeaderView(infoTextView);
+                infoTextView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            materialDialog.getContentView().setText(Html.fromHtml(info, FROM_HTML_MODE_LEGACY));
+                        } else {
+                            materialDialog.getContentView().setText(Html.fromHtml(info));
+                        }
+                        materialDialog.show();
+                        tracker.send(new HitBuilders.EventBuilder()
+                                .setCategory("02. Promote")
+                                .setAction("查看最新消息")
+                                .setLabel("最新消息")
+                                .build());
+                    }
+                });
             }
         });
     }

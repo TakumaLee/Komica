@@ -1,25 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView_section_details"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent">
 
-    <!--<FrameLayout-->
-        <!--android:id="@+id/frameLayout_sectionWeb"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="256dp"></FrameLayout>-->
+        <LinearLayout
+            android:id="@+id/linearLayout_section_post_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/md_blue_50"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linearLayout_section_post_input_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"></LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout_section_post_check"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/button_section_post_cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:background="@color/white"
+                    android:text="@string/cancel"
+                    android:textColor="@color/primary"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/button_section_post_confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:background="@color/white"
+                    android:text="@string/confirm"
+                    android:textColor="@color/primary"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView_section_details"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/linearLayout_section_post_container"/>
+
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_section_details_add_post"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="32dp"
-        android:src="@drawable/ic_add"/>
+        app:backgroundTint="@color/primary"
+        app:layout_anchor="@id/linearLayout_section_post_container"
+        app:layout_anchorGravity="top|center"
+        android:src="@drawable/ic_add"
+        android:tint="@color/white"/>
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

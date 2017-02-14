@@ -1,13 +1,17 @@
 package idv.kuma.app.komica.fragments;
 
 import android.annotation.TargetApi;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,35 +26,41 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.analytics.HitBuilders;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import idv.kuma.app.komica.R;
 import idv.kuma.app.komica.configs.BundleKeyConfigs;
 import idv.kuma.app.komica.entity.KPost;
 import idv.kuma.app.komica.entity.KTitle;
 import idv.kuma.app.komica.fragments.base.BaseFragment;
-import idv.kuma.app.komica.http.NetworkCallback;
-import idv.kuma.app.komica.http.OkHttpClientConnect;
 import idv.kuma.app.komica.javascripts.JSInterface;
 import idv.kuma.app.komica.manager.KomicaManager;
+import idv.kuma.app.komica.manager.YoutubeManager;
+import idv.kuma.app.komica.utils.AppTools;
 import idv.kuma.app.komica.utils.CrawlerUtils;
 import idv.kuma.app.komica.utils.KLog;
+import idv.kuma.app.komica.views.CustomTabActivityHelper;
 import idv.kuma.app.komica.views.PostView;
+import idv.kuma.app.komica.views.WebViewFallback;
 import idv.kuma.app.komica.widgets.DividerItemDecoration;
 import idv.kuma.app.komica.widgets.KLinearLayoutManager;
+import idv.kuma.app.komica.widgets.MutableLinkMovementMethod;
 import tw.showang.recycleradaterbase.LoadMoreListener;
 import tw.showang.recycleradaterbase.RecyclerAdapterBase;
 
@@ -60,6 +70,8 @@ import tw.showang.recycleradaterbase.RecyclerAdapterBase;
 
 public class SectionDetailsFragment extends BaseFragment implements KomicaManager.OnUpdateConfigListener {
     private static final String TAG = SectionDetailsFragment.class.getSimpleName();
+
+    private static final String REPLY_TO_SOMEONE = ">>No.";
 
     private String url;
     private String title;
@@ -73,8 +85,14 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
     private KLinearLayoutManager linearLayoutManager;
     private SectionDetailsAdapter adapter;
 
+    private View postInputView;
+    private TextInputEditText commentEditText;
+
     private FloatingActionButton addPostFab;
-    private MaterialDialog postDialog;
+    private LinearLayout postContainer;
+    private TextView confirmBtn;
+    private TextView cancelBtn;
+    private boolean preparePost = false;
     private boolean isPosting = false;
     private int page = 0;
     private int pageCount = 0;
@@ -127,7 +145,6 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ((LinearLayout) postDialog.getCustomView().findViewById(R.id.linearLayout_post_container)).removeAllViews();
         if (webView != null) {
             webView.stopLoading();
             webView = null;
@@ -136,14 +153,11 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
 
     @Override
     public boolean isBackPressed() {
-        if (null != postDialog) {
-            postDialog.dismiss();
-        }
         return super.isBackPressed();
     }
 
     private void initView() {
-        initPostDialog();
+        initPostView();
         initWebView();
         recyclerView = findViewById(getView(), R.id.recyclerView_section_details);
         addPostFab = findViewById(getView(), R.id.fab_section_details_add_post);
@@ -164,19 +178,19 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         addPostFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tracker.send(new HitBuilders.EventBuilder()
-                        .setCategory("03. 互動")
-                        .setAction(from + "_" + title + "_開始回文")
-                        .setLabel(from + "_" + title)
-                        .build());
-                postDialog.show();
+                preparePost = !preparePost;
+                if (preparePost) {
+                    showPostInput();
+                } else {
+                    hidePostInput();
+                }
             }
         });
 
         switch (webType) {
             case KomicaManager.WebType.INTEGRATED:
-                ((LinearLayout) postDialog.getCustomView().findViewById(R.id.linearLayout_post_container)).addView(reCaProgressBar);
-                ((LinearLayout) postDialog.getCustomView().findViewById(R.id.linearLayout_post_container)).addView(webView);
+                postContainer.addView(reCaProgressBar);
+                postContainer.addView(webView);
 //                postDialog = new MaterialDialog.Builder(getContext())
 //                        .cancelable(false)
 //                        .autoDismiss(false)
@@ -202,46 +216,67 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         getActivity().setTitle(title);
     }
 
-    private void initPostDialog() {
-        postDialog = new MaterialDialog.Builder(getContext())
-                .customView(R.layout.layout_post, true)
-                .positiveText(R.string.confirm)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        TextInputEditText commentEditText = (TextInputEditText) postDialog.getCustomView().findViewById(R.id.editText_post_comment);
-                        String comment = commentEditText.getText().toString().replaceAll("\\n", "\\\\n");
-                        KLog.v(TAG, comment);
-                        switch (webType) {
-                            case KomicaManager.WebType.INTEGRATED:
-                                String submitStr = "javascript:" + "document.getElementsByTagName('form')[0].submit();";
-                                String commentStr = "javascript:" + "document.getElementsByTagName('textarea')[0].value='" + comment + "';";
+    private void initPostView() {
+        postContainer = findViewById(getView(), R.id.linearLayout_section_post_input_container);
+        confirmBtn = findViewById(getView(), R.id.button_section_post_confirm);
+        cancelBtn = findViewById(getView(), R.id.button_section_post_cancel);
+
+        postInputView = LayoutInflater.from(getContext()).inflate(R.layout.layout_post, null);
+        commentEditText = findViewById(postInputView, R.id.editText_post_comment);
+        int px = AppTools.dpToPx(4);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(px, px, px, px);
+        postInputView.setLayoutParams(params);
+        postContainer.addView(postInputView);
+
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String comment = commentEditText.getText().toString().replaceAll("\\n", "\\\\n");
+                KLog.v(TAG, comment);
+                switch (webType) {
+                    case KomicaManager.WebType.INTEGRATED:
+                        String submitStr = "javascript:" + "document.getElementsByTagName('form')[0].submit();";
+                        String commentStr = "javascript:" + "document.getElementsByTagName('textarea')[0].value='" + comment + "';";
 //                                            String checkStr = "javascript:" + "parent.frames['0'].document.getElementById('recaptcha-anchor').setAttribute('aria-checked', true);";
 //                                String checkStr = "javascript:" + "parent.frames['0'].document.getElementById('recaptcha-anchor').click();";
 //                                            String checkStr = "javascript:" + "parent.frames['0'].contentWindow.postMessage(" +
 //                                                    "document.getElementById('recaptcha-anchor').setAttribute('aria-checked', true)," +
 //                                                    Uri.parse(webView.getUrl()).getHost() +
 //                                                    ")";
-                                webView.loadUrl(commentStr + submitStr);
-                                break;
-                            case KomicaManager.WebType.THREADS:
-                            case KomicaManager.WebType.NORMAL:
-                            case KomicaManager.WebType.THREADS_LIST:
-                            default:
-                                submitStr = "javascript:" + "document.getElementById('" + formElem.id() + "').submit();";
-                                webView.loadUrl("javascript:" + "document.getElementById('fcom').value='" + comment + "';" + submitStr);
-                                break;
-                        }
-                        isPosting = true;
-                        Toast.makeText(getContext(), R.string.message_please_wait_for_replying, Toast.LENGTH_LONG).show();
-                        tracker.send(new HitBuilders.EventBuilder()
-                                .setCategory("03. 互動")
-                                .setAction(from + "_" + title + "_回文發佈")
-                                .setLabel(from + "_" + title)
-                                .build());
-                    }
-                })
-                .build();
+                        webView.loadUrl(commentStr + submitStr);
+                        break;
+                    case KomicaManager.WebType.THREADS:
+                    case KomicaManager.WebType.NORMAL:
+                    case KomicaManager.WebType.THREADS_LIST:
+                    default:
+                        submitStr = "javascript:" + "document.getElementById('" + formElem.id() + "').submit();";
+                        webView.loadUrl("javascript:" + "document.getElementById('fcom').value='" + comment + "';" + submitStr);
+                        break;
+                }
+                isPosting = true;
+                Toast.makeText(getContext(), R.string.message_please_wait_for_replying, Toast.LENGTH_LONG).show();
+                tracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("03. 互動")
+                        .setAction(from + "_" + title + "_回文發佈")
+                        .setLabel(from + "_" + title)
+                        .build());
+                commentEditText.setText("");
+                hidePostInput();
+            }
+        });
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("03. 互動")
+                        .setAction(from + "_" + title + "_回文清空")
+                        .setLabel(from + "_" + title)
+                        .build());
+                commentEditText.setText("");
+                hidePostInput();
+            }
+        });
     }
 
     private void initWebView() {
@@ -416,59 +451,85 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         if (null == getActivity()) {
             return;
         }
-        OkHttpClientConnect.excuteAutoGet(url, new NetworkCallback() {
-            @Override
-            public void onFailure(IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(int responseCode, String result) {
-                if (null == getActivity()) {
-                    return;
-                }
-                if (result.contains("ReDirUrl")) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String reDirUrl = url.substring(0, url.lastIndexOf("/") + 1) + "m" + url.substring(url.lastIndexOf("/"));
-                            webView.stopLoading();
-                            webView.loadUrl(reDirUrl);
+        AndroidNetworking.get(url).build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (null == getActivity()) {
+                            return;
                         }
-                    });
+                        if (response.contains("ReDirUrl")) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String reDirUrl = url.substring(0, url.lastIndexOf("/") + 1) + "m" + url.substring(url.lastIndexOf("/"));
+                                    webView.stopLoading();
+                                    webView.loadUrl(reDirUrl);
+                                }
+                            });
 
-                } else {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            webView.loadUrl(url);
+                        } else {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    webView.loadUrl(url);
+                                }
+                            });
                         }
-                    });
-                }
-                if (page == 0) {
-                    postList.clear();
-                }
-                Document document = Jsoup.parse(result);
-                formElem = document.getElementsByTag("form").first();
-                List<KTitle> headList = CrawlerUtils.getPostList(document, url, webType);
-                KTitle head = headList.size() > 0 ? headList.get(0) : null;
-                //TODO no data to load.
-                if (null == head) {
-                    toastNoMoreData();
-                    return;
-                }
-                if (page == 0) {
-                    postList.add(head);
-                }
-                postList.addAll(head.getReplyList());
-                notifyAdapter();
-                hasAnotherPage = !document.getElementsByClass("page_switch").isEmpty() && page != pageCount - 1;
-                if (hasAnotherPage) {
-                    pageCount = document.getElementsByClass("page_switch").first().getElementsByClass("link").size() + 1;
-                    adapter.setLoadMoreEnable(page < pageCount - 1);
-                }
-            }
-        });
+                        if (page == 0) {
+                            postList.clear();
+                        }
+                        Document document = Jsoup.parse(response);
+                        formElem = document.getElementsByTag("form").first();
+                        List<KTitle> headList = CrawlerUtils.getPostList(document, url, webType);
+                        KTitle head = headList.size() > 0 ? headList.get(0) : null;
+                        //TODO no data to load.
+                        if (null == head) {
+                            toastNoMoreData();
+                            return;
+                        }
+                        if (page == 0) {
+                            postList.add(head);
+                        }
+                        postList.addAll(head.getReplyList());
+                        notifyAdapter();
+                        hasAnotherPage = !document.getElementsByClass("page_switch").isEmpty() && page != pageCount - 1;
+                        if (hasAnotherPage) {
+                            pageCount = document.getElementsByClass("page_switch").first().getElementsByClass("link").size() + 1;
+                            adapter.setLoadMoreEnable(page < pageCount - 1);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+
+                    }
+                });
+    }
+
+    private void showPostInput() {
+        addPostFab.setImageResource(R.drawable.ic_arrow_drop_down);
+        confirmBtn.setVisibility(View.VISIBLE);
+        cancelBtn.setVisibility(View.VISIBLE);
+        postContainer.setVisibility(View.VISIBLE);
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory("03. 互動")
+                .setAction(from + "_" + title + "_開始回文")
+                .setLabel(from + "_" + title)
+                .build());
+    }
+
+    private void hidePostInput() {
+        addPostFab.setImageResource(R.drawable.ic_add);
+        confirmBtn.setVisibility(View.GONE);
+        cancelBtn.setVisibility(View.GONE);
+        postContainer.setVisibility(View.GONE);
+        AppTools.hideKeyboard(addPostFab);
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory("03. 互動")
+                .setAction(from + "_" + title + "_關閉回文")
+                .setLabel(from + "_" + title)
+                .build());
     }
 
     private void toastNoMoreData() {
@@ -505,6 +566,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
     class SectionDetailsAdapter extends RecyclerAdapterBase {
 
         private List<KPost> postList;
+        private RecyclerView.ViewHolder findViewHolder;
 
         protected SectionDetailsAdapter(List<KPost> dataList) {
             super(dataList);
@@ -515,6 +577,19 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         protected RecyclerView.ViewHolder onCreateItemViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
             PostView postView = new PostView(parent.getContext());
             postView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            postView.setOnReplyListener(new PostView.OnReplyListener() {
+                @Override
+                public void onGetReplyId(String id) {
+                    showPostInput();
+                    tracker.send(new HitBuilders.EventBuilder()
+                            .setCategory("03. 互動")
+                            .setAction(from + "_" + title + "_回覆單一貼文")
+                            .setLabel(from + "_" + title + "_No." + id)
+                            .build());
+                    String comment = commentEditText.getText().toString() + REPLY_TO_SOMEONE + id + "\n";
+                    commentEditText.setText(comment);
+                }
+            });
             return new SectionDetailsViewHolder(postView);
         }
 
@@ -525,12 +600,74 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
             KPost post = postList.get(getItemPosition(holder));
             ((PostView) holder.itemView).setPost(post);
             ((PostView) holder.itemView).notifyDataSetChanged();
+            MutableLinkMovementMethod movementMethod = new MutableLinkMovementMethod();
+            movementMethod.setOnUrlClickListener(new MutableLinkMovementMethod.OnUrlClickListener() {
+                @Override
+                public void onUrlClick(TextView widget, Uri uri) {
+//                    Intent intent = new Intent(getContext(), WebViewActivity.class);
+//                    intent.putExtra(BundleKeyConfigs.KEY_WEB_URL, uri.toString());
+//                    startActivity(intent);
+                    if (uri.toString().contains("youtube") || uri.toString().contains("youtu.be")) {
+                        YoutubeManager.getInstance().playYoutube(getActivity(), uri.toString());
+                    } else if (uri.toString().startsWith("http")) {
+                        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                        builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.primary));
+                        CustomTabsIntent customTabsIntent = builder.build();
+                        final List<ResolveInfo> customTabsApps = getActivity().getPackageManager().queryIntentActivities(customTabsIntent.intent, 0);
+
+                        if (customTabsApps.size() > 0) {
+                            CustomTabActivityHelper.openCustomTab(getActivity(), customTabsIntent, uri, new WebViewFallback());
+                        } else {
+                            // Chrome not installed. Display a toast or something to notify the user
+                            customTabsIntent.launchUrl(getContext(), uri);
+                        }
+                    } else {
+                        Pattern pattern = Pattern.compile("(\\d+)(?!.*\\d)");
+                        Matcher matcher = pattern.matcher(uri.toString());
+                        String id = null;
+                        if (matcher.find()) {
+                            id = matcher.group(1);
+                            KLog.v(TAG, id);
+                        }
+                        if (id == null) {
+                            id = "";
+                        }
+                        if (null != findViewHolder) {
+                            findViewHolder.itemView.setBackgroundResource(R.color.md_blue_50);
+                        }
+                        final int pos = findPostPosition(id);
+                        if (pos != -1) {
+                            recyclerView.scrollToPosition(pos);
+                            recyclerView.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    findViewHolder = recyclerView.findViewHolderForLayoutPosition(pos);
+                                    if (null != findViewHolder) {
+                                        findViewHolder.itemView.setBackgroundColor(Color.GREEN);
+                                    }
+                                }
+                            }, 100);
+
+                        }
+                    }
+                }
+            });
+            ((PostView) holder.itemView).setLinkMovementMethod(movementMethod);
             if (position == 0) {
                 holder.itemView.setBackgroundResource(R.color.white);
             } else {
                 holder.itemView.setBackgroundResource(R.color.md_blue_50);
             }
 
+        }
+
+        private int findPostPosition(String id) {
+            for (int i = 0; i < postList.size(); i++) {
+                if (id.equals(postList.get(i).getId())) {
+                    return i;
+                }
+            }
+            return -1;
         }
 
     }

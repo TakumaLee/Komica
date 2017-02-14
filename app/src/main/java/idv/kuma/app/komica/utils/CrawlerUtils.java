@@ -71,6 +71,9 @@ public class CrawlerUtils {
                 KReply replyPost = new KReply(element, url);
                 replyList.add(replyPost);
             }
+            if (null == titlePost) {
+                continue;
+            }
             if (webType == KomicaManager.WebType.THREADS) {
                 titlePost.setReplyList(replyList);
                 titlePostList.add(titlePost);

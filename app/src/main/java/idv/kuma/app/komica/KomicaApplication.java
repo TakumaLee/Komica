@@ -8,12 +8,15 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.widget.ImageView;
 
+import com.androidnetworking.AndroidNetworking;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.stetho.Stetho;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -60,6 +63,13 @@ public class KomicaApplication extends MultiDexApplication {
 //        KumaAdSDK.initSingleton(getApplicationContext());
         initExoplayer();
 
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .addNetworkInterceptor(new StethoInterceptor())
+                .build();
+        AndroidNetworking.initialize(getApplicationContext(), okHttpClient);
+        if (BuildConfig.DEBUG) {
+            Stetho.initializeWithDefaults(getApplicationContext());
+        }
         Glide.get(this).register(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(new OkHttpClient()));
         DrawerImageLoader.init(new AbstractDrawerImageLoader() {
             @Override

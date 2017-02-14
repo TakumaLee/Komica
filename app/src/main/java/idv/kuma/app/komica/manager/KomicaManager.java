@@ -7,6 +7,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -17,7 +20,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +28,6 @@ import idv.kuma.app.komica.configs.WebUrlFormaterUtils;
 import idv.kuma.app.komica.context.ApplicationContextSingleton;
 import idv.kuma.app.komica.entity.KomicaMenuGroup;
 import idv.kuma.app.komica.entity.KomicaMenuMember;
-import idv.kuma.app.komica.http.NetworkCallback;
-import idv.kuma.app.komica.http.OkHttpClientConnect;
 import idv.kuma.app.komica.utils.KLog;
 import idv.kuma.app.player.PlayerActivity;
 
@@ -178,34 +178,31 @@ public class KomicaManager {
     }
 
     public void loadKomicaMenu() {
-        OkHttpClientConnect.excuteAutoGet(WebUrlFormaterUtils.getKomicaMenuKeyUrl(), new NetworkCallback() {
+        AndroidNetworking.get(WebUrlFormaterUtils.getKomicaMenuKeyUrl())
+                .build().getAsString(new StringRequestListener() {
             @Override
-            public void onFailure(IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(int responseCode, String result) {
+            public void onResponse(String response) {
                 try {
-                    menuKeyObj = new JSONObject(result);
+                    menuKeyObj = new JSONObject(response);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-        });
-        OkHttpClientConnect.excuteAutoGet(WebUrlFormaterUtils.getKomicaMenuUrl(), new NetworkCallback() {
+
             @Override
-            public void onFailure(IOException e) {
+            public void onError(ANError anError) {
 
             }
-
+        });
+        AndroidNetworking.get(WebUrlFormaterUtils.getKomicaMenuUrl())
+                .build().getAsString(new StringRequestListener() {
             @Override
-            public void onResponse(int responseCode, String result) {
+            public void onResponse(String response) {
                 int count = 0;
                 int memberId = 0;
                 List<KomicaMenuGroup> groupList = new ArrayList<>();
                 try {
-                    JSONArray array = new JSONArray(result);
+                    JSONArray array = new JSONArray(response);
                     for (int i = 0; i < array.length(); i++) {
                         String title = array.getJSONObject(i).getString("title");
                         KomicaMenuGroup group = new KomicaMenuGroup();
@@ -238,8 +235,11 @@ public class KomicaManager {
                         }
                     }
                 });
+            }
 
-//                fragment.notifyDrawerBuild();
+            @Override
+            public void onError(ANError anError) {
+
             }
         });
     }

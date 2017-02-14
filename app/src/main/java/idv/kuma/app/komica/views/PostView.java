@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -44,6 +45,7 @@ public class PostView extends LinearLayout {
 
     public TextView postIdTextView;
     public TextView postTitleTextView;
+    public TextView postReplyTextView;
     public TextView postQuoteTextView;
     public ImageView postThumbImageView;
     public TextView postImgErrMsgTextView;
@@ -53,6 +55,12 @@ public class PostView extends LinearLayout {
     public TextView postVideoTitleTextView;
 
     private KPost post;
+
+    OnReplyListener onReplyListener;
+
+    public interface OnReplyListener {
+        void onGetReplyId(String id);
+    }
 
     public PostView(Context context) {
         this(context, null);
@@ -74,6 +82,7 @@ public class PostView extends LinearLayout {
         postImgListContainer = (LinearLayout) findViewById(R.id.linearLayout_section_preview_imgList_container);
         postIdTextView = (TextView) findViewById(R.id.textView_section_post_id);
         postTitleTextView = (TextView) findViewById(R.id.textView_section_post_title);
+        postReplyTextView = (TextView) findViewById(R.id.textView_section_post_reply);
         postQuoteTextView = (TextView) findViewById(R.id.textView_section_post_quote);
         postImgErrMsgTextView = (TextView) findViewById(R.id.textView_section_post_message);
         postThumbImageView = (ImageView) findViewById(R.id.imageView_section_post_thumb);
@@ -83,6 +92,16 @@ public class PostView extends LinearLayout {
             @Override
             public void onClick(View view) {
                 ThirdPartyManager.getInstance().loginFacebook((Activity) getContext());
+            }
+        });
+
+        postReplyTextView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null == onReplyListener) {
+                    return;
+                }
+                onReplyListener.onGetReplyId(post.getId());
             }
         });
 
@@ -96,6 +115,10 @@ public class PostView extends LinearLayout {
 
     public void setLinkMovementMethod(LinkMovementMethod movementMethod) {
         postQuoteTextView.setMovementMethod(movementMethod);
+    }
+
+    public void setOnReplyListener(OnReplyListener onReplyListener) {
+        this.onReplyListener = onReplyListener;
     }
 
     public void notifyDataSetChanged() {
@@ -177,8 +200,13 @@ public class PostView extends LinearLayout {
                     public void onUrisAvailable(String videoId, String videoTitle, SparseArray<YtFile> ytFiles) {
                         KLog.v(TAG, "onYoutube id: " + videoId);
                         KLog.v(TAG, "onYoutube title: " + videoTitle);
-                        KLog.v(TAG, "onYoutube files: " + ytFiles.size() + "_" + ytFiles.get(22).getUrl());
-                        KomicaManager.getInstance().startPlayerActivity(getContext(), videoTitle, ytFiles.get(22).getUrl());
+                        if (ytFiles == null) {
+                            Toast.makeText(getContext(), "此影片目前無法觀看", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+//                            KLog.v(TAG, "onYoutube files: " + ytFiles.size() + "_" + ytFiles.get(22).getUrl());
+                        int index = ytFiles.size() > 1 ? 1 : 0;
+                        KomicaManager.getInstance().startPlayerActivity(getContext(), videoTitle, ytFiles.get(ytFiles.keyAt(index)).getUrl());
                     }
                 });
             } else {
