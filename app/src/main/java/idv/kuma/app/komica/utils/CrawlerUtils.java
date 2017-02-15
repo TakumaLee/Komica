@@ -41,7 +41,9 @@ public class CrawlerUtils {
         List<KTitle> titlePostList = new ArrayList<>();
         switch (webType) {
             case KomicaManager.WebType.THREADS_LIST:
-                parseThreadPost(document.getElementById("threads"), titlePostList, webType, url);
+                for (Element thread : document.getElementById("threads").getElementsByClass("thread")) {
+                    parseThreadPost(thread, titlePostList, webType, url);
+                }
                 break;
             default:
                 for (Element thread : threads) {
