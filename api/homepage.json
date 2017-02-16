@@ -2,6 +2,16 @@
   "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 0.6.6<\/font><br><br />修正以下頁面閃退與重複同個貼文問題<font color=\"#ff0000\"><br />影視<br />四格<br />女性角色<br />男性角色<\/font>",
   "promoteList":[
     {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2264220",
+      "promotionTitle":"TVアニメ『冴えない彼女の育てかた♭』第1弾CM",
+      "prmotionImg":""
+    },
+    {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2263761",
+      "promotionTitle":"銀魂 624",
+      "prmotionImg":""
+    },
+    {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2262841",
       "promotionTitle":"食戟 203",
       "prmotionImg":""
@@ -32,11 +42,6 @@
       "prmotionImg":""
     },
     {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2257990",
-      "promotionTitle":"銀魂 623",
-      "prmotionImg":""
-    },
-    {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/live/pixmicat.php?res=1175499",
       "promotionTitle":"為這美好的世界\n送上祝福2 06",
       "prmotionImg":""
@@ -47,18 +52,13 @@
       "prmotionImg":""
     },
     {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2256596",
-      "promotionTitle":"感染 53",
-      "prmotionImg":""
-    },
-    {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2255377",
       "promotionTitle":"巨人 90",
       "prmotionImg":""
     },
     {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2258004",
-      "promotionTitle":"英雄學園 126",
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2263710",
+      "promotionTitle":"英雄學園 127",
       "prmotionImg":""
     }
   ]
