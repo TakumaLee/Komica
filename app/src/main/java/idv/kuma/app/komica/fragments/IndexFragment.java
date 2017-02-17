@@ -155,7 +155,7 @@ public class IndexFragment extends BaseFragment {
 
             @Override
             public void onError(ANError anError) {
-
+                notifyAdapter();
             }
         });
     }

@@ -54,6 +54,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import idv.kuma.app.komica.R;
+import idv.kuma.app.komica.activities.ImageActivity;
 import idv.kuma.app.komica.activities.SectionDetailsActivity;
 import idv.kuma.app.komica.adapters.LoadMoreViewHolder;
 import idv.kuma.app.komica.configs.BundleKeyConfigs;
@@ -106,6 +107,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
     private int page = 0;
     private int pageCount = 1;
 
+    private List<String> imgList = Collections.emptyList();
     private String link = "";
     private boolean isLinkPage = false;
 
@@ -134,6 +136,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
         indexUrl = url;
         webType = getArguments().getInt(BundleKeyConfigs.KEY_WEB_TYPE);
         titlePostList = new ArrayList<>();
+        imgList = new ArrayList<>();
     }
 
     @Nullable
@@ -426,6 +429,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
 
                         titlePostList.addAll(CrawlerUtils.getIntegratedPostList(document, url));
                         notifyAdapter();
+                        KomicaManager.getInstance().notifyImageTitleList(titlePostList, imgList);
 
                         Element pageElem = document.getElementsByAttributeValue("border", "1").first();
                         if (pageElem == null) {
@@ -673,12 +677,24 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
             if (titleList.get(position).getReplyList().size() > 0) {
                 holder.replyLinearLayout.setVisibility(VISIBLE);
                 holder.replyLinearLayout.removeAllViews();
-                for (KReply reply : titleList.get(position).getReplyList()) {
+                for (final KReply reply : titleList.get(position).getReplyList()) {
                     PostView postView = new PostView(viewHolder.itemView.getContext());
                     postView.setBackgroundResource(R.color.md_blue_50);
                     postView.setPost(reply);
                     postView.setLinkMovementMethod(movementMethod);
                     postView.notifyDataSetChanged();
+                    postView.postThumbImageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String currentUrl = reply.getPostImageList().get(0).isHide() ?
+                                    reply.getPostImageList().get(0).getHideImgUrl() :
+                                    reply.getPostImageList().get(0).getImageUrl();
+                            Intent intent = new Intent(v.getContext(), ImageActivity.class);
+                            intent.putStringArrayListExtra(BundleKeyConfigs.BUNDLE_IMAGE_LIST, (ArrayList<String>) imgList);
+                            intent.putExtra(BundleKeyConfigs.BUNDLE_IMAGE_CURRENT_URL, currentUrl);
+                            startActivity(intent);
+                        }
+                    });
                     holder.replyLinearLayout.addView(postView);
                 }
             } else {
@@ -759,6 +775,16 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
             replyLinearLayout = findViewById(itemView, R.id.linearLayout_section_preview_replyContainer);
 
             postThumbImageView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin() ? VISIBLE : GONE);
+            postThumbImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), ImageActivity.class);
+                    intent.putStringArrayListExtra(BundleKeyConfigs.BUNDLE_IMAGE_LIST, (ArrayList<String>) imgList);
+                    intent.putExtra(BundleKeyConfigs.BUNDLE_IMAGE_CURRENT_URL, post.getPostImageList().get(0).isHide() ?
+                            post.getPostImageList().get(0).getHideImgUrl() : post.getPostImageList().get(0).getImageUrl());
+                    startActivity(intent);
+                }
+            });
             postImgErrMsgTextView.setVisibility(KomicaManager.getInstance().isSwitchLogin() && KomicaAccountManager.getInstance().isLogin() ? GONE : VISIBLE);
             postImgErrMsgTextView.setOnClickListener(new View.OnClickListener() {
                 @Override

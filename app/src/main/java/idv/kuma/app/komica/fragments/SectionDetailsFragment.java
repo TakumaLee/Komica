@@ -1,6 +1,7 @@
 package idv.kuma.app.komica.fragments;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -45,6 +46,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import idv.kuma.app.komica.R;
+import idv.kuma.app.komica.activities.ImageActivity;
 import idv.kuma.app.komica.configs.BundleKeyConfigs;
 import idv.kuma.app.komica.entity.KPost;
 import idv.kuma.app.komica.entity.KTitle;
@@ -100,6 +102,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
     private boolean isLoadingFinished = false;
 
     private List<KPost> postList = Collections.emptyList();
+    private List<String> imgList = Collections.emptyList();
 
     public static SectionDetailsFragment newInstance(String from, String url, String title, int webType) {
         SectionDetailsFragment fragment = new SectionDetailsFragment();
@@ -120,6 +123,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         title = getArguments().getString(BundleKeyConfigs.KEY_WEB_TITLE);
         webType = getArguments().getInt(BundleKeyConfigs.KEY_WEB_TYPE);
         postList = new ArrayList<>();
+        imgList = new ArrayList<>();
     }
 
     @Nullable
@@ -493,6 +497,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                         }
                         postList.addAll(head.getReplyList());
                         notifyAdapter();
+                        KomicaManager.getInstance().notifyImageList(head, imgList);
                         hasAnotherPage = !document.getElementsByClass("page_switch").isEmpty() && page != pageCount - 1;
                         if (hasAnotherPage) {
                             pageCount = document.getElementsByClass("page_switch").first().getElementsByClass("link").size() + 1;
@@ -597,9 +602,21 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
         protected void onBindItemViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
             SectionDetailsViewHolder holder = (SectionDetailsViewHolder) viewHolder;
             KLog.v(TAG, String.valueOf(getItemPosition(holder)));
-            KPost post = postList.get(getItemPosition(holder));
+            final KPost post = postList.get(getItemPosition(holder));
             ((PostView) holder.itemView).setPost(post);
             ((PostView) holder.itemView).notifyDataSetChanged();
+            ((PostView) holder.itemView).postThumbImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String currentUrl = post.getPostImageList().get(0).isHide() ?
+                            post.getPostImageList().get(0).getHideImgUrl() :
+                            post.getPostImageList().get(0).getImageUrl();
+                    Intent intent = new Intent(v.getContext(), ImageActivity.class);
+                    intent.putStringArrayListExtra(BundleKeyConfigs.BUNDLE_IMAGE_LIST, (ArrayList<String>) imgList);
+                    intent.putExtra(BundleKeyConfigs.BUNDLE_IMAGE_CURRENT_URL, currentUrl);
+                    startActivity(intent);
+                }
+            });
             MutableLinkMovementMethod movementMethod = new MutableLinkMovementMethod();
             movementMethod.setOnUrlClickListener(new MutableLinkMovementMethod.OnUrlClickListener() {
                 @Override

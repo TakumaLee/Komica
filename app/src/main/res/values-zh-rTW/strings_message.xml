@@ -15,4 +15,6 @@
     <string name="message_please_wait_for_replying">回覆貼帖子中，請稍後</string>
     <string name="message_loading_complete">列表更新完成</string>
     <string name="message_no_more_data">已是最後一頁</string>
+
+    <string name="message_image_is_not_ready">請等待圖片載入...</string>
 </resources>

@@ -26,6 +26,9 @@ import java.util.List;
 import idv.kuma.app.komica.BuildConfig;
 import idv.kuma.app.komica.configs.WebUrlFormaterUtils;
 import idv.kuma.app.komica.context.ApplicationContextSingleton;
+import idv.kuma.app.komica.entity.KPostImage;
+import idv.kuma.app.komica.entity.KReply;
+import idv.kuma.app.komica.entity.KTitle;
 import idv.kuma.app.komica.entity.KomicaMenuGroup;
 import idv.kuma.app.komica.entity.KomicaMenuMember;
 import idv.kuma.app.komica.utils.KLog;
@@ -175,6 +178,24 @@ public class KomicaManager {
             }
         }
         return member;
+    }
+
+    public void notifyImageTitleList(List<KTitle> titlePostList, List<String> imgList) {
+        imgList.clear();
+        for (KTitle title : titlePostList) {
+            notifyImageList(title, imgList);
+        }
+    }
+
+    public void notifyImageList(KTitle title, List<String> imgList) {
+        for (KPostImage postImage : title.getPostImageList()) {
+            imgList.add(postImage.isHide() ? postImage.getHideImgUrl() : postImage.getImageUrl());
+        }
+        for (KReply reply : title.getReplyList()) {
+            for (KPostImage postImage : reply.getPostImageList()) {
+                imgList.add(postImage.isHide() ? postImage.getHideImgUrl() : postImage.getImageUrl());
+            }
+        }
     }
 
     public void loadKomicaMenu() {

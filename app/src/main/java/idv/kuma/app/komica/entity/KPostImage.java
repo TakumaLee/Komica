@@ -30,7 +30,7 @@ public class KPostImage {
     }
 
     public boolean isHide() {
-        return hideImgUrl == null;
+        return hideImgUrl != null;
     }
 
     public String getImageUrl() {
