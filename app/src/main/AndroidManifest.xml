@@ -19,6 +19,11 @@
         tools:replace="android:allowBackup">
         <activity android:name=".MainActivity"></activity>
 
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider370946269917455"
+            android:exported="true" />
+
         <service
             android:name=".services.KomicaFcmListenerService">
             <intent-filter>

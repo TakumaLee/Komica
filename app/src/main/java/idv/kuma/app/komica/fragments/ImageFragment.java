@@ -37,7 +37,8 @@ import idv.kuma.app.komica.R;
 import idv.kuma.app.komica.adapters.TabFragmentAdapter;
 import idv.kuma.app.komica.configs.BundleKeyConfigs;
 import idv.kuma.app.komica.fragments.base.BaseFragment;
-import idv.kuma.app.komica.utils.ImageHelper;
+import idv.kuma.app.komica.manager.ShareAdapter;
+import idv.kuma.app.komica.manager.ShareManager;
 import idv.kuma.app.komica.utils.KLog;
 import idv.kuma.app.komica.views.PhotoViewPager;
 
@@ -67,6 +68,7 @@ public class ImageFragment extends BaseFragment {
     private CropImageView cropImageView;
 
     private MaterialDialog progressDialog;
+    private MaterialDialog shareDialog;
 
     private Paint paint;
 
@@ -131,6 +133,51 @@ public class ImageFragment extends BaseFragment {
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(currentPosition);
 
+        shareDialog = ShareManager.getInstance().getShareDialog(getActivity(), new ShareManager.ShareEventCallback() {
+            @Override
+            public void onSuccess() {
+                shareDialog.dismiss();
+                ftb.hide();
+            }
+
+            @Override
+            public void onCancel() {
+                shareDialog.dismiss();
+                ftb.hide();
+            }
+
+            @Override
+            public void onError() {
+                shareDialog.dismiss();
+                ftb.hide();
+            }
+        }, new ShareAdapter.OnPlatformSelectedListener() {
+            @Override
+            public void onFacebook() {
+                Bitmap shareImage = cropImageView.getCroppedImage();
+                ShareManager.getInstance().share(getActivity(), ShareManager.Platform.FACEBOOK, shareImage, null, null, null);
+            }
+
+            @Override
+            public void onMore() {
+                Bitmap shareImage = cropImageView.getCroppedImage();
+                File folder = Environment.getExternalStoragePublicDirectory("Komica+/share");
+                if (!folder.exists()) {
+                    folder.mkdirs();
+                }
+                File f = new File(Environment.getExternalStoragePublicDirectory("Komica+/share") + File.separator + "share.png");
+                try {
+                    f.createNewFile();
+                    FileOutputStream fo = new FileOutputStream(f);
+                    shareImage.compress(Bitmap.CompressFormat.PNG, 100, fo);
+                    fo.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                ShareManager.getInstance().share(getActivity(), ShareManager.Platform.OTHER, shareImage, Uri.fromFile(f), null, null);
+            }
+        });
+
         ftb.attachFab(fab);
         ftb.hide();
         ftb.enableAutoHide(false);
@@ -168,31 +215,8 @@ public class ImageFragment extends BaseFragment {
             @Override
             public void onItemClick(MenuItem item) {
                 switch (item.getItemId()) {
-//                    case R.id.action_screenshot:
-//                        ImagePageFragment fragment = ((ImagePageFragment) adapter.getItem(viewPager.getCurrentItem()));
-//                        String imageUrl = fragment.getImageUrl();
-//                        Bitmap bitmap = cropImageView.getCroppedImage();
                     case R.id.action_share:
-                        if (null == paint) {
-                            paint = new Paint();
-                        }
-                        ImagePageFragment fragment = ((ImagePageFragment) adapter.getItem(viewPager.getCurrentItem()));
-                        String appName = getString(R.string.app_name);
-                        Bitmap shareImage = cropImageView.getCroppedImage();
-                        File folder = Environment.getExternalStoragePublicDirectory("Komica+/share");
-                        if (!folder.exists()) {
-                            folder.mkdirs();
-                        }
-                        File f = new File(Environment.getExternalStoragePublicDirectory("Komica+/share") + File.separator + "share.png");
-                        try {
-                            f.createNewFile();
-                            FileOutputStream fo = new FileOutputStream(f);
-                            shareImage.compress(Bitmap.CompressFormat.PNG, 100, fo);
-                            fo.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        ImageHelper.shareIntentUrl(getContext(), Uri.fromFile(f));
+                        shareDialog.show();
                         break;
                     case R.id.action_cancel:
                     default:

@@ -461,6 +461,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                 notifyTitle();
                 titlePostList.addAll(CrawlerUtils.getPostList(document, url, webType));
                 notifyAdapter();
+                KomicaManager.getInstance().notifyImageTitleList(titlePostList, imgList);
                 Element pageSwitch = document.getElementById("page_switch");
                 if (null == pageSwitch) {
                     pageSwitch = document.getElementsByClass("page_switch").first();
