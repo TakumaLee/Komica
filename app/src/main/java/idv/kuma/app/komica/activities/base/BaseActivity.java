@@ -53,7 +53,7 @@ public class BaseActivity extends KomicaActivityBase {
 
     protected void replaceFragment(int resId, Fragment fragment) {
         if (active) {
-            getSupportFragmentManager().beginTransaction().replace(resId, fragment, fragment.getClass().getName()).commitAllowingStateLoss();
+            getSupportFragmentManager().beginTransaction().replace(resId, fragment, fragment.getClass().getName()).commit();
         }
     }
 

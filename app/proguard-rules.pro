@@ -218,6 +218,11 @@
     public static final ** CREATOR;
 }
 
+# Exoplayer
+ -keep class com.google.android.exoplayer.** {*;}
+ -dontwarn com.google.android.exoplayer.**
+
+
 # SQL APP Proguard
 #-dontwarn com.viewpagerindicator.**
 -keep class idv.kuma.app.komica.model.**
@@ -275,6 +280,8 @@ public static boolean isLoggable(java.lang.String, int);
 -keep class **.R$* {
     <fields>;
 }
+
+
 
 # Sinch
 -keepclasseswithmembernames class * {
