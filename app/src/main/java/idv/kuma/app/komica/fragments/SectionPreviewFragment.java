@@ -693,6 +693,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                             Intent intent = new Intent(v.getContext(), ImageActivity.class);
                             intent.putStringArrayListExtra(BundleKeyConfigs.BUNDLE_IMAGE_LIST, (ArrayList<String>) imgList);
                             intent.putExtra(BundleKeyConfigs.BUNDLE_IMAGE_CURRENT_URL, currentUrl);
+                            intent.putExtra(BundleKeyConfigs.KEY_WEB_FROM, title);
                             startActivity(intent);
                         }
                     });
@@ -783,6 +784,7 @@ public class SectionPreviewFragment extends BaseFragment implements FacebookMana
                     intent.putStringArrayListExtra(BundleKeyConfigs.BUNDLE_IMAGE_LIST, (ArrayList<String>) imgList);
                     intent.putExtra(BundleKeyConfigs.BUNDLE_IMAGE_CURRENT_URL, post.getPostImageList().get(0).isHide() ?
                             post.getPostImageList().get(0).getHideImgUrl() : post.getPostImageList().get(0).getImageUrl());
+                    intent.putExtra(BundleKeyConfigs.KEY_WEB_FROM, title);
                     startActivity(intent);
                 }
             });

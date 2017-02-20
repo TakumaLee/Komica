@@ -614,6 +614,7 @@ public class SectionDetailsFragment extends BaseFragment implements KomicaManage
                     Intent intent = new Intent(v.getContext(), ImageActivity.class);
                     intent.putStringArrayListExtra(BundleKeyConfigs.BUNDLE_IMAGE_LIST, (ArrayList<String>) imgList);
                     intent.putExtra(BundleKeyConfigs.BUNDLE_IMAGE_CURRENT_URL, currentUrl);
+                    intent.putExtra(BundleKeyConfigs.KEY_WEB_FROM, from + "_" + title);
                     startActivity(intent);
                 }
             });

@@ -23,7 +23,8 @@ public class ImageActivity extends BaseActivity {
         List<String> imgList = getIntent().getStringArrayListExtra(BundleKeyConfigs.BUNDLE_IMAGE_LIST);
 //        int currentPosition = getIntent().getIntExtra(WebTypeConfigs.BINDLE_DM_PAGE, 0);
         String currentUrl = getIntent().getStringExtra(BundleKeyConfigs.BUNDLE_IMAGE_CURRENT_URL);
-        fragment = ImageFragment.newInstance(imgList, currentUrl);
+        String from = getIntent().getStringExtra(BundleKeyConfigs.KEY_WEB_FROM);
+        fragment = ImageFragment.newInstance(from, imgList, currentUrl);
         if (null == savedInstanceState) {
             getSupportFragmentManager().beginTransaction().add(R.id.activity_image, fragment).commit();
         }

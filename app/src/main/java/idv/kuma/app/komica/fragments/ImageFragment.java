@@ -4,7 +4,6 @@ import android.Manifest;
 import android.animation.Animator;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,11 +18,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.rubensousa.floatingtoolbar.FloatingToolbar;
+import com.google.android.gms.analytics.HitBuilders;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
@@ -54,11 +53,9 @@ public class ImageFragment extends BaseFragment {
 
     private List<String> imgList = Collections.emptyList();
     private int currentPosition = 0;
-    private int fedPage = 1;
-    private static final int BIG_IMAGE_ID = 57;
     private String currentUrl = null;
+    private String from;
 
-    private WebView webView;
     private PhotoViewPager viewPager;
     private TabFragmentAdapter adapter;
 
@@ -70,22 +67,22 @@ public class ImageFragment extends BaseFragment {
     private MaterialDialog progressDialog;
     private MaterialDialog shareDialog;
 
-    private Paint paint;
-
     private long touchSenconds;
 
-    public static ImageFragment newInstance(List<String> imgList, String currentUrl) {
+    public static ImageFragment newInstance(String from, List<String> imgList, String currentUrl) {
         ImageFragment fragment = new ImageFragment();
         Bundle bundle = new Bundle();
+        bundle.putString(BundleKeyConfigs.KEY_WEB_FROM, from);
         bundle.putStringArrayList(BundleKeyConfigs.BUNDLE_IMAGE_LIST, (ArrayList<String>) imgList);
         bundle.putString(BundleKeyConfigs.BUNDLE_IMAGE_CURRENT_URL, currentUrl);
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    public static ImageFragment newInstance(List<String> imgList, int currentPosition) {
+    public static ImageFragment newInstance(String from, List<String> imgList, int currentPosition) {
         ImageFragment fragment = new ImageFragment();
         Bundle bundle = new Bundle();
+        bundle.putString(BundleKeyConfigs.KEY_WEB_FROM, from);
         bundle.putStringArrayList(BundleKeyConfigs.BUNDLE_IMAGE_LIST, (ArrayList<String>) imgList);
         bundle.putInt(BundleKeyConfigs.BUNDLE_IMAGE_POSITION, currentPosition);
         fragment.setArguments(bundle);
@@ -95,16 +92,15 @@ public class ImageFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        from = getArguments().getString(BundleKeyConfigs.KEY_WEB_FROM);
         imgList = getArguments().getStringArrayList(BundleKeyConfigs.BUNDLE_IMAGE_LIST);
         currentPosition = getArguments().getInt(BundleKeyConfigs.BUNDLE_IMAGE_POSITION);
         currentUrl = getArguments().getString(BundleKeyConfigs.BUNDLE_IMAGE_CURRENT_URL);
         if (currentUrl != null) {
             currentPosition = findImagePosition();
         }
-//        if (branch != null) {
-//            tracker.setScreenName(branch.getCompanyName() + "_" + branch.getMainTitle());
-//            tracker.send(new HitBuilders.ScreenViewBuilder().build());
-//        }
+        tracker.setScreenName(from + "_圖片閱覽");
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Nullable
