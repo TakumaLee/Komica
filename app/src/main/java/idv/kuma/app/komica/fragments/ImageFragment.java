@@ -99,7 +99,7 @@ public class ImageFragment extends BaseFragment {
         if (currentUrl != null) {
             currentPosition = findImagePosition();
         }
-        tracker.setScreenName(from + "_圖片閱覽");
+        tracker.setScreenName("圖片閱覽_" + from);
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
