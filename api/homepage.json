@@ -2,6 +2,16 @@
   "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 0.7.6<\/font><br><br /><br />修正一些情況下的閃退問題<font color=\"#ff0000\"><br />新增圖片放大檢視功能<br />新增圖片裁切分享功能<br />魷魚，開發人員快餓死了請幫忙點個贊助！謝謝！<\/font><br /><br />新的開發進度：<br />沒有，目前開發人員正在準備分享的演講稿當中，準備上台被慘電一下",
   "promoteList":[
     {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/live/pixmicat.php?res=1181579",
+      "promotionTitle":"為這美好的世界\n送上祝福2 07",
+      "prmotionImg":""
+    },
+    {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/live/pixmicat.php?res=1181949",
+      "promotionTitle":"龍女僕 07",
+      "prmotionImg":""
+    },
+    {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2269270",
       "promotionTitle":"食戟 204",
       "prmotionImg":""
@@ -39,16 +49,6 @@
     {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2260996",
       "promotionTitle":"達爾文遊戲 48",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/live/pixmicat.php?res=1175499",
-      "promotionTitle":"為這美好的世界\n送上祝福2 06",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/live/pixmicat.php?res=1175760",
-      "promotionTitle":"龍女僕 06",
       "prmotionImg":""
     }
   ]
