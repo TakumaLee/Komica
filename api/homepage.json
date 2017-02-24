@@ -2,6 +2,36 @@
   "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 0.7.8<\/font><br><br /><br />修正資料錯誤問題<font color=\"#ff0000\"><br />新增圖片放大檢視功能<br />新增圖片裁切分享功能<br />魷魚，開發人員快餓死了請幫忙點個贊助！謝謝！<\/font><br /><br />新的開發進度：<br />沒有，目前開發人員正在準備分享的演講稿當中，準備上台被慘電一下",
   "promoteList":[
     {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2269722",
+      "promotionTitle":"感染 54",
+      "prmotionImg":""
+    },
+    {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2270389",
+      "promotionTitle":"銀魂 625",
+      "prmotionImg":""
+    },
+    {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2270736",
+      "promotionTitle":"一拳超人 111",
+      "prmotionImg":""
+    },
+    {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2271046",
+      "promotionTitle":"伊莉雅",
+      "prmotionImg":""
+    },
+    {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2270295",
+      "promotionTitle":"Boruto 10",
+      "prmotionImg":""
+    },
+    {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2270300",
+      "promotionTitle":"英雄學園 128",
+      "prmotionImg":""
+    },
+    {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/live/pixmicat.php?res=1181579",
       "promotionTitle":"為這美好的世界\n送上祝福2 07",
       "prmotionImg":""
@@ -17,38 +47,8 @@
       "prmotionImg":""
     },
     {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2268925",
-      "promotionTitle":"Pokemon\n20 years",
-      "prmotionImg":""
-    },
-    {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2267681",
       "promotionTitle":"零使 畫冊",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2264940",
-      "promotionTitle":"龍珠超 21",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2264664",
-      "promotionTitle":"Fairy Tail\n522+523",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2263761",
-      "promotionTitle":"銀魂 624",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2262803",
-      "promotionTitle":"海賊 856",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2260996",
-      "promotionTitle":"達爾文遊戲 48",
       "prmotionImg":""
     }
   ]
