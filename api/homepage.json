@@ -3,6 +3,21 @@
   "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 0.7.21<\/font><br><br />暫時跑去開發縮圖功能，動畫播放器目前依然如火如荼展開中！請稍待！<font color=\"#ff0000\"><\/font><br /><br />新的開發進度：<br />新增縮圖功能以減緩圖片過大讀取過慢問題...後！繼續動畫連載功能製作！",
   "promoteList":[
     {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2288153",
+      "promotionTitle":"銀魂 627",
+      "prmotionImg":""
+    },
+    {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2289382",
+      "promotionTitle":"Fairy Tail 527",
+      "prmotionImg":""
+    },
+    {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2289306",
+      "promotionTitle":"亞人4748",
+      "prmotionImg":""
+    },
+    {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2288077",
       "promotionTitle":"英雄學園 130",
       "prmotionImg":""
@@ -43,11 +58,6 @@
       "prmotionImg":""
     },
     {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2283473",
-      "promotionTitle":"Fairy Tail 526",
-      "prmotionImg":""
-    },
-    {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/live/pixmicat.php?res=1195734",
       "promotionTitle":"為這美好的世界\n送上祝福2 09",
       "prmotionImg":""
@@ -81,11 +91,6 @@
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2277726",
       "promotionTitle":"雙星陰陽師 41",
       "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2277934",
-      "promotionTitle":"鐵血的孤兒新情報",
-      "prmotionImg":""
-    }
+    }    
   ]
 }
