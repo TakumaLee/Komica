@@ -1,6 +1,6 @@
 {
-  "infoCode": 10,
-  "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 0.7.21<\/font><br><br />暫時跑去開發縮圖功能，動畫播放器目前依然如火如荼展開中！請稍待！<font color=\"#ff0000\"><\/font><br /><br />新的開發進度：<br />新增縮圖功能以減緩圖片過大讀取過慢問題...後！繼續動畫連載功能製作！",
+  "infoCode": 11,
+  "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 0.7.21<\/font><br><br />暫時跑去開發縮圖功能，動畫播放器目前依然如火如荼展開中！請稍待！<font color=\"#ff0000\"><\/font><br /><br />新的開發進度：<br />動畫頁面已完成，也已測試可以播放，目前製作播放器的 UI 中！",
   "promoteList":[
     {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2291975",
