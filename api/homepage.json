@@ -3,6 +3,11 @@
   "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 0.7.21<\/font><br><br />暫時跑去開發縮圖功能，動畫播放器目前依然如火如荼展開中！請稍待！<font color=\"#ff0000\"><\/font><br /><br />新的開發進度：<br />動畫頁面已完成，也已測試可以播放，目前製作播放器的 UI 中！",
   "promoteList":[
     {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/live/pixmicat.php?res=1208449",
+      "promotionTitle":"遊戲王 劇場版",
+      "prmotionImg":""
+    },
+    {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2291975",
       "promotionTitle":"時鐘機關之星",
       "prmotionImg":""
@@ -75,11 +80,6 @@
     {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2286743",
       "promotionTitle":"達爾文遊戲 49",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2283356",
-      "promotionTitle":"『冴えない彼女の育てかた♭\n第2弾CM",
       "prmotionImg":""
     },
     {
