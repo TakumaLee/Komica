@@ -3,6 +3,21 @@
   "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 0.8.0<\/font><br><br /><font color=\"#ff0000\">動畫播放器與新番頁面完成！<\/font><br /><br />新的開發進度：<br />持續修正一些問題並完善動畫來源中，請多關注！",
   "promoteList":[
     {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2294510",
+      "promotionTitle":"賭ケグルイ",
+      "prmotionImg":""
+    },
+    {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2294591",
+      "promotionTitle":"食戟 208",
+      "prmotionImg":""
+    },
+    {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2294536",
+      "promotionTitle":"海賊 860",
+      "prmotionImg":""
+    },
+    {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/live/pixmicat.php?res=1208449",
       "promotionTitle":"遊戲王 劇場版",
       "prmotionImg":""
@@ -55,21 +70,6 @@
     {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2288077",
       "promotionTitle":"英雄學園 130",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2287998",
-      "promotionTitle":"ナイツ＆マジック PV",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2287875",
-      "promotionTitle":"海賊 859",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2287899",
-      "promotionTitle":"食戟 207",
       "prmotionImg":""
     }
   ]
