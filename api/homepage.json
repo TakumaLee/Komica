@@ -1,6 +1,6 @@
 {
   "infoCode": 15,
-  "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 0.8.3<\/font><br><br /><font color=\"#ff0000\">修正綜合頁面詳細頁面與其他相關頁面無法正常讀取問題<br />新增驗證機制與條款可以不用登入即可查看貼圖<\/font><br /><br />新的開發進度：<br />持續修正一些問題並完善動畫來源中，請多關注！",
+  "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 0.8.9<\/font><br><br /><font color=\"#ff0000\">修正綜合頁面詳細頁面與其他相關頁面無法正常讀取問題<br />修正某些手機無法正常顯示驗證機制並閃退問題<br />新增驗證機制與條款可以不用登入即可查看貼圖<\/font><br /><br />新的開發進度：<br />持續修正一些問題並完善動畫來源中，請多關注！",
   "promoteList":[
     {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2296335",
