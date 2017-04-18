@@ -3,6 +3,11 @@
   "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 0.8.21<\/font><br><br /><font color=\"#ff0000\">緊急修正部分使用者閃退問題！<br />於詳細貼文頁面新增重新整理按鈕與至底按鈕<br />修正一些動畫播放閃退問題<br /><\/font><br /><br />新的開發進度：<br />已收到許多使用者來信建議，非常感謝各位使用者的意見，但由於想法太多故完成速度有限煩請見諒，會一點一點的更新上來請稍候！",
   "promoteList":[
     {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2321852",
+      "promotionTitle":"Magi 346",
+      "prmotionImg":""
+    },
+    {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2318776",
       "promotionTitle":"Fairy Tail 531",
       "prmotionImg":""
@@ -40,11 +45,6 @@
     {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2310059",
       "promotionTitle":"旋風管家 最終回 ",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2310123",
-      "promotionTitle":"Magi 345",
       "prmotionImg":""
     }
   ]
