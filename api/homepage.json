@@ -3,6 +3,11 @@
   "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 0.8.27<\/font><br><br /><font color=\"#ff0000\">研究後發現 Google 播放器會有一部分無法播放或播放到一半停止的問題，然後 Google 目前並不想修復（雖然 Google 播放器速度很快效能很好...）<br /><br />下個版本會針對播放器進行這部分的修復，不好意思讓各位使用者有不好的播放體驗<br />m(_ _)m<\/font><br /><br />新的開發進度：<br />已收到許多使用者來信建議，非常感謝各位使用者的意見，但由於想法太多故完成速度有限煩請見諒，會一點一點的更新上來請稍候！",
   "promoteList":[
     {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2326135",
+      "promotionTitle":"一拳超人",
+      "prmotionImg":""
+    },
+    {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2324278",
       "promotionTitle":"英雄學園 135",
       "prmotionImg":""
@@ -35,11 +40,6 @@
     {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2318776",
       "promotionTitle":"Fairy Tail 531",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2316386",
-      "promotionTitle":"感染 59",
       "prmotionImg":""
     },
     {
