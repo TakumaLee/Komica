@@ -3,6 +3,11 @@
   "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 0.9.3<\/font><br><br /><font color=\"#ff0000\">調整討論串 UI 並增加看廣告即可看動畫功能，不用再登入 Facebook。<\/font><br /><br />新的開發進度：<br />已收到許多使用者來信建議，非常感謝各位使用者的意見，但由於想法太多故完成速度有限煩請見諒，會一點一點的更新上來請稍候！",
   "promoteList":[
     {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2335052",
+      "promotionTitle":"銀魂 633",
+      "prmotionImg":""
+    },
+    {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2335059",
       "promotionTitle":"英雄學園 136",
       "prmotionImg":""
@@ -40,11 +45,6 @@
     {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2329264",
       "promotionTitle":"伊莉雅",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2324323",
-      "promotionTitle":"銀魂 632",
       "prmotionImg":""
     }
   ]
