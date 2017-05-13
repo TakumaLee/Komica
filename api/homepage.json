@@ -3,6 +3,11 @@
   "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 0.9.3<\/font><br><br /><font color=\"#ff0000\">目前解析動畫來源的國外伺服器似乎掛點了，會先想辦法修復以及新增其他來源 m(_ _)m<\/font><br /><br />新的開發進度：<br />已收到許多使用者來信建議，非常感謝各位使用者的意見，但由於想法太多故完成速度有限煩請見諒，會一點一點的更新上來請稍候！",
   "promoteList":[
     {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2347451",
+      "promotionTitle":"達爾文遊戲 50",
+      "prmotionImg":""
+    },
+    {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2346249",
       "promotionTitle":"Magi 349",
       "prmotionImg":""
@@ -35,16 +40,6 @@
     {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2342468",
       "promotionTitle":"朋友遊戲 43",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2339814",
-      "promotionTitle":"巨人 93",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2330285",
-      "promotionTitle":"感染 61",
       "prmotionImg":""
     }
   ]
