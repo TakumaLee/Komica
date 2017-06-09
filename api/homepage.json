@@ -1,7 +1,12 @@
 {
   "infoCode": 26,
-  "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 0.9.15<\/font><br><br /><font color=\"#ff0000\">動畫來源偶爾可能會死......目前復活！ m(_ _)m<\/font><br />外加修正 0.9.14 版本容易點進討論區問題<br /><br />新的開發進度：<br />開始消化各位使用者回報的問題中......公司的技術正在邁向下個階段同時焦頭爛額中。・゜・(ノД`)・゜・。",
-  "promoteList":[    
+  "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 0.9.20<\/font><br><br /><font color=\"#ff0000\">動畫來源偶爾可能會死......目前復活！ m(_ _)m<\/font><br />外加修正 0.9.14 版本容易點進討論區問題<br /><br />新的開發進度：<br />開始消化各位使用者回報的問題中......公司的技術正在邁向下個階段同時焦頭爛額中。・゜・(ノД`)・゜・。",
+  "promoteList":[
+    {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2371303",
+      "promotionTitle":"Fairy Tail 539",
+      "prmotionImg":""
+    },
     {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2369096",
       "promotionTitle":"海賊 868",
@@ -20,11 +25,6 @@
     {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2365271",
       "promotionTitle":"Magi 352",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2365279",
-      "promotionTitle":"Fairy Tail 538",
       "prmotionImg":""
     },
     {
