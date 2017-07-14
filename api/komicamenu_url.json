@@ -28,11 +28,13 @@
       },
       {
         "title": "綜合",
-        "url": "http://rem.komica2.net/00/index.htm"
+        "url": "http://rem.komica2.net/00/index.htm",
+        "priority": 9995
       },
       {
         "title": "綜合2",
-        "url": "http:\/\/alleyneblade.mymoe.moe\/queensblade\/"
+        "url": "http:\/\/alleyneblade.mymoe.moe\/queensblade\/",
+        "priority": 9995
       },
       {
         "title": "掛圖",
@@ -44,11 +46,13 @@
       },
       {
         "title": "新番捏他",
-        "url": "http:\/\/2cat.or.tl\/~tedc21thc\/new\/index.html"
+        "url": "http:\/\/2cat.or.tl\/~tedc21thc\/new\/index.html",
+        "priority": 9990
       },
       {
         "title": "新番實況",
-        "url": "http:\/\/2cat.or.tl\/~tedc21thc\/live\/index.html"
+        "url": "http:\/\/2cat.or.tl\/~tedc21thc\/live\/index.html",
+        "priority": 9990
       },
       {
         "title": "三次實況",
@@ -72,7 +76,8 @@
       },
       {
         "title": "歡樂惡搞",
-        "url": "http:\/\/aqua.komica.org\/12\/index.htm"
+        "url": "http:\/\/aqua.komica.org\/12\/index.htm",
+        "priority": 9995
       },
       {
         "title": "特攝",
@@ -983,7 +988,8 @@
       },
       {
         "title": "四格",
-        "url": "https:\/\/aqua.komica.org\/42\/index.htm"
+        "url": "https:\/\/aqua.komica.org\/42\/index.htm",
+        "priority": 9995
       },
       {
         "title": "擬人化",
