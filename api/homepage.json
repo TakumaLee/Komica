@@ -1,14 +1,29 @@
 {
-  "infoCode": 34,
-  "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 1.1.6<\/font><br><br /><font color=\"#ff0000\">發現了一點可能隨機發生的小問題，請使用者更新至此版本！<\/font><br />新的開發進度：<br />開始消化各位使用者回報的問題中......公司的技術正在邁向下個階段同時焦頭爛額中。・゜・(ノД`)・゜・。",
+  "infoCode": 35,
+  "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 1.1.7<\/font><br><br /><font color=\"#ff0000\">無法正常圖片閱覽，包含閃退頻繁跳出廣告的使用者，請更新至此版本試用看看！<\/font><br />新的開發進度：<br />開始消化各位使用者回報的問題中......公司的技術正在邁向下個階段同時焦頭爛額中。・゜・(ノД`)・゜・。",
   "indexSort":[
     "favorite",
     "promote"
   ],
   "promoteList":[
     {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2415965",
+      "promotionTitle":"哥布林殺手 14",
+      "prmotionImg":""
+    },
+    {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2420113",
+      "promotionTitle":"銀魂 645",
+      "prmotionImg":""
+    },
+    {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2419670",
       "promotionTitle":"英雄學園 147",
+      "prmotionImg":""
+    },
+    {
+      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2420530",
+      "promotionTitle":"Magi 360",
       "prmotionImg":""
     },
     {
@@ -22,23 +37,8 @@
       "prmotionImg":""
     },
     {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2413448",
-      "promotionTitle":"Fairy Tail 終",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2413089",
-      "promotionTitle":"銀魂 644",
-      "prmotionImg":""
-    },
-    {
       "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2411318",
       "promotionTitle":"海賊 873",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.or.tl/~tedc21thc/new/pixmicat.php?res=2400003",
-      "promotionTitle":"Magi 357",
       "prmotionImg":""
     }
   ]
