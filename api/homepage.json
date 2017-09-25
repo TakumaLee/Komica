@@ -1,11 +1,16 @@
 {
   "infoCode": 46,
-  "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 1.4.12<\/font><br><br /><font color=\"#ff0000\">提升播放器效能<br />修正各個動畫影片不足的 BUG<br />修正觀看影片時暫時離開 app 後回來會重新讀取的狀況<\/font><br /><br />新的開發進度：<br />開發者爆肝",
+  "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 1.4.13<\/font><br><br /><font color=\"#ff0000\">提升播放器效能<br />修正各個動畫影片不足的 BUG<br />修正觀看影片時暫時離開 app 後回來會重新讀取的狀況<\/font><br /><br />新的開發進度：<br />開發者爆肝",
   "indexSort":[
     "favorite",
     "promote"
   ],
   "promoteList":[
+    {
+      "promotionUrl":"http://2cat.ml/~tedc21thc/new/pixmicat.php?res=2472427",
+      "promotionTitle":"伊莉雅",
+      "prmotionImg":""
+    },
     {
       "promotionUrl":"http://2cat.ml/~tedc21thc/new/pixmicat.php?res=2470515",
       "promotionTitle":"哥殺 16",
@@ -19,11 +24,6 @@
     {
       "promotionUrl":"http://2cat.ml/~tedc21thc/new/pixmicat.php?res=2468704",
       "promotionTitle":" 一拳 122",
-      "prmotionImg":""
-    },
-    {
-      "promotionUrl":"http://2cat.ml/~tedc21thc/new/pixmicat.php?res=2469028",
-      "promotionTitle":"達爾文遊戲 54",
       "prmotionImg":""
     },
     {
