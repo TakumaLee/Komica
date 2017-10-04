@@ -401,12 +401,22 @@
         "url": "http:\/\/kagaminerin.org\/rpg\/"
       },
       {
-        "title": "賽車遊戲",
-        "url": "http://2cat.ml/~caradmin/rcg-slg/"
-      },
-      {
-        "title": "戰略遊戲",
-        "url": "http://2cat.ml/~caradmin/rcg-slg/"
+        "title": "賽車戰略遊戲",
+        "url": "http://2cat.ml/~caradmin/rcg-slg/",
+        "branch":[
+          {
+            "title": "戰略遊戲",
+            "url": "http://komica.yucie.net/simulation/"
+          },
+          {
+            "title": "戰略及賽車避難所",
+            "url": "https://no_99.mymoe.moe/rcg_slg/pixmicat.php?page_num=0"
+          },
+          {
+            "title": "賽車遊戲",
+            "url": "http://komica.yucie.net/racing/"
+          }
+        ]
       },
       {
         "title": "養成遊戲",
