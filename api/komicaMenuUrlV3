@@ -156,11 +156,11 @@
     "member": [
       {
         "title": "綜合學術",
-        "url": "https:\/\/gzone-anime.info\/UnitedSites\/academic\/"
+        "url": "http://gzone-anime.info/UnitedSites/academic/"
       },
       {
         "title": "數學",
-        "url": "https:\/\/study.mymoe.moe\/math\/"
+        "url": "http:\/\/study.mymoe.moe\/math\/"
       },
       {
         "title": "歷史",
@@ -168,11 +168,11 @@
       },
       {
         "title": "地理",
-        "url": "https:\/\/study.mymoe.moe\/geography\/"
+        "url": "http:\/\/study.mymoe.moe\/geography\/"
       },
       {
         "title": "校園",
-        "url": "https:\/\/komicolle.dreamhosters.com\/school\/"
+        "url": "http:\/\/komicolle.dreamhosters.com\/school\/"
       },
       {
         "title": "職業",
@@ -184,7 +184,7 @@
       },
       {
         "title": "生活消費",
-        "url": "https:\/\/gzone-anime.info\/UnitedSites\/shopping\/"
+        "url": "http:\/\/gzone-anime.info\/UnitedSites\/shopping\/"
       },
       {
         "title": "法律",
@@ -192,7 +192,7 @@
       },
       {
         "title": "海外",
-        "url": "https://next.nagatoyuki.org/outremer/"
+        "url": "http://next.nagatoyuki.org/outremer/"
       },
       {
         "title": "閒談@香港",
@@ -200,11 +200,11 @@
       },
       {
         "title": "消費電子",
-        "url": "https:\/\/komicolle.dreamhosters.com\/digital\/"
+        "url": "http://komicolle.dreamhosters.com/digital/"
       },
       {
         "title": "藝術",
-        "url": "https:\/\/gzone-anime.info\/UnitedSites\/art\/"
+        "url": "http://gzone-anime.info/UnitedSites/art/"
       },
       {
         "title": "繪師",
@@ -228,7 +228,7 @@
       },
       {
         "title": "燃",
-        "url": "https:\/\/ningen.dreamhosters.com\/moe\/"
+        "url": "http:\/\/ningen.dreamhosters.com\/moe\/"
       },
       {
         "title": "笑話",
@@ -240,11 +240,11 @@
       },
       {
         "title": "故事接龍",
-        "url": "https:\/\/storysol2.boguspix.com\/"
+        "url": "http:\/\/storysol2.boguspix.com\/"
       },
       {
         "title": "歐美漫畫",
-        "url": "https:\/\/miyarei.org\/AmericanSuperHeroes\/"
+        "url": "http:\/\/miyarei.org\/AmericanSuperHeroes\/"
       },
       {
         "title": "歐美動畫",
@@ -276,11 +276,11 @@
       },
       {
         "title": "夢",
-        "url": "https:\/\/komicolle.dreamhosters.com\/dream\/"
+        "url": "http:\/\/komicolle.dreamhosters.com\/dream\/"
       },
       {
         "title": "流言終結",
-        "url": "https://next.nagatoyuki.org/myth/"
+        "url": "http://next.nagatoyuki.org/myth/"
       },
       {
         "title": "政治",
@@ -320,7 +320,7 @@
       },
       {
         "title": "圖書",
-        "url": "https:\/\/gzone-anime.info\/UnitedSites\/books\/"
+        "url": "http:\/\/gzone-anime.info\/UnitedSites\/books\/"
       },
       {
         "title": "讀書筆記",
@@ -328,11 +328,11 @@
       },
       {
         "title": "煩惱相談",
-        "url": "https://next.nagatoyuki.org/conseil/"
+        "url": "http://next.nagatoyuki.org/conseil/"
       },
       {
         "title": "安價",
-        "url": "https://next.nagatoyuki.org/ancre/"
+        "url": "http://next.nagatoyuki.org/ancre/"
       }
     ]
   },
