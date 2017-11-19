@@ -822,11 +822,11 @@
       },
       {
         "title": "塗鴉工廠",
-        "url": "https:\/\/broken.goodluck.com.tw\/"
+        "url": "http:\/\/broken.goodluck.com.tw\/"
       },
       {
         "title": "3D",
-        "url": "https:\/\/komicolle.dreamhosters.com\/3d\/"
+        "url": "http:\/\/komicolle.dreamhosters.com\/3d\/"
       },
       {
         "title": "MMD",
@@ -859,7 +859,7 @@
       },
       {
         "title": "酒",
-        "url": "https://next.nagatoyuki.org/beverage/"
+        "url": "http://next.nagatoyuki.org/beverage/"
       },
       {
         "title": "咖啡\/茶",
@@ -938,14 +938,10 @@
       },
       {
         "title": "三次壁",
-        "url": "https:\/\/2nee.org\/bg_photo"
+        "url": "http:\/\/2nee.org\/bg_photo"
       },
       {
-        "title": "手機壁",
-        "url": "https:\/\/komica.csie.org\/~cellwall\/"
-      },
-      {
-        "title": "PSP壁",
+        "title": "PSV/手機壁",
         "url": "https://2cat.ml/~touhonoob/14d/"
       }
     ]
@@ -967,7 +963,7 @@
       },
       {
         "title": "程設交流",
-        "url": "https:\/\/komicolle.dreamhosters.com\/cs\/"
+        "url": "http:\/\/komicolle.dreamhosters.com\/cs\/"
       },
       {
         "title": "網頁設計",
@@ -1095,7 +1091,7 @@
     "member": [
       {
         "title": "KomicaWiki",
-        "url": "https:\/\/wiki.komica.org\/wiki5\/"
+        "url": "https://wiki.komica.org/"
       },
       {
         "title": "精華區",
@@ -1103,7 +1099,7 @@
       },
       {
         "title": "Komicolle",
-        "url": "https:\/\/komicolle.org\/"
+        "url": "http:\/\/komicolle.org\/"
       }
     ]
   },
@@ -1129,27 +1125,27 @@
     "member": [
       {
         "title": "Komica2",
-        "url": "https:\/\/pink.komica.org\/"
+        "url": "https://komica2.net/"
       },
       {
         "title": "0rz.tw",
-        "url": "https:\/\/0rz.tw\/"
+        "url": "https://0rz.tw/"
       },
       {
         "title": "Google 日本",
-        "url": "https:\/\/www.google.co.jp\/ja"
+        "url": "https://www.google.co.jp/ja"
       },
       {
         "title": "goo 辞書",
-        "url": "https:\/\/dictionary.goo.ne.jp\/"
+        "url": "https://dictionary.goo.ne.jp/"
       },
       {
         "title": "Yahoo! 字典",
-        "url": "https:\/\/tw.dictionary.yahoo.com\/"
+        "url": "https://tw.dictionary.yahoo.com/"
       },
       {
         "title": "英漢字典",
-        "url": "https:\/\/cdict.net\/"
+        "url": "https://cdict.net/"
       },
       {
         "title": "國語辭典",
