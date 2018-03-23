@@ -1,5 +1,24 @@
 [
   {
+    "title": "雜談",
+    "member": [
+      {
+        "title": "綜合",
+        "url": "https://rem.komica2.net/00/index.htm",
+        "priority": 9995
+      },
+      {
+        "title": "綜合2",
+        "url": "https://alleyneblade.mymoe.moe/queensblade/",
+        "priority": 9995
+      },
+      {
+        "title": "掛圖",
+        "url": "https://aqua.komica.org/64/index.htm"
+      }
+    ]
+  },
+  {
     "title": "連線板",
     "member": [
       {
@@ -25,20 +44,6 @@
       {
         "title": "影視",
         "url": "https://aqua.komica.org/04/index.htm"
-      },
-      {
-        "title": "綜合",
-        "url": "https://rem.komica2.net/00/index.htm",
-        "priority": 9995
-      },
-      {
-        "title": "綜合2",
-        "url": "https://alleyneblade.mymoe.moe/queensblade/",
-        "priority": 9995
-      },
-      {
-        "title": "掛圖",
-        "url": "https://aqua.komica.org/64/index.htm"
       },
       {
         "title": "氣象",
@@ -160,19 +165,15 @@
       },
       {
         "title": "數學",
-        "url": "http:\/\/study.mymoe.moe\/math\/"
+        "url": "https://aqua.komica.org/75/index.htm"
       },
       {
         "title": "歷史",
         "url": "https:\/\/study.mymoe.moe\/history\/"
       },
       {
-        "title": "地理",
-        "url": "http:\/\/study.mymoe.moe\/geography\/"
-      },
-      {
         "title": "校園",
-        "url": "http:\/\/komicolle.dreamhosters.com\/school\/"
+        "url": "https://aqua.komica.org/school/"
       },
       {
         "title": "職業",
@@ -197,10 +198,6 @@
       {
         "title": "閒談@香港",
         "url": "https:\/\/kagaminerin.org\/hongkong\/"
-      },
-      {
-        "title": "消費電子",
-        "url": "http://komicolle.dreamhosters.com/digital/"
       },
       {
         "title": "藝術",
@@ -954,7 +951,7 @@
     "title": "電腦網路",
     "member": [
       {
-        "title": "電腦",
+        "title": "電腦/消費電子",
         "url": "https://aqua.komica.org/37/index.htm"
       },
       {
