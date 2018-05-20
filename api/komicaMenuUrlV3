@@ -46,6 +46,15 @@
         "url": "https://aqua.komica.org/04/index.htm"
       },
       {
+        "title": "歡樂惡搞",
+        "url": "https://luna.komica.org/12/index.htm",
+        "priority": 9995
+      },
+      {
+        "title": "新聞",
+        "url": "https://aqua.komica.org/25/index.htm"
+      },
+      {
         "title": "氣象",
         "url": "https://aqua.komica.org/62/index.htm"
       },
@@ -78,11 +87,6 @@
       {
         "title": "螢幕攝",
         "url": "https:\/\/alica.dreamhosters.com\/screenshot\/"
-      },
-      {
-        "title": "歡樂惡搞",
-        "url": "https://luna.komica.org/12/index.htm",
-        "priority": 9995
       },
       {
         "title": "特攝",
@@ -982,10 +986,6 @@
       {
         "title": "文化交流",
         "url": "https:\/\/aqua.komica.org\/22\/index.htm"
-      },
-      {
-        "title": "新聞",
-        "url": "https://aqua.komica.org/25/index.htm"
       },
       {
         "title": "寫真",
