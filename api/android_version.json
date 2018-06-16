@@ -2,5 +2,5 @@
   "update_version": "2.0.13",
   "update_version_code": 313,
   "update_link": "https://play.google.com/store/apps/details?id=idv.kuma.app.komica",
-  "update_force": true
+  "update_force": false
 }
