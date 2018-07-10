@@ -432,10 +432,6 @@
         "url": "https:\/\/2cat.org\/~boylove\/"
       },
       {
-        "title": "音樂遊戲",
-        "url": "https:\/\/komica.chiisana.net\/musicgame\/"
-      },
-      {
         "title": "網頁遊戲",
         "url": "https:\/\/komica.chiisana.net\/webgame\/"
       },
@@ -1185,6 +1181,10 @@
   {
     "title": "失效連結",
     "member": [
+      {
+        "title": "音樂遊戲",
+        "url": "https:\/\/komica.chiisana.net\/musicgame\/"
+      },
       {
         "title": "SF",
         "url": "https:\/\/orzistic.org\/s\/"
