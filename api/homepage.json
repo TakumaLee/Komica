@@ -1,6 +1,6 @@
 {
-  "infoCode": 56,
-  "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 2.1.11<\/font><br><br /><font color=\"#ff0000\">新版本修正綜合2...<\/font><br /><font color=\"#2196F3\">7 月新番強勢回歸！<br />歡喜迎新番！<\/font>",
+  "infoCode": 57,
+  "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 2.1.13<\/font><br><br /><font color=\"#ff0000\">修正 Gif 版 WEBM 檔案播放連結錯誤問題<\/font><br />",
   "indexSort":[
     "favorite",
     "promote"
