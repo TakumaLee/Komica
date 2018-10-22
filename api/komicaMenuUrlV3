@@ -23,11 +23,11 @@
     "member": [
       {
         "title": "2CAT",
-        "url": "http://2cat.tk/"
+        "url": "https://2cat.tk/"
       },
       {
         "title": "貓管理部",
-        "url": "http://2cat.tk/0d/fstyle.html"
+        "url": "https://2cat.tk/0d/fstyle.html"
       },
       {
         "title": "站務公告",
@@ -35,11 +35,11 @@
       },
       {
         "title": "動畫",
-        "url": "http://2cat.tk/~tedc21thc/anime/"
+        "url": "https://2cat.tk/~tedc21thc/anime/"
       },
       {
         "title": "漫畫",
-        "url": "http://2cat.tk/~scribe/2c/"
+        "url": "https://2cat.tk/~scribe/2c/"
       },
       {
         "title": "影視",
@@ -60,12 +60,12 @@
       },
       {
         "title": "新番捏他",
-        "url": "http://2cat.tk/~tedc21thc/new/index.html",
+        "url": "https://2cat.tk/~tedc21thc/new/index.html",
         "priority": 9990
       },
       {
         "title": "新番實況",
-        "url": "http://2cat.tk/~tedc21thc/live/index.html",
+        "url": "https://2cat.tk/~tedc21thc/live/index.html",
         "priority": 9990
       },
       {
@@ -118,21 +118,21 @@
       },
       {
         "title": "萌",
-        "url": "http://2cat.tk/~kirur/img2/index.htm",
+        "url": "https://2cat.tk/~kirur/img2/index.htm",
         "branch":[
           {
             "title": "萌壹",
-            "url": "http://2cat.tk/~kirur/img2/index2.htm"
+            "url": "https://2cat.tk/~kirur/img2/index2.htm"
           },
           {
             "title": "萌貳",
-            "url": "http://2cat.tk/~kirur/img2/_2/"
+            "url": "https://2cat.tk/~kirur/img2/_2/"
           }
         ]
       },
       {
         "title": "詢問",
-        "url": "http://2cat.tk/~kirur/orz/index.htm"
+        "url": "https://2cat.tk/~kirur/orz/index.htm"
       },
       {
         "title": "AA",
@@ -221,7 +221,7 @@
       },
       {
         "title": "生存遊戲",
-        "url": "http://2cat.tk/~gtr2003/pixmicat1/"
+        "url": "https://2cat.tk/~gtr2003/pixmicat1/"
       },
       {
         "title": "鐵道",
@@ -253,7 +253,7 @@
       },
       {
         "title": "大自然",
-        "url": "http://2cat.tk/~rt/pd/"
+        "url": "https://2cat.tk/~rt/pd/"
       },
       {
         "title": "天文",
@@ -342,7 +342,7 @@
     "member": [
       {
         "title": "短片",
-        "url": "http://2cat.tk/~touhonoob/21d/"
+        "url": "https://2cat.tk/~touhonoob/21d/"
       },
       {
         "title": "短片2",
@@ -403,7 +403,7 @@
       },
       {
         "title": "賽車戰略遊戲",
-        "url": "http://2cat.tk/~caradmin/rcg-slg/",
+        "url": "https://2cat.tk/~caradmin/rcg-slg/",
         "branch":[
           {
             "title": "戰略遊戲",
@@ -599,7 +599,7 @@
       },
       {
         "title": "東方",
-        "url": "http://2cat.tk/~kirur/touhou/index.htm"
+        "url": "https://2cat.tk/~kirur/touhou/index.htm"
       },
       {
         "title": "葉鍵",
@@ -794,7 +794,7 @@
       },
       {
         "title": "返信娘",
-        "url": "http://2cat.tk/~rt/hd/"
+        "url": "https://2cat.tk/~rt/hd/"
       },
       {
         "title": "Lolita Fashion",
@@ -935,7 +935,7 @@
     "member": [
       {
         "title": "二次壁",
-        "url": "http://2cat.tk/~twocat/5d/"
+        "url": "https://2cat.tk/~twocat/5d/"
       },
       {
         "title": "三次壁",
@@ -943,7 +943,7 @@
       },
       {
         "title": "PSV/手機壁",
-        "url": "http://2cat.tk/~touhonoob/14d/"
+        "url": "https://2cat.tk/~touhonoob/14d/"
       }
     ]
   },
@@ -956,7 +956,7 @@
       },
       {
         "title": "Pixmicat!",
-        "url": "http://2cat.tk/~scribe/pixmicat_dev/"
+        "url": "https://2cat.tk/~scribe/pixmicat_dev/"
       },
       {
         "title": "Joyful Note",
@@ -1113,7 +1113,7 @@
       },
       {
         "title": "(Web)",
-        "url": "http://2cat.tk/~rt/irc/"
+        "url": "https://2cat.tk/~rt/irc/"
       }
     ]
   },
