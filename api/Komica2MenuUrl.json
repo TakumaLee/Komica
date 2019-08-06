@@ -1,139 +1,1052 @@
 [
   {
-    "title": "管理",
+    "title": "雜談",
     "member": [
       {
-        "title": "管理室",
-        "url": "http://komica2.net/f10/",
+        "title": "綜合",
+        "url": "https://sora.komica.org/00/index.htm",
         "priority": 9995
+      },
+      {
+        "title": "綜合2",
+        "url": "https://alleyneblade.mymoe.moe/queensblade/pixmicat.php?page_num=0",
+        "priority": 9995
+      },
+      {
+        "title": "掛圖",
+        "url": "https://aqua.komica.org/64/index.htm"
       }
     ]
   },
   {
-    "title": "畫像板",
+    "title": "連線板",
     "member": [
       {
-        "title": "二次裡A",
-        "url": "http://komica2.net/51/index.htm"
+        "title": "2CAT",
+        "url": "https://2cat.komica.org/"
       },
       {
-        "title": "二次裡B",
-        "url": "http://komica2.net/54/index.htm"
+        "title": "貓管理部",
+        "url": "https://2cat.komica.org/0d/fstyle.html"
       },
       {
-        "title": "三次元裡",
-        "url": "http://komica2.net/43/index.htm"
+        "title": "站務公告",
+        "url": "https://komica.blogspot.com/"
       },
       {
-        "title": "動畫裡",
-        "url": "http://2nyan.org/azurelane/"
+        "title": "動畫",
+        "url": "https://2cat.komica.org/~tedc21thc/anime/"
       },
       {
-        "title": "遊戲裡",
-        "url": "http://komica2.net/59/index.htm"
+        "title": "漫畫",
+        "url": "https://2cat.komica.org/~scribe/2c/"
       },
       {
-        "title": "Alicesoft",
-        "url": "http://komica2.net/alicesoft/"
+        "title": "影視",
+        "url": "https://aqua.komica.org/04/index.htm"
       },
       {
-        "title": "3D裡",
-        "url": "http://komica2.net/66/index.htm",
+        "title": "歡樂惡搞",
+        "url": "https://luna.komica.org/12/index.htm",
         "priority": 9995
       },
       {
-        "title": "塗鴉裡",
-        "url": "http://komica2.net/55/index.htm"
+        "title": "新聞",
+        "url": "https://aqua.komica.org/25/index.htm"
       },
       {
-        "title": "壁紙裡",
-        "url": "http://komica2.net/wallpaper/"
+        "title": "氣象",
+        "url": "https://aqua.komica.org/62/index.htm"
       },
       {
-        "title": "Figure 裡",
-        "url": "http://komica2.net/wallpaper/",
+        "title": "新番捏他",
+        "url": "https://2cat.komica.org/~tedc21thc/new/index.html",
         "priority": 9990
       },
       {
-        "title": "玩偶裡",
-        "url": "http://komica2.net/doll/",
+        "title": "新番實況",
+        "url": "https://2cat.komica.org/~tedc21thc/live/index.html",
         "priority": 9990
       },
       {
-        "title": "交易合購裡",
-        "url": "http://komica2.net/70/"
+        "title": "三次實況",
+        "url": "https:\/\/yuutan.mymoe.moe\/pawahuru\/"
       },
       {
-        "title": "成人玩具",
-        "url": "http://2cat.org/~toy/"
+        "title": "模型",
+        "url": "https:\/\/aqua.komica.org\/09\/index.htm"
       },
       {
-        "title": "東方裡",
-        "url": "http://komica.peroneko.org/touhou/"
+        "title": "Figure\/GK",
+        "url": "https:\/\/vi.anacel.com\/fg\/vichan\/fg\/"
       },
       {
-        "title": "獸裡",
-        "url": "http://komica2.net/34/index.htm"
+        "title": "玩偶",
+        "url": "https:\/\/aqua.komica.org\/26\/index.htm"
       },
       {
-        "title": "機娘裡",
-        "url": "http://cyber.boguspix.com/"
+        "title": "螢幕攝",
+        "url": "https:\/\/alica.dreamhosters.com\/screenshot\/"
       },
       {
-        "title": "觸手裡",
-        "url": "http://p.komica.acg.club.tw/k2slime/"
+        "title": "特攝",
+        "url": "https:\/\/aqua.komica.org\/13\/index.htm"
       },
       {
-        "title": "足襪",
-        "url": "http://komica2.net/stock/"
+        "title": "祭典",
+        "url": "http://rthost.cr.rs/sd/"
       },
       {
-        "title": "惡搞裡",
-        "url": "http://komica2.net/48/index.htm"
+        "title": "治癒系",
+        "url": "https:\/\/tsukisiro.snow-sugar.net\/iyasi\/"
       },
       {
-        "title": "偽娘裡",
-        "url": "http://2cat.org/~futa/"
+        "title": "蘿蔔",
+        "url": "https://aqua.komica.org/15/index.htm"
       },
       {
-        "title": "YURI",
-        "url": "http://komica2.net/31/index.htm"
+        "title": "攝影",
+        "url": "https://aqua.komica.org/50/index.htm"
       },
       {
-        "title": "YAOI",
-        "url": "http://komica2.net/32/index.htm"
+        "title": "軍武",
+        "url": "https://aqua.komica.org/17/index.htm"
       },
       {
-        "title": "詢問裡",
-        "url": "http://majeur.zawarudo.org/demande/"
+        "title": "車",
+        "url": "https:\/\/no_99.mymoe.moe\/cars\/index.htm"
       },
       {
-        "title": "知識裡",
-        "url": "http://2cat.org/~know/"
+        "title": "萌",
+        "url": "https://2cat.komica.org/~kirur/img2/index.htm",
+        "branch":[
+          {
+            "title": "萌壹",
+            "url": "https://2cat.komica.org/~kirur/img2/index2.htm"
+          },
+          {
+            "title": "萌貳",
+            "url": "https://2cat.komica.org/~kirur/img2/_2/"
+          }
+        ]
       },
       {
-        "title": "改造裡",
-        "url": "http://komica2.net/kaizou/"
+        "title": "詢問",
+        "url": "https://2cat.komica.org/~kirur/orz/index.htm"
       },
       {
-        "title": "成人音聲",
-        "url": "http://komica2.net/hvoice/"
+        "title": "AA",
+        "url": "https:\/\/rthost.fam.cx\/aa\/pbbs.html"
       },
       {
-        "title": "小說裡",
-        "url": "http://komica2.net/63/index.htm"
+        "title": "COSPLAY",
+        "url": "https://secilia.zawarudo.org/costumade/"
       },
       {
-        "title": "高解析裡",
-        "url": "http://2cat.org/~hisoura/"
+        "title": "改造",
+        "url": "https://sora.komica.org/40/index.htm"
       },
       {
-        "title": "GIF裡",
-        "url": "http://2cat.org/~gifura/"
+        "title": "投票所",
+        "url": "https:\/\/komica.yucie.net\/vote\/"
       },
       {
-        "title": "宣傳裡",
-        "url": "http://komica2.net/21d/index.htm"
+        "title": "問答",
+        "url": "https:\/\/komica.yucie.net\/quiztest\/"
+      },
+      {
+        "title": "UP",
+        "url": "https:\/\/rthost.fam.cx\/komica-up\/upload.php"
+      }
+    ]
+  },
+  {
+    "title": "連線二板",
+    "member": [
+      {
+        "title": "綜合學術",
+        "url": "http://gzone-anime.info/UnitedSites/academic/"
+      },
+      {
+        "title": "數學",
+        "url": "https://aqua.komica.org/75/index.htm"
+      },
+      {
+        "title": "歷史",
+        "url": "https:\/\/study.mymoe.moe\/history\/"
+      },
+      {
+        "title": "校園",
+        "url": "https://aqua.komica.org/school/"
+      },
+      {
+        "title": "職業",
+        "url": "https://2cat.org/~career/"
+      },
+      {
+        "title": "財經",
+        "url": "https://2cat.org/~finance/"
+      },
+      {
+        "title": "生活消費",
+        "url": "http:\/\/gzone-anime.info\/UnitedSites\/shopping\/"
+      },
+      {
+        "title": "法律",
+        "url": "https://2cat.org/~law/"
+      },
+      {
+        "title": "海外",
+        "url": "http://next.nagatoyuki.org/outremer/"
+      },
+      {
+        "title": "閒談@香港",
+        "url": "https:\/\/kagaminerin.org\/hongkong\/"
+      },
+      {
+        "title": "藝術",
+        "url": "http://gzone-anime.info/UnitedSites/art/"
+      },
+      {
+        "title": "繪師",
+        "url": "https://2cat.org/~artist/"
+      },
+      {
+        "title": "交易合購",
+        "url": "https:\/\/komica.yucie.net\/trade\/"
+      },
+      {
+        "title": "鋼普拉",
+        "url": "https:\/\/aqua.komica.org\/61\/index.htm"
+      },
+      {
+        "title": "生存遊戲",
+        "url": "https://2cat.komica.org/~gtr2003/pixmicat1/"
+      },
+      {
+        "title": "鐵道",
+        "url": "https:\/\/tsukisiro.snow-sugar.net\/tetsudou\/"
+      },
+      {
+        "title": "燃",
+        "url": "http:\/\/ningen.dreamhosters.com\/moe\/"
+      },
+      {
+        "title": "笑話",
+        "url": "https:\/\/touhonoob.mymoe.moe\/kjoker\/"
+      },
+      {
+        "title": "猜謎",
+        "url": "https://2cat.org/~quiz/"
+      },
+      {
+        "title": "故事接龍",
+        "url": "http:\/\/storysol2.boguspix.com\/"
+      },
+      {
+        "title": "歐美漫畫",
+        "url": "http:\/\/miyarei.org\/AmericanSuperHeroes\/"
+      },
+      {
+        "title": "歐美動畫",
+        "url": "https:\/\/mymoe.moe\/boards\/wei75631\/komicartoon\/"
+      },
+      {
+        "title": "大自然",
+        "url": "https://2cat.komica.org/~rt/pd/"
+      },
+      {
+        "title": "天文",
+        "url": "https://2cat.org/~astronomy/"
+      },
+      {
+        "title": "星座命理",
+        "url": "https:\/\/kagaminerin.org\/horoscope\/"
+      },
+      {
+        "title": "New Age",
+        "url": "https:\/\/crystal.mymoe.moe\/newage\/"
+      },
+      {
+        "title": "戀愛",
+        "url": "https:\/\/moecorner.com\/iboards\/Relationship\/"
+      },
+      {
+        "title": "超常現象",
+        "url": "https:\/\/2cat.org\/~supernature\/"
+      },
+      {
+        "title": "夢",
+        "url": "http:\/\/komicolle.dreamhosters.com\/dream\/"
+      },
+      {
+        "title": "流言終結",
+        "url": "http://next.nagatoyuki.org/myth/"
+      },
+      {
+        "title": "政治",
+        "url": "https:\/\/politics.mymoe.moe\/index\/"
+      },
+      {
+        "title": "旅遊",
+        "url": "https:\/\/travel.voidfactory.com\/"
+      },
+      {
+        "title": "耳機",
+        "url": "https:\/\/norrk.mymoe.moe\/headphone\/"
+      },
+      {
+        "title": "手機",
+        "url": "https:\/\/phone.mymoe.moe\/pda\/"
+      },
+      {
+        "title": "服飾",
+        "url": "https://2cat.org/~pixmicat/"
+      },
+      {
+        "title": "美容",
+        "url": "https:\/\/kagaminerin.org\/cosmetic\/"
+      },
+      {
+        "title": "髮型",
+        "url": "https:\/\/yuutan.mymoe.moe\/kaminoke\/"
+      },
+      {
+        "title": "家政",
+        "url": "https:\/\/mymoe.moe\/boards\/24\/house\/"
+      },
+      {
+        "title": "手工藝",
+        "url": "https:\/\/komica.chiisana.net\/diy\/"
+      },
+      {
+        "title": "圖書",
+        "url": "http:\/\/gzone-anime.info\/UnitedSites\/books\/"
+      },
+      {
+        "title": "讀書筆記",
+        "url": "https:\/\/mymoe.moe\/boards\/24\/mindmap\/"
+      },
+      {
+        "title": "煩惱相談",
+        "url": "http://next.nagatoyuki.org/conseil/"
+      },
+      {
+        "title": "安價",
+        "url": "http://next.nagatoyuki.org/ancre/"
+      }
+    ]
+  },
+  {
+    "title": "影音",
+    "member": [
+      {
+        "title": "短片",
+        "url": "https://2cat.komica.org/~touhonoob/21d/"
+      },
+      {
+        "title": "短片2",
+        "url": "https://sora.komica.org/69/"
+      },
+      {
+        "title": "彈幕",
+        "url": "https:\/\/komica.yucie.net\/video\/"
+      },
+      {
+        "title": "直播",
+        "url": "https:\/\/komica.yucie.net\/boardcast\/"
+      },
+      {
+        "title": "MAD",
+        "url": "https://aqua.komica.org/39/index.htm"
+      },
+      {
+        "title": "Vtuber",
+        "url": "https://luna.komica.org/74/"
+      }
+    ]
+  },
+  {
+    "title": "遊戲",
+    "member": [
+      {
+        "title": "遊戲速報",
+        "url": "https:\/\/aqua.komica.org\/27\/index.htm"
+      },
+      {
+        "title": "綜合遊戲",
+        "url": "http://tehepero.org/komica/main/index.htm"
+      },
+      {
+        "title": "動作遊戲",
+        "url": "https:\/\/kagaminerin.org\/act\/"
+      },
+      {
+        "title": "格鬥遊戲",
+        "url": "https:\/\/komica.yucie.net\/fight\/"
+      },
+      {
+        "title": "2D STG",
+        "url": "https:\/\/kagaminerin.org\/stg\/"
+      },
+      {
+        "title": "3D STG",
+        "url": "https:\/\/kagaminerin.org\/fps\/"
+      },
+      {
+        "title": "冒險遊戲",
+        "url": "https:\/\/kagaminerin.org\/avg\/"
+      },
+      {
+        "title": "RPG",
+        "url": "https:\/\/kagaminerin.org\/rpg\/"
+      },
+      {
+        "title": "賽車戰略遊戲",
+        "url": "https://2cat.komica.org/~caradmin/rcg-slg/",
+        "branch":[
+          {
+            "title": "戰略遊戲",
+            "url": "https://komica.yucie.net/simulation/"
+          },
+          {
+            "title": "戰略及賽車避難所",
+            "url": "https://no_99.mymoe.moe/rcg_slg/pixmicat.php?page_num=0"
+          },
+          {
+            "title": "賽車遊戲",
+            "url": "https://komica.yucie.net/racing/"
+          }
+        ]
+      },
+      {
+        "title": "養成遊戲",
+        "url": "https:\/\/komica.yucie.net\/slg\/"
+      },
+      {
+        "title": "戀愛遊戲",
+        "url": "https:\/\/komica.yucie.net\/renai\/"
+      },
+      {
+        "title": "女性向遊戲",
+        "url": "https://2cat.org/~boylove/"
+      },
+      {
+        "title": "網頁遊戲",
+        "url": "https://2cat.org/~webgame/"
+      },
+      {
+        "title": "獨立遊戲",
+        "url": "https:\/\/komica.dbfoxtw.me\/indiegame\/"
+      },
+      {
+        "title": "手機遊戲",
+        "url": "https://2cat.org/~cellphone/"
+      },
+      {
+        "title": "VR/體感遊戲",
+        "url": "https://2cat.org/~motion/"
+      },
+      {
+        "title": "桌上遊戲",
+        "url": "https://2cat.org/~boardgame/"
+      },
+      {
+        "title": "麻將",
+        "url": "https:\/\/moecorner.com\/iboards\/Mahjong\/"
+      },
+      {
+        "title": "遊戲設計",
+        "url": "https:\/\/komica.dbfoxtw.me\/gameprogramming\/"
+      },
+      {
+        "title": "RPG Maker",
+        "url": "https:\/\/rm2k3xpvx.mymoe.moe\/rm\/"
+      },
+      {
+        "title": "STEAM",
+        "url": "https:\/\/steam.mymoe.moe\/STEAM\/index.htm"
+      },
+      {
+        "title": "網路遊戲",
+        "url": "https://aqua.komica.org/52/index.htm"
+      }
+    ]
+  },
+  {
+    "title": "遊戲作品",
+    "member": [
+      {
+        "title": "CosmicBreak",
+        "url": "https:\/\/gamegroup.mymoe.moe\/cosmicbreak\/"
+      },
+      {
+        "title": "Elsword",
+        "url": "https:\/\/palladium.mymoe.moe\/ElswordNew\/"
+      },
+      {
+        "title": "DNF",
+        "url": "https:\/\/sdgo.mymoe.moe\/GGCDNF\/"
+      },
+      {
+        "title": "DOTA2",
+        "url": "https:\/\/lordofdota2.mymoe.moe\/DOTA2\/"
+      },
+      {
+        "title": "FEZ",
+        "url": "https:\/\/komica.yucie.net\/fez\/"
+      },
+      {
+        "title": "GW2",
+        "url": "https:\/\/fina.mymoe.moe\/gw2\/"
+      },
+      {
+        "title": "GTA",
+        "url": "https:\/\/fenrisulfr.org\/gta\/"
+      },
+      {
+        "title": "LOL",
+        "url": "https:\/\/klol.mymoe.moe\/komicaLOL\/"
+      },
+      {
+        "title": "Minecraft",
+        "url": "https:\/\/komica.peroneko.org\/minecraft\/"
+      },
+      {
+        "title": "PAD",
+        "url": "https:\/\/phone.mymoe.moe\/bazudora\/index.htm"
+      },
+      {
+        "title": "PSO2",
+        "url": "https:\/\/2012.mymoe.moe\/pso2\/"
+      },
+      {
+        "title": "SDGO",
+        "url": "https:\/\/touhonoob.mymoe.moe\/sd_gundum\/"
+      },
+      {
+        "title": "StarCraft",
+        "url": "https:\/\/mymoe.moe\/boards\/touhonoob\/starcraft\/"
+      },
+      {
+        "title": "T7S",
+        "url": "https:\/\/www.karlsland.net\/t7s\/"
+      },
+      {
+        "title": "TOS",
+        "url": "https:\/\/tos.pixmi.net\/"
+      },
+      {
+        "title": "WOW",
+        "url": "https:\/\/www.wowhk.org\/"
+      },
+      {
+        "title": "白貓Project",
+        "url": "https:\/\/acs5566.mymoe.moe\/shironeko\/"
+      },
+      {
+        "title": "流亡黯道 PoE",
+        "url": "https:\/\/pathofexile.mymoe.moe\/komicaPOE\/"
+      },
+      {
+        "title": "新瑪奇英雄傳",
+        "url": "https:\/\/kvindictus.mymoe.moe\/Vindictus\/"
+      },
+      {
+        "title": "戰車世界",
+        "url": "https:\/\/fenrisulfr.org\/wot\/"
+      },
+      {
+        "title": "戰地風雲",
+        "url": "https:\/\/fenrisulfr.org\/battlefield\/"
+      },
+      {
+        "title": "戰爭雷霆",
+        "url": "https:\/\/fenrisulfr.org\/war_thunder\/"
+      },
+      {
+        "title": "戰機世界",
+        "url": "https:\/\/fenrisulfr.org\/wowp\/"
+      },
+      {
+        "title": "戰艦世界",
+        "url": "https:\/\/fenrisulfr.org\/wows\/"
+      },
+      {
+        "title": "艦隊收藏",
+        "url": "https:\/\/acgspace.wsfun.com\/kancolle\/"
+      },
+      {
+        "title": "魔物獵人",
+        "url": "https:\/\/strange-komica.com\/MonsterHunter\/"
+      },
+      {
+        "title": "爐石戰記",
+        "url": "https:\/\/lordofdota2.mymoe.moe\/Hearthstone\/"
+      },
+      {
+        "title": "星空幻想",
+        "url": "https:\/\/ttr_rb.mymoe.moe\/ttrrb\/"
+      }
+    ]
+  },
+  {
+    "title": "動漫作品",
+    "member": [
+      {
+        "title": "動物朋友",
+        "url": "https://aqua.komica.org/68/"
+      },
+      {
+        "title": "東方",
+        "url": "https://2cat.org/~touhou/"
+      },
+      {
+        "title": "葉鍵",
+        "url": "http:\/\/ningen.dreamhosters.com\/leafkey\/"
+      },
+      {
+        "title": "龍騎士07",
+        "url": "https://2cat.org/~07expansion/"
+      },
+      {
+        "title": "涼宮",
+        "url": "http://next.nagatoyuki.org/szmy/"
+      },
+      {
+        "title": "反逆",
+        "url": "https:\/\/komica.chiisana.net\/pizzahut\/"
+      },
+      {
+        "title": "奈葉",
+        "url": "https:\/\/nanoha.boguspix.com\/"
+      },
+      {
+        "title": "廢怯少女",
+        "url": "https:\/\/mymoe.moe\/boards\/21\/madoka\/"
+      },
+      {
+        "title": "禁書",
+        "url": "https:\/\/index.mymoe.moe\/index\/"
+      },
+      {
+        "title": "遊戲王",
+        "url": "https:\/\/yugioh.mymoe.moe\/20110517\/"
+      },
+      {
+        "title": "女王之刃",
+        "url": "https:\/\/alleyneblade.mymoe.moe\/0002\/"
+      },
+      {
+        "title": "APH",
+        "url": "https:\/\/kagaminerin.org\/aph1\/"
+      },
+      {
+        "title": "Digimon",
+        "url": "https:\/\/joshua.mymoe.moe\/digimon\/"
+      },
+      {
+        "title": "Homestuck",
+        "url": "https:\/\/komica.dbfoxtw.me\/homestuck\/"
+      },
+      {
+        "title": "IM@S",
+        "url": "https:\/\/idolma.ster.tw\/imgbbs\/"
+      },
+      {
+        "title": "LoveLive!",
+        "url": "https:\/\/lovelive.mymoe.moe\/lovelive\/"
+      },
+      {
+        "title": "Pokemon",
+        "url": "https:\/\/kagaminerin.org\/pokemon\/"
+      },
+      {
+        "title": "Pretty Cure",
+        "url": "https:\/\/komica.yucie.net\/prettycure\/"
+      },
+      {
+        "title": "Saki",
+        "url": "https:\/\/neet1145.mymoe.moe\/shizuno\/"
+      },
+      {
+        "title": "Strike Witches",
+        "url": "https:\/\/www.karlsland.net\/sw\/"
+      },
+      {
+        "title": "VOCALOID",
+        "url": "https:\/\/vocaloid.orzhk.net\/"
+      }
+    ]
+  },
+  {
+    "title": "製作公司",
+    "member": [
+      {
+        "title": "Capcom",
+        "url": "https:\/\/no_99.mymoe.moe\/capcom\/"
+      },
+      {
+        "title": "GAINAX",
+        "url": "https:\/\/kagaminerin.org\/gainax\/"
+      },
+      {
+        "title": "KOEI",
+        "url": "https:\/\/www.karlsland.net\/koei\/"
+      },
+      {
+        "title": "SQEX",
+        "url": "https:\/\/moecorner.com\/iboards\/Square_Enix\/"
+      },
+      {
+        "title": "TYPE-MOON",
+        "url": "http://gzone-anime.info/UnitedSites/TypeMoon/"
+      },
+      {
+        "title": "京都動畫",
+        "url": "https:\/\/komica.yucie.net\/kyoutoanimate\/"
+      }
+    ]
+  },
+  {
+    "title": "聲優藝人",
+    "member": [
+      {
+        "title": "聲優綜合",
+        "url": "https:\/\/komica.yucie.net\/seiyuu\/"
+      },
+      {
+        "title": "釘宮",
+        "url": "https:\/\/komica.yucie.net\/kugimiya\/"
+      },
+      {
+        "title": "田村\/堀江\/水樹",
+        "url": "https:\/\/komica.yucie.net\/nana\/"
+      },
+      {
+        "title": "AKB48",
+        "url": "https:\/\/akb48.mymoe.moe\/akb48\/"
+      },
+      {
+        "title": "Sound Horizon",
+        "url": "http://laurenthorizon.weebly.com/"
+      }
+    ]
+  },
+  {
+    "title": "專題板",
+    "member": [
+      {
+        "title": "角色配對",
+        "url": "https:\/\/kagaminerin.org\/flash\/"
+      },
+      {
+        "title": "催淚",
+        "url": "https:\/\/kagaminerin.org\/tearing\/"
+      },
+      {
+        "title": "性轉換",
+        "url": "https:\/\/komica.chiisana.net\/genderswap\/"
+      },
+      {
+        "title": "Maid",
+        "url": "http:\/\/ningen.dreamhosters.com\/maid\/"
+      },
+      {
+        "title": "巫女",
+        "url": "http:\/\/alica.dreamhosters.com\/miko\/"
+      },
+      {
+        "title": "魔女",
+        "url": "https:\/\/komica.yucie.net\/magic\/"
+      },
+      {
+        "title": "蘿莉",
+        "url": "https:\/\/komica.yucie.net\/lori\/"
+      },
+      {
+        "title": "正太",
+        "url": "http:\/\/p.komica.acg.club.tw\/s\/"
+      },
+      {
+        "title": "御姊",
+        "url": "https:\/\/sister.boguspix.com\/"
+      },
+      {
+        "title": "兄貴",
+        "url": "http:\/\/p.komica.acg.club.tw\/a\/"
+      },
+      {
+        "title": "妹系",
+        "url": "https:\/\/komica.yucie.net\/imoto\/"
+      },
+      {
+        "title": "人外",
+        "url": "https:\/\/komica.dbfoxtw.me\/jingai\/"
+      },
+      {
+        "title": "獸",
+        "url": "https:\/\/kemono.wtako.net\/kemono\/"
+      },
+      {
+        "title": "機娘",
+        "url": "http:\/\/msgirls.boguspix.com\/"
+      },
+      {
+        "title": "返信娘",
+        "url": "https://2cat.komica.org/~rt/hd/"
+      },
+      {
+        "title": "Lolita Fashion",
+        "url": "https:\/\/komica.yucie.net\/lolita\/"
+      },
+      {
+        "title": "傲嬌",
+        "url": "https:\/\/komica.chiisana.net\/tsundere\/"
+      }
+    ]
+  },
+  {
+    "title": "創作",
+    "member": [
+      {
+        "title": "塗鴉王國",
+        "url": "https:\/\/aqua.komica.org\/30\/index.htm"
+      },
+      {
+        "title": "線上繪圖",
+        "url": "https://aqua.komica.org/poti/index.htm"
+      },
+      {
+        "title": "塗鴉保育區",
+        "url": "https:\/\/kemono.wtako.net\/kemozone\/"
+      },
+      {
+        "title": "塗鴉工廠",
+        "url": "http:\/\/broken.goodluck.com.tw\/"
+      },
+      {
+        "title": "3D",
+        "url": "http:\/\/komicolle.dreamhosters.com\/3d\/"
+      },
+      {
+        "title": "MMD",
+        "url": "https:\/\/valerinty.mymoe.moe\/mmdance\/"
+      },
+      {
+        "title": "同人",
+        "url": "https://aqua.komica.org/65/index.htm"
+      },
+      {
+        "title": "同人2",
+        "url": "https:\/\/doujin2.acgmoe.com\/board\/"
+      },
+      {
+        "title": "SOHO",
+        "url": "https:\/\/durudurudadada.mymoe.moe\/soho\/"
+      },
+      {
+        "title": "宣傳",
+        "url": "https://aqua.komica.org/20d/index.htm"
+      }
+    ]
+  },
+  {
+    "title": "飲食",
+    "member": [
+      {
+        "title": "飲食",
+        "url": "https://aqua.komica.org/58/index.htm"
+      },
+      {
+        "title": "酒",
+        "url": "http://next.nagatoyuki.org/beverage/"
+      },
+      {
+        "title": "咖啡\/茶",
+        "url": "https:\/\/2cat.org\/~coffee\/"
+      },
+      {
+        "title": "烹飪",
+        "url": "https:\/\/2cat.org\/~cooking\/"
+      },
+      {
+        "title": "素食",
+        "url": "https:\/\/kagaminerin.org\/vegetarian\/"
+      }
+    ]
+  },
+  {
+    "title": "體育運動",
+    "member": [
+      {
+        "title": "體育",
+        "url": "https://aqua.komica.org/49/index.htm"
+      },
+      {
+        "title": "足球",
+        "url": "https:\/\/komica.yucie.net\/worldcup\/"
+      },
+      {
+        "title": "武術",
+        "url": "https:\/\/komica.yucie.net\/budou\/"
+      }
+    ]
+  },
+  {
+    "title": "動物",
+    "member": [
+      {
+        "title": "動物綜合",
+        "url": "https:\/\/2nyan.org\/animal\/"
+      },
+      {
+        "title": "犬",
+        "url": "https:\/\/komica.yucie.net\/dog\/"
+      },
+      {
+        "title": "貓",
+        "url": "https:\/\/komica.yucie.net\/cat\/"
+      },
+      {
+        "title": "鳥",
+        "url": "https://2cat.org/~bird/"
+      },
+      {
+        "title": "蟲",
+        "url": "https:\/\/spg-web.sytes.net\/PasteChart\/insect\/"
+      },
+      {
+        "title": "水族",
+        "url": "https:\/\/komica.yucie.net\/aquarium\/"
+      },
+      {
+        "title": "認養",
+        "url": "https:\/\/komica.yucie.net\/adopt\/"
+      }
+    ]
+  },
+  {
+    "title": "桌布壁紙",
+    "member": [
+      {
+        "title": "二次壁",
+        "url": "https://2cat.org/~wallpaper"
+      },
+      {
+        "title": "三次壁",
+        "url": "http://2nee.org/bg_photo"
+      },
+      {
+        "title": "PSV/手機壁",
+        "url": "https://2cat.komica.org/~touhonoob/14d/"
+      }
+    ]
+  },
+  {
+    "title": "電腦網路",
+    "member": [
+      {
+        "title": "電腦/消費電子",
+        "url": "https://aqua.komica.org/37/index.htm"
+      },
+      {
+        "title": "Pixmicat!",
+        "url": "https://2cat.komica.org/~scribe/pixmicat_dev/"
+      },
+      {
+        "title": "Joyful Note",
+        "url": "https:\/\/rthost.fam.cx\/joyful\/"
+      },
+      {
+        "title": "程設交流",
+        "url": "http:\/\/komicolle.dreamhosters.com\/cs\/"
+      },
+      {
+        "title": "網頁設計",
+        "url": "https:\/\/touhonoob.mymoe.moe\/webdevelop\/"
+      },
+      {
+        "title": "Apple",
+        "url": "https:\/\/moecorner.com\/iboards\/Apple\/"
+      }
+    ]
+  },
+  {
+    "title": "本地板",
+    "member": [
+      {
+        "title": "文化交流",
+        "url": "https:\/\/aqua.komica.org\/22\/index.htm"
+      },
+      {
+        "title": "寫真",
+        "url": "https://sora.komica.org/16/index.htm"
+      },
+      {
+        "title": "女性角色",
+        "url": "https://luna.komica.org/19/index.htm"
+      },
+      {
+        "title": "男性角色",
+        "url": "https://sora.komica.org/38/index.htm"
+      },
+      {
+        "title": "中性角色",
+        "url": "https://aqua.komica.org/57/index.htm"
+      },
+      {
+        "title": "四格",
+        "url": "https://sora.komica.org/42/index.html",
+        "priority": 9995
+      },
+      {
+        "title": "擬人化",
+        "url": "https://aqua.komica.org/36/index.htm"
+      },
+      {
+        "title": "少女漫畫",
+        "url": "https://aqua.komica.org/47/index.htm"
+      },
+      {
+        "title": "音樂",
+        "url": "https:\/\/aqua.komica.org\/29\/index.htm"
+      },
+      {
+        "title": "布袋戲",
+        "url": "https://aqua.komica.org/46/index.htm"
+      },
+      {
+        "title": "小說",
+        "url": "https:\/\/aqua.komica.org\/35\/index.htm"
+      },
+      {
+        "title": "奇幻",
+        "url": "https://aqua.komica.org/60/index.htm"
+      },
+      {
+        "title": "紙牌",
+        "url": "https://aqua.komica.org/10/index.htm"
+      },
+      {
+        "title": "高解析度",
+        "url": "https:\/\/aqua.komica.org\/33\/index.htm"
+      },
+      {
+        "title": "GIF",
+        "url": "https://luna.komica.org/23/index.htm"
+      },
+      {
+        "title": "FLASH",
+        "url": "https://aqua.komica.org/23/index.htm"
+      },
+      {
+        "title": "求圖",
+        "url": "https://sora.komica.org/45/index.htm"
+      },
+      {
+        "title": "測試",
+        "url": "https:\/\/komica42.dreamhosters.com\/99\/index.htm"
       }
     ]
   },
@@ -141,19 +1054,28 @@
     "title": "文字板",
     "member": [
       {
-        "title": "雜談",
-        "url": "http://komica2.net/f11/",
-        "priority": 9995
+        "title": "綜合討論",
+        "url": "https:\/\/aqua.komica.org\/f1\/index.php"
       },
       {
-        "title": "寫作裡",
-        "url": "http://komica2.net/f12/",
-        "priority": 9995
+        "title": "連結",
+        "url": "https:\/\/aqua.komica.org\/f3\/index.php"
       },
       {
-        "title": "寫作資料庫",
-        "url": "http://komica2.net/f12_archive/",
-        "priority": 9995
+        "title": "豆知識",
+        "url": "https:\/\/aqua.komica.org\/f5\/index.php"
+      },
+      {
+        "title": "電腦 ",
+        "url": "https://aqua.komica.org/f6/index.php"
+      },
+      {
+        "title": "單身",
+        "url": "https:\/\/aqua.komica.org\/f7b\/index.php"
+      },
+      {
+        "title": "寫作",
+        "url": "https:\/\/aqua.komica.org\/f9\/index.php"
       }
     ]
   },
@@ -161,9 +1083,131 @@
     "title": "其他",
     "member": [
       {
-        "title": "精華裡",
-        "url": "http://komica2.net/up/",
-        "priority": 9995
+        "title": "KomicaWiki",
+        "url": "https://wiki.komica.org/"
+      },
+      {
+        "title": "精華區",
+        "url": "https:\/\/aqua.komica.org\/up\/index.php"
+      },
+      {
+        "title": "Komicolle",
+        "url": "http:\/\/komicolle.org\/"
+      }
+    ]
+  },
+  {
+    "title": "聊天室",
+    "member": [
+      {
+        "title": "BarGiko",
+        "url": "https:\/\/l4cs.jpn.org\/gikopoi\/"
+      },
+      {
+        "title": "IRC",
+        "url": "irc:\/\/irc.freenode.net\/2cat"
+      },
+      {
+        "title": "(Web)",
+        "url": "https://2cat.komica.org/~rt/irc/"
+      }
+    ]
+  },
+  {
+    "title": "外部連結",
+    "member": [
+      {
+        "title": "Komica2",
+        "url": "https://komica2.net/"
+      },
+      {
+        "title": "0rz.tw",
+        "url": "https://0rz.tw/"
+      },
+      {
+        "title": "Google 日本",
+        "url": "https://www.google.co.jp/ja"
+      },
+      {
+        "title": "goo 辞書",
+        "url": "https://dictionary.goo.ne.jp/"
+      },
+      {
+        "title": "Yahoo! 字典",
+        "url": "https://tw.dictionary.yahoo.com/"
+      },
+      {
+        "title": "英漢字典",
+        "url": "https://cdict.net/"
+      },
+      {
+        "title": "國語辭典",
+        "url": "https:\/\/dict.revised.moe.edu.tw\/cbdic\/index.html"
+      },
+      {
+        "title": "Excite 翻訳",
+        "url": "https:\/\/www.excite.co.jp\/world\/chinese\/"
+      },
+      {
+        "title": "Babel Fish",
+        "url": "https:\/\/www.babelfish.com\/"
+      },
+      {
+        "title": "維基百科",
+        "url": "https:\/\/zh.wikipedia.org\/"
+      },
+      {
+        "title": "Yahoo! 知識+",
+        "url": "https:\/\/tw.knowledge.yahoo.com\/"
+      },
+      {
+        "title": "繁簡轉換",
+        "url": "https:\/\/www.tdctrade.com\/putonghua\/index.htm"
+      },
+      {
+        "title": "假名注音",
+        "url": "https:\/\/www.hiragana.jp\/"
+      },
+      {
+        "title": "漢字轉換",
+        "url": "https:\/\/www.j-talk.com\/nihongo\/"
+      }
+    ]
+  },
+  {
+    "title": "失效連結",
+    "member": [
+      {
+        "title": "音樂遊戲",
+        "url": "https:\/\/komica.chiisana.net\/musicgame\/"
+      },
+      {
+        "title": "SF",
+        "url": "https:\/\/orzistic.org\/s\/"
+      },
+      {
+        "title": "國際政治",
+        "url": "https:\/\/orzistic.org\/i\/"
+      },
+      {
+        "title": "樂器．作曲",
+        "url": "https:\/\/www.svwind.org\/bbs\/"
+      },
+      {
+        "title": "角色商品",
+        "url": "https:\/\/netaba.re\/cat\/"
+      },
+      {
+        "title": "川澄\/能登",
+        "url": "https:\/\/mamiko.keyfans.net\/"
+      },
+      {
+        "title": "花澤",
+        "url": "https:\/\/kana.keyfans.net\/"
+      },
+      {
+        "title": "偶像",
+        "url": "https:\/\/yuutan.mymoe.moe\/idol\/"
       }
     ]
   }
