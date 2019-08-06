@@ -4,12 +4,12 @@
     "member": [
       {
         "title": "綜合",
-        "url": "https://ram.komica2.net/00/index.htm",
+        "url": "https://sora.komica.org/00/index.htm",
         "priority": 9995
       },
       {
         "title": "綜合2",
-        "url": "https://alleyneblade.mymoe.moe/queensblade/",
+        "url": "https://alleyneblade.mymoe.moe/queensblade/pixmicat.php?page_num=0",
         "priority": 9995
       },
       {
@@ -23,11 +23,11 @@
     "member": [
       {
         "title": "2CAT",
-        "url": "https://2cat.cf/"
+        "url": "https://2cat.komica.org/"
       },
       {
         "title": "貓管理部",
-        "url": "https://2cat.cf/0d/fstyle.html"
+        "url": "https://2cat.komica.org/0d/fstyle.html"
       },
       {
         "title": "站務公告",
@@ -35,15 +35,24 @@
       },
       {
         "title": "動畫",
-        "url": "https://2cat.cf/~tedc21thc/anime/"
+        "url": "https://2cat.komica.org/~tedc21thc/anime/"
       },
       {
         "title": "漫畫",
-        "url": "https://2cat.cf/~scribe/2c/"
+        "url": "https://2cat.komica.org/~scribe/2c/"
       },
       {
         "title": "影視",
         "url": "https://aqua.komica.org/04/index.htm"
+      },
+      {
+        "title": "歡樂惡搞",
+        "url": "https://luna.komica.org/12/index.htm",
+        "priority": 9995
+      },
+      {
+        "title": "新聞",
+        "url": "https://aqua.komica.org/25/index.htm"
       },
       {
         "title": "氣象",
@@ -51,12 +60,12 @@
       },
       {
         "title": "新番捏他",
-        "url": "https://2cat.cf/~tedc21thc/new/index.html",
+        "url": "https://2cat.komica.org/~tedc21thc/new/index.html",
         "priority": 9990
       },
       {
         "title": "新番實況",
-        "url": "https://2cat.cf/~tedc21thc/live/index.html",
+        "url": "https://2cat.komica.org/~tedc21thc/live/index.html",
         "priority": 9990
       },
       {
@@ -78,11 +87,6 @@
       {
         "title": "螢幕攝",
         "url": "https:\/\/alica.dreamhosters.com\/screenshot\/"
-      },
-      {
-        "title": "歡樂惡搞",
-        "url": "https://luna.komica.org/12/index.htm",
-        "priority": 9995
       },
       {
         "title": "特攝",
@@ -114,21 +118,21 @@
       },
       {
         "title": "萌",
-        "url": "https://2cat.cf/~kirur/img2/index.htm",
+        "url": "https://2cat.komica.org/~kirur/img2/index.htm",
         "branch":[
           {
             "title": "萌壹",
-            "url": "https://2cat.cf/~kirur/img2/index2.htm"
+            "url": "https://2cat.komica.org/~kirur/img2/index2.htm"
           },
           {
             "title": "萌貳",
-            "url": "https://2cat.cf/~kirur/img2/_2/"
+            "url": "https://2cat.komica.org/~kirur/img2/_2/"
           }
         ]
       },
       {
         "title": "詢問",
-        "url": "https://2cat.cf/~kirur/orz/index.htm"
+        "url": "https://2cat.komica.org/~kirur/orz/index.htm"
       },
       {
         "title": "AA",
@@ -136,11 +140,11 @@
       },
       {
         "title": "COSPLAY",
-        "url": "https:\/\/cosplay.mymoe.moe\/cosplay\/index.htm"
+        "url": "https://secilia.zawarudo.org/costumade/"
       },
       {
         "title": "改造",
-        "url": "https://luna.komica.org/40/index.htm"
+        "url": "https://sora.komica.org/40/index.htm"
       },
       {
         "title": "投票所",
@@ -177,11 +181,11 @@
       },
       {
         "title": "職業",
-        "url": "https:\/\/2cat.org\/~career\/"
+        "url": "https://2cat.org/~career/"
       },
       {
         "title": "財經",
-        "url": "https:\/\/2cat.org\/~finance\/"
+        "url": "https://2cat.org/~finance/"
       },
       {
         "title": "生活消費",
@@ -189,7 +193,7 @@
       },
       {
         "title": "法律",
-        "url": "https:\/\/2cat.org\/~law\/"
+        "url": "https://2cat.org/~law/"
       },
       {
         "title": "海外",
@@ -205,7 +209,7 @@
       },
       {
         "title": "繪師",
-        "url": "https:\/\/2cat.org\/~artist\/"
+        "url": "https://2cat.org/~artist/"
       },
       {
         "title": "交易合購",
@@ -217,7 +221,7 @@
       },
       {
         "title": "生存遊戲",
-        "url": "https://2cat.cf/~gtr2003/pixmicat1/"
+        "url": "https://2cat.komica.org/~gtr2003/pixmicat1/"
       },
       {
         "title": "鐵道",
@@ -233,7 +237,7 @@
       },
       {
         "title": "猜謎",
-        "url": "https:\/\/2cat.org\/~quiz\/"
+        "url": "https://2cat.org/~quiz/"
       },
       {
         "title": "故事接龍",
@@ -249,11 +253,11 @@
       },
       {
         "title": "大自然",
-        "url": "https://2cat.cf/~rt/pd/"
+        "url": "https://2cat.komica.org/~rt/pd/"
       },
       {
         "title": "天文",
-        "url": "https:\/\/2cat.org\/~astronomy\/"
+        "url": "https://2cat.org/~astronomy/"
       },
       {
         "title": "星座命理",
@@ -297,7 +301,7 @@
       },
       {
         "title": "服飾",
-        "url": "https:\/\/2cat.org\/~pixmicat\/"
+        "url": "https://2cat.org/~pixmicat/"
       },
       {
         "title": "美容",
@@ -338,11 +342,11 @@
     "member": [
       {
         "title": "短片",
-        "url": "https://2cat.cf/~touhonoob/21d/"
+        "url": "https://2cat.komica.org/~touhonoob/21d/"
       },
       {
         "title": "短片2",
-        "url": "https://luna.komica.org/69/"
+        "url": "https://sora.komica.org/69/"
       },
       {
         "title": "彈幕",
@@ -371,7 +375,7 @@
       },
       {
         "title": "綜合遊戲",
-        "url": "http:\/\/tehepero.org\/komica\/"
+        "url": "http://tehepero.org/komica/main/index.htm"
       },
       {
         "title": "動作遊戲",
@@ -399,7 +403,7 @@
       },
       {
         "title": "賽車戰略遊戲",
-        "url": "https://2cat.cf/~caradmin/rcg-slg/",
+        "url": "https://2cat.komica.org/~caradmin/rcg-slg/",
         "branch":[
           {
             "title": "戰略遊戲",
@@ -425,31 +429,27 @@
       },
       {
         "title": "女性向遊戲",
-        "url": "https:\/\/2cat.org\/~boylove\/"
-      },
-      {
-        "title": "音樂遊戲",
-        "url": "https:\/\/komica.chiisana.net\/musicgame\/"
+        "url": "https://2cat.org/~boylove/"
       },
       {
         "title": "網頁遊戲",
-        "url": "https:\/\/komica.chiisana.net\/webgame\/"
+        "url": "https://2cat.org/~webgame/"
       },
       {
         "title": "獨立遊戲",
         "url": "https:\/\/komica.dbfoxtw.me\/indiegame\/"
       },
       {
-        "title": "行動遊戲",
-        "url": "https:\/\/2cat.org\/~handheld\/"
+        "title": "手機遊戲",
+        "url": "https://2cat.org/~cellphone/"
       },
       {
-        "title": "體感遊戲",
-        "url": "https:\/\/2cat.org\/~motion\/"
+        "title": "VR/體感遊戲",
+        "url": "https://2cat.org/~motion/"
       },
       {
         "title": "桌上遊戲",
-        "url": "https:\/\/2cat.org\/~boardgame\/"
+        "url": "https://2cat.org/~boardgame/"
       },
       {
         "title": "麻將",
@@ -599,7 +599,7 @@
       },
       {
         "title": "東方",
-        "url": "https://2cat.cf/~kirur/touhou/index.htm"
+        "url": "https://2cat.org/~touhou/"
       },
       {
         "title": "葉鍵",
@@ -607,7 +607,7 @@
       },
       {
         "title": "龍騎士07",
-        "url": "https:\/\/2cat.org\/~07expansion\/"
+        "url": "https://2cat.org/~07expansion/"
       },
       {
         "title": "涼宮",
@@ -794,7 +794,7 @@
       },
       {
         "title": "返信娘",
-        "url": "https://2cat.cf/~rt/hd/"
+        "url": "https://2cat.komica.org/~rt/hd/"
       },
       {
         "title": "Lolita Fashion",
@@ -888,10 +888,6 @@
         "url": "https:\/\/komica.yucie.net\/worldcup\/"
       },
       {
-        "title": "單車",
-        "url": "https:\/\/komicolle.dreamhosters.com\/bicycle\/"
-      },
-      {
         "title": "武術",
         "url": "https:\/\/komica.yucie.net\/budou\/"
       }
@@ -914,7 +910,7 @@
       },
       {
         "title": "鳥",
-        "url": "https:\/\/2cat.org\/~bird\/"
+        "url": "https://2cat.org/~bird/"
       },
       {
         "title": "蟲",
@@ -935,15 +931,15 @@
     "member": [
       {
         "title": "二次壁",
-        "url": "https://2cat.cf/~twocat/5d/"
+        "url": "https://2cat.org/~wallpaper"
       },
       {
         "title": "三次壁",
-        "url": "http:\/\/2nee.org\/bg_photo"
+        "url": "http://2nee.org/bg_photo"
       },
       {
         "title": "PSV/手機壁",
-        "url": "https://2cat.cf/~touhonoob/14d/"
+        "url": "https://2cat.komica.org/~touhonoob/14d/"
       }
     ]
   },
@@ -956,7 +952,7 @@
       },
       {
         "title": "Pixmicat!",
-        "url": "https://2cat.cf/~scribe/pixmicat_dev/"
+        "url": "https://2cat.komica.org/~scribe/pixmicat_dev/"
       },
       {
         "title": "Joyful Note",
@@ -984,12 +980,8 @@
         "url": "https:\/\/aqua.komica.org\/22\/index.htm"
       },
       {
-        "title": "新聞",
-        "url": "https://aqua.komica.org/25/index.htm"
-      },
-      {
         "title": "寫真",
-        "url": "https://luna.komica.org/16/index.htm"
+        "url": "https://sora.komica.org/16/index.htm"
       },
       {
         "title": "女性角色",
@@ -997,7 +989,7 @@
       },
       {
         "title": "男性角色",
-        "url": "https:\/\/aqua.komica.org\/38\/index.htm"
+        "url": "https://sora.komica.org/38/index.htm"
       },
       {
         "title": "中性角色",
@@ -1005,7 +997,7 @@
       },
       {
         "title": "四格",
-        "url": "https:\/\/aqua.komica.org\/42\/index.htm",
+        "url": "https://sora.komica.org/42/index.html",
         "priority": 9995
       },
       {
@@ -1042,15 +1034,15 @@
       },
       {
         "title": "GIF",
-        "url": "https:\/\/aqua.komica.org\/23\/index.htm"
-      },
-      {
-        "title": "FLASH",
         "url": "https://luna.komica.org/23/index.htm"
       },
       {
+        "title": "FLASH",
+        "url": "https://aqua.komica.org/23/index.htm"
+      },
+      {
         "title": "求圖",
-        "url": "https://luna.komica.org/45/index.htm"
+        "url": "https://sora.komica.org/45/index.htm"
       },
       {
         "title": "測試",
@@ -1117,7 +1109,7 @@
       },
       {
         "title": "(Web)",
-        "url": "https://2cat.cf/~rt/irc/"
+        "url": "https://2cat.komica.org/~rt/irc/"
       }
     ]
   },
@@ -1185,6 +1177,10 @@
   {
     "title": "失效連結",
     "member": [
+      {
+        "title": "音樂遊戲",
+        "url": "https:\/\/komica.chiisana.net\/musicgame\/"
+      },
       {
         "title": "SF",
         "url": "https:\/\/orzistic.org\/s\/"
