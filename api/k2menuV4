@@ -1,0 +1,236 @@
+[
+  {
+    "member": [
+      {
+        "id": 0,
+        "title": "管理室",
+        "type": 4,
+        "url": "http://komica2.net/f10/"
+      }
+    ],
+    "id": 0,
+    "title": "管理"
+  },
+  {
+    "member": [
+      {
+        "id": 1,
+        "title": "二次裡A",
+        "type": 4,
+        "url": "http://komica2.net/51/index.htm"
+      },
+      {
+        "id": 2,
+        "title": "二次裡B",
+        "type": 4,
+        "url": "http://komica2.net/54/index.htm"
+      },
+      {
+        "id": 3,
+        "title": "三次元裡",
+        "type": 4,
+        "url": "http://komica2.net/43/index.htm"
+      },
+      {
+        "id": 4,
+        "title": "動畫裡",
+        "type": 10,
+        "url": "http://2nyan.org/azurelane/"
+      },
+      {
+        "id": 5,
+        "title": "遊戲裡",
+        "type": 4,
+        "url": "http://komica2.net/59/index.htm"
+      },
+      {
+        "id": 6,
+        "title": "Alicesoft",
+        "type": 4,
+        "url": "http://komica2.net/alicesoft/"
+      },
+      {
+        "id": 7,
+        "title": "3D裡",
+        "type": 4,
+        "url": "http://komica2.net/66/index.htm"
+      },
+      {
+        "id": 8,
+        "title": "塗鴉裡",
+        "type": 4,
+        "url": "http://komica2.net/55/index.htm"
+      },
+      {
+        "id": 9,
+        "title": "壁紙裡",
+        "type": 4,
+        "url": "http://komica2.net/wallpaper/"
+      },
+      {
+        "id": 10,
+        "title": "Figure 裡",
+        "type": 4,
+        "url": "http://komica2.net/wallpaper/"
+      },
+      {
+        "id": 11,
+        "title": "玩偶裡",
+        "type": 4,
+        "url": "http://komica2.net/doll/"
+      },
+      {
+        "id": 12,
+        "title": "交易合購裡",
+        "type": 4,
+        "url": "http://komica2.net/70/"
+      },
+      {
+        "id": 13,
+        "title": "成人玩具",
+        "type": 10,
+        "url": "http://2cat.org/~toy/"
+      },
+      {
+        "id": 14,
+        "title": "東方裡",
+        "type": 1,
+        "url": "http://komica.peroneko.org/touhou/"
+      },
+      {
+        "id": 15,
+        "title": "獸裡",
+        "type": 4,
+        "url": "http://komica2.net/34/index.htm"
+      },
+      {
+        "id": 16,
+        "title": "機娘裡",
+        "type": 1,
+        "url": "http://cyber.boguspix.com/"
+      },
+      {
+        "id": 17,
+        "title": "觸手裡",
+        "type": 4,
+        "url": "http://p.komica.acg.club.tw/k2slime/"
+      },
+      {
+        "id": 18,
+        "title": "足襪",
+        "type": 4,
+        "url": "http://komica2.net/stock/"
+      },
+      {
+        "id": 19,
+        "title": "惡搞裡",
+        "type": 4,
+        "url": "http://komica2.net/48/index.htm"
+      },
+      {
+        "id": 20,
+        "title": "偽娘裡",
+        "type": 10,
+        "url": "http://2cat.org/~futa/"
+      },
+      {
+        "id": 21,
+        "title": "YURI",
+        "type": 4,
+        "url": "http://komica2.net/31/index.htm"
+      },
+      {
+        "id": 22,
+        "title": "YAOI",
+        "type": 4,
+        "url": "http://komica2.net/32/index.htm"
+      },
+      {
+        "id": 23,
+        "title": "詢問裡",
+        "type": 10,
+        "url": "http://majeur.zawarudo.org/demande/"
+      },
+      {
+        "id": 24,
+        "title": "知識裡",
+        "type": 10,
+        "url": "http://2cat.org/~know/"
+      },
+      {
+        "id": 25,
+        "title": "改造裡",
+        "type": 4,
+        "url": "http://komica2.net/kaizou/"
+      },
+      {
+        "id": 26,
+        "title": "成人音聲",
+        "type": 4,
+        "url": "http://komica2.net/hvoice/"
+      },
+      {
+        "id": 27,
+        "title": "小說裡",
+        "type": 4,
+        "url": "http://komica2.net/63/index.htm"
+      },
+      {
+        "id": 28,
+        "title": "高解析裡",
+        "type": 1,
+        "url": "http://2cat.org/~hisoura/"
+      },
+      {
+        "id": 29,
+        "title": "GIF裡",
+        "type": 10,
+        "url": "http://2cat.org/~gifura/"
+      },
+      {
+        "id": 30,
+        "title": "宣傳裡",
+        "type": 4,
+        "url": "http://komica2.net/21d/index.htm"
+      }
+    ],
+    "id": 1,
+    "title": "畫像板"
+  },
+  {
+    "member": [
+      {
+        "id": 31,
+        "title": "雜談",
+        "type": 10,
+        "url": "http://komica2.net/f11/"
+      },
+      {
+        "id": 32,
+        "title": "寫作裡",
+        "type": 10,
+        "url": "http://komica2.net/f12/"
+      },
+      {
+        "id": 33,
+        "title": "寫作資料庫",
+        "type": 10,
+        "url": "http://komica2.net/f12_archive/"
+      }
+    ],
+    "id": 2,
+    "title": "文字板"
+  },
+  {
+    "member": [
+      {
+        "id": 34,
+        "title": "精華裡",
+        "type": 10,
+        "url": "http://komica2.net/up/"
+      }
+    ],
+    "id": 3,
+    "title": "其他"
+  }
+]
