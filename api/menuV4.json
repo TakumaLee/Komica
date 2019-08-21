@@ -300,7 +300,7 @@
       {
         "id": 47,
         "title": "繪師",
-        "type": 4,
+        "type": 10,
         "url": "https://2cat.org/~artist/"
       },
       {
@@ -361,7 +361,7 @@
         "id": 57,
         "title": "歐美動畫",
         "type": 1,
-        "url": "https://mymoe.moe/boards/wei75631/komicartoon/"
+        "url": "https://aqua.komica.org/76/"
       },
       {
         "id": 58,
@@ -372,7 +372,7 @@
       {
         "id": 59,
         "title": "天文",
-        "type": 4,
+        "type": 10,
         "url": "https://2cat.org/~astronomy/"
       },
       {
@@ -402,8 +402,8 @@
       {
         "id": 64,
         "title": "夢",
-        "type": 1,
-        "url": "http://komicolle.dreamhosters.com/dream/"
+        "type": 4,
+        "url": "https://aqua.komica.org/dream/"
       },
       {
         "id": 65,
