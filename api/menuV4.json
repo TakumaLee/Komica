@@ -283,12 +283,12 @@
         "id": 44,
         "title": "海外",
         "type": 10,
-        "url": "http://next.nagatoyuki.org/outremer/"
+        "url": "https://liaison.nagatoyuki.org/outremer/"
       },
       {
         "id": 45,
         "title": "閒談@香港",
-        "type": 10,
+        "type": 1,
         "url": "https://kagaminerin.org/hongkong/"
       },
       {
@@ -349,7 +349,7 @@
         "id": 55,
         "title": "故事接龍",
         "type": 1,
-        "url": "http://storysol2.boguspix.com/"
+        "url": "https://storysol.boguspix.com/"
       },
       {
         "id": 56,
