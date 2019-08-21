@@ -409,7 +409,7 @@
         "id": 65,
         "title": "流言終結",
         "type": 10,
-        "url": "http://next.nagatoyuki.org/myth/"
+        "url": "https://liaison.nagatoyuki.org/myth/"
       },
       {
         "id": 66,
@@ -438,7 +438,7 @@
       {
         "id": 70,
         "title": "服飾",
-        "type": 4,
+        "type": 10,
         "url": "https://2cat.org/~pixmicat/"
       },
       {
@@ -460,12 +460,6 @@
         "url": "https://mymoe.moe/boards/24/house/"
       },
       {
-        "id": 74,
-        "title": "手工藝",
-        "type": 1,
-        "url": "https://komica.chiisana.net/diy/"
-      },
-      {
         "id": 75,
         "title": "圖書",
         "type": 1,
@@ -481,13 +475,13 @@
         "id": 77,
         "title": "煩惱相談",
         "type": 10,
-        "url": "http://next.nagatoyuki.org/conseil/"
+        "url": "https://liaison.nagatoyuki.org/conseil/"
       },
       {
         "id": 78,
         "title": "安價",
         "type": 10,
-        "url": "http://next.nagatoyuki.org/ancre/"
+        "url": "https://liaison.nagatoyuki.org/ancre/"
       }
     ],
     "id": 2,
@@ -542,12 +536,6 @@
         "title": "遊戲速報",
         "type": 4,
         "url": "https://aqua.komica.org/27/index.htm"
-      },
-      {
-        "id": 86,
-        "title": "綜合遊戲",
-        "type": 1,
-        "url": "http://tehepero.org/komica/main/index.htm"
       },
       {
         "id": 87,
@@ -1724,7 +1712,7 @@
       {
         "id": 265,
         "title": "音樂遊戲",
-        "type": 1,
+        "type": 10,
         "url": "https://komica.chiisana.net/musicgame/"
       },
       {
@@ -1768,6 +1756,18 @@
         "title": "偶像",
         "type": 10,
         "url": "https://yuutan.mymoe.moe/idol/"
+      },
+      {
+        "id": 74,
+        "title": "手工藝",
+        "type": 10,
+        "url": "https://komica.chiisana.net/diy/"
+      },
+      {
+        "id": 86,
+        "title": "綜合遊戲",
+        "type": 1,
+        "url": "http://tehepero.org/komica/main/index.htm"
       }
     ],
     "id": 20,
