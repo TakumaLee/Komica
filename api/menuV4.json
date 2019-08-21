@@ -1233,12 +1233,12 @@
         "id": 197,
         "title": "飲食",
         "type": 4,
-        "url": "https://aqua.komica.org/58/index.htm"
+        "url": "https://aqua.komica.org/58/index.html"
       },
       {
         "id": 198,
         "title": "酒",
-        "type": 1,
+        "type": 10,
         "url": "https://liaison.nagatoyuki.org/beverage/"
       },
       {
@@ -1269,7 +1269,7 @@
         "id": 202,
         "title": "體育",
         "type": 4,
-        "url": "https://aqua.komica.org/49/index.htm"
+        "url": "https://aqua.komica.org/49/index.html"
       },
       {
         "id": 203,
@@ -1291,8 +1291,8 @@
       {
         "id": 205,
         "title": "動物綜合",
-        "type": 1,
-        "url": "https://2nyan.org/animal/"
+        "type": 10,
+        "url": "https://2cat.org/~animal/"
       },
       {
         "id": 206,
@@ -1309,14 +1309,14 @@
       {
         "id": 208,
         "title": "鳥",
-        "type": 4,
+        "type": 10,
         "url": "https://2cat.org/~bird/"
       },
       {
         "id": 209,
         "title": "蟲",
         "type": 1,
-        "url": "https://spg-web.sytes.net/PasteChart/insect/"
+        "url": "http://spg-web.sytes.net/PasteChart/insect/"
       },
       {
         "id": 210,
@@ -1373,22 +1373,10 @@
         "url": "https://2cat.komica.org/~scribe/pixmicat_dev/"
       },
       {
-        "id": 217,
-        "title": "Joyful Note",
-        "type": 10,
-        "url": "https://rthost.fam.cx/joyful/"
-      },
-      {
         "id": 218,
         "title": "程設交流",
         "type": 4,
         "url": "https://aqua.komica.org/cs/"
-      },
-      {
-        "id": 219,
-        "title": "網頁設計",
-        "type": 1,
-        "url": "https://touhonoob.mymoe.moe/webdevelop/"
       },
       {
         "id": 220,
@@ -1437,7 +1425,7 @@
         "title": "四格",
         "priority": 9995,
         "type": 4,
-        "url": "https://sora.komica.org/42/index.html"
+        "url": "https://sora.komica.org/42a/index.html?1564399411"
       },
       {
         "id": 227,
@@ -1497,19 +1485,13 @@
         "id": 236,
         "title": "FLASH",
         "type": 4,
-        "url": "https://aqua.komica.org/23/index.htm"
+        "url": "https://aqua.komica.org/24/index.htm"
       },
       {
         "id": 237,
         "title": "求圖",
         "type": 4,
         "url": "https://sora.komica.org/45/index.htm"
-      },
-      {
-        "id": 238,
-        "title": "測試",
-        "type": 10,
-        "url": "https://komica42.dreamhosters.com/99/index.htm"
       }
     ],
     "id": 15,
