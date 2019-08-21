@@ -581,19 +581,13 @@
           {
             "id": 94,
             "title": "戰略遊戲",
-            "type": 4,
-            "url": "https://komica.yucie.net/simulation/"
-          },
-          {
-            "id": 95,
-            "title": "戰略及賽車避難所",
             "type": 1,
-            "url": "https://no_99.mymoe.moe/rcg_slg/pixmicat.php?page_num=0"
+            "url": "https://komica.yucie.net/simulation/"
           },
           {
             "id": 96,
             "title": "賽車遊戲",
-            "type": 4,
+            "type": 1,
             "url": "https://komica.yucie.net/racing/"
           }
         ],
@@ -614,13 +608,13 @@
       {
         "id": 99,
         "title": "女性向遊戲",
-        "type": 4,
+        "type": 10,
         "url": "https://2cat.org/~boylove/"
       },
       {
         "id": 100,
         "title": "網頁遊戲",
-        "type": 4,
+        "type": 10,
         "url": "https://2cat.org/~webgame/"
       },
       {
@@ -632,19 +626,19 @@
       {
         "id": 102,
         "title": "手機遊戲",
-        "type": 4,
+        "type": 10,
         "url": "https://2cat.org/~cellphone/"
       },
       {
         "id": 103,
         "title": "VR/體感遊戲",
-        "type": 4,
+        "type": 10,
         "url": "https://2cat.org/~motion/"
       },
       {
         "id": 104,
         "title": "桌上遊戲",
-        "type": 4,
+        "type": 10,
         "url": "https://2cat.org/~boardgame/"
       },
       {
@@ -684,9 +678,21 @@
   {
     "member": [
       {
+        "id": 276,
+        "title": "AGA",
+        "type": 10,
+        "url": "https://secilia.zawarudo.org/alicegearaegis/"
+      },
+      {
+        "id": 277,
+        "title": "Azur Lane",
+        "type": 10,
+        "url": "https://2cat.org/~azurlane/"
+      },
+      {
         "id": 110,
         "title": "CosmicBreak",
-        "type": 1,
+        "type": 10,
         "url": "https://gamegroup.mymoe.moe/cosmicbreak/"
       },
       {
@@ -734,7 +740,7 @@
       {
         "id": 118,
         "title": "Minecraft",
-        "type": 1,
+        "type": 10,
         "url": "https://komica.peroneko.org/minecraft/"
       },
       {
