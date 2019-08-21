@@ -774,22 +774,28 @@
         "url": "https://www.karlsland.net/t7s/"
       },
       {
-        "id": 124,
-        "title": "TOS",
-        "type": 1,
-        "url": "https://tos.pixmi.net/"
-      },
-      {
         "id": 125,
         "title": "WOW",
+        "type": 1,
+        "url": "http://www.wowhk.org/wowhk/"
+      },
+      {
+        "id": 278,
+        "title": "少女前線",
         "type": 10,
-        "url": "https://www.wowhk.org/"
+        "url": "https://secilia.zawarudo.org/gf/"
       },
       {
         "id": 126,
         "title": "白貓Project",
         "type": 1,
         "url": "https://acs5566.mymoe.moe/shironeko/"
+      },
+      {
+        "id": 279,
+        "title": "碧藍幻想",
+        "type": 10,
+        "url": "https://2cat.org/~granblue/"
       },
       {
         "id": 127,
@@ -837,25 +843,19 @@
         "id": 134,
         "title": "艦隊收藏",
         "type": 1,
-        "url": "https://acgspace.wsfun.com/kancolle/"
+        "url": "http://acgspace.wsfun.com/kancolle/"
       },
       {
         "id": 135,
         "title": "魔物獵人",
         "type": 1,
-        "url": "https://strange-komica.com/MonsterHunter/"
+        "url": "http://strange-komica.com/MonsterHunter/"
       },
       {
         "id": 136,
         "title": "爐石戰記",
         "type": 1,
         "url": "https://lordofdota2.mymoe.moe/Hearthstone/"
-      },
-      {
-        "id": 137,
-        "title": "星空幻想",
-        "type": 1,
-        "url": "https://ttr_rb.mymoe.moe/ttrrb/"
       }
     ],
     "id": 5,
@@ -872,7 +872,7 @@
       {
         "id": 139,
         "title": "東方",
-        "type": 4,
+        "type": 10,
         "url": "https://2cat.org/~touhou/"
       },
       {
@@ -884,7 +884,7 @@
       {
         "id": 141,
         "title": "龍騎士07",
-        "type": 4,
+        "type": 10,
         "url": "https://2cat.org/~07expansion/"
       },
       {
@@ -892,12 +892,6 @@
         "title": "涼宮",
         "type": 1,
         "url": "http://next.nagatoyuki.org/szmy/"
-      },
-      {
-        "id": 143,
-        "title": "反逆",
-        "type": 1,
-        "url": "https://komica.chiisana.net/pizzahut/"
       },
       {
         "id": 144,
@@ -921,7 +915,7 @@
         "id": 147,
         "title": "遊戲王",
         "type": 1,
-        "url": "https://yugioh.mymoe.moe/20110517/"
+        "url": "https://aqua.komica.org/73/index.htm"
       },
       {
         "id": 148,
@@ -951,7 +945,7 @@
         "id": 152,
         "title": "IM@S",
         "type": 1,
-        "url": "https://idolma.ster.tw/imgbbs/"
+        "url": "http://idolma.ster.tw/imgbbs/"
       },
       {
         "id": 153,
@@ -1774,6 +1768,12 @@
         "title": "綜合遊戲",
         "type": 1,
         "url": "http://tehepero.org/komica/main/index.htm"
+      },
+      {
+        "id": 143,
+        "title": "反逆",
+        "type": 1,
+        "url": "https://komica.chiisana.net/pizzahut/"
       }
     ],
     "id": 20,
