@@ -990,15 +990,9 @@
   {
     "member": [
       {
-        "id": 159,
-        "title": "Capcom",
-        "type": 1,
-        "url": "https://no_99.mymoe.moe/capcom/"
-      },
-      {
         "id": 160,
         "title": "GAINAX",
-        "type": 10,
+        "type": 1,
         "url": "https://kagaminerin.org/gainax/"
       },
       {
@@ -1083,7 +1077,7 @@
         "id": 172,
         "title": "性轉換",
         "type": 1,
-        "url": "https://komica.chiisana.net/genderswap/"
+        "url": "https://aqua.komica.org/72/"
       },
       {
         "id": 173,
@@ -1162,12 +1156,6 @@
         "title": "Lolita Fashion",
         "type": 1,
         "url": "https://komica.yucie.net/lolita/"
-      },
-      {
-        "id": 186,
-        "title": "傲嬌",
-        "type": 1,
-        "url": "https://komica.chiisana.net/tsundere/"
       }
     ],
     "id": 9,
@@ -1185,7 +1173,7 @@
         "id": 188,
         "title": "線上繪圖",
         "type": 10,
-        "url": "https://aqua.komica.org/poti/index.htm"
+        "url": "https://secilia.zawarudo.org/dessin/"
       },
       {
         "id": 189,
@@ -1203,13 +1191,13 @@
         "id": 191,
         "title": "3D",
         "type": 3,
-        "url": "http://komicolle.dreamhosters.com/3d/"
+        "url": "https://aqua.komica.org/3d/index.htm"
       },
       {
         "id": 192,
         "title": "MMD",
         "type": 1,
-        "url": "https://valerinty.mymoe.moe/mmdance/"
+        "url": "https://secilia.zawarudo.org/avenir/"
       },
       {
         "id": 193,
@@ -1233,7 +1221,7 @@
         "id": 196,
         "title": "宣傳",
         "type": 1,
-        "url": "https://aqua.komica.org/20d/index.htm"
+        "url": "https://luna.komica.org/20d/index.htm"
       }
     ],
     "id": 10,
@@ -1251,12 +1239,12 @@
         "id": 198,
         "title": "酒",
         "type": 1,
-        "url": "http://next.nagatoyuki.org/beverage/"
+        "url": "https://liaison.nagatoyuki.org/beverage/"
       },
       {
         "id": 199,
         "title": "咖啡/茶",
-        "type": 4,
+        "type": 10,
         "url": "https://2cat.org/~coffee/"
       },
       {
@@ -1774,6 +1762,12 @@
         "title": "反逆",
         "type": 1,
         "url": "https://komica.chiisana.net/pizzahut/"
+      },
+      {
+        "id": 186,
+        "title": "傲嬌",
+        "type": 1,
+        "url": "https://komica.chiisana.net/tsundere/"
       }
     ],
     "id": 20,
