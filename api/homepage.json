@@ -1,11 +1,4 @@
 {
-  "infoCode": 60,
-  "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 2.2.18<\/font><br><br /><font color=\"#ff0000\">目前正在嘗試優化一些顯示問題 m(_ _)m<\/font><br />",
-  "indexSort":[
-    "favorite",
-    "promote"
-  ],
-  "promoteList":[
-    
-  ]
+  "infoCode": 110,
+  "promoteInfo":"<br><font color=\"#304FFE\">更新資訊： 版本 2.5.0<\/font><br><br /><font color=\"#ff0000\">越修越糟糕覺得絕望(╯‵□′)╯︵┻━┻<\/font><br />"
 }
