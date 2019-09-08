@@ -282,7 +282,7 @@
       {
         "id": 44,
         "title": "海外",
-        "type": 10,
+        "type": 6,
         "url": "https://liaison.nagatoyuki.org/outremer/"
       },
       {
@@ -306,7 +306,7 @@
       {
         "id": 48,
         "title": "交易合購",
-        "type": 10,
+        "type": 5,
         "url": "https://komica.yucie.net/trade/"
       },
       {
@@ -408,7 +408,7 @@
       {
         "id": 65,
         "title": "流言終結",
-        "type": 10,
+        "type": 6,
         "url": "https://liaison.nagatoyuki.org/myth/"
       },
       {
@@ -474,13 +474,13 @@
       {
         "id": 77,
         "title": "煩惱相談",
-        "type": 10,
+        "type": 6,
         "url": "https://liaison.nagatoyuki.org/conseil/"
       },
       {
         "id": 78,
         "title": "安價",
-        "type": 10,
+        "type": 6,
         "url": "https://liaison.nagatoyuki.org/ancre/"
       }
     ],
@@ -680,7 +680,7 @@
       {
         "id": 276,
         "title": "AGA",
-        "type": 10,
+        "type": 6,
         "url": "https://secilia.zawarudo.org/alicegearaegis/"
       },
       {
@@ -782,7 +782,7 @@
       {
         "id": 278,
         "title": "少女前線",
-        "type": 10,
+        "type": 6,
         "url": "https://secilia.zawarudo.org/gf/"
       },
       {
@@ -926,7 +926,21 @@
       {
         "id": 149,
         "title": "APH",
-        "type": 10,
+        "type": 11,
+        "branch": [
+          {
+            "id": 273,
+            "title": "APH1",
+            "type": 1,
+            "url": "http://www.kagaminerin.org/aph1/top.htm"
+          },
+          {
+            "id": 274,
+            "title": "APH2",
+            "type": 1,
+            "url": "http://www.kagaminerin.org/aph2/"
+          }
+        ],
         "url": "https://kagaminerin.org/aph1/"
       },
       {
@@ -1172,7 +1186,7 @@
       {
         "id": 188,
         "title": "線上繪圖",
-        "type": 10,
+        "type": 6,
         "url": "https://secilia.zawarudo.org/dessin/"
       },
       {
@@ -1238,7 +1252,7 @@
       {
         "id": 198,
         "title": "酒",
-        "type": 10,
+        "type": 6,
         "url": "https://liaison.nagatoyuki.org/beverage/"
       },
       {
